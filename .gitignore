@@ -37,3 +37,4 @@ nosetests.xml
 
 # Perso
 tiles.json_backup
+tiles.json

@@ -145,7 +145,7 @@ def prompt_tile():
 
 
 def main():
-    shutil.copyfil("tiles.json", "tiles.json_backup")
+    shutil.copyfile("tiles.json", "tiles.json_backup")
 
     with open("tiles.json") as f:
         tiles = json.load(f)
