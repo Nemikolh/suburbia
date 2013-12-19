@@ -10,7 +10,7 @@ colors = ["BLUE", "GREY", "YELLOW", "GREEN", "LAKE"]
 letters = ["A", "B", "C", "BASE"]
 scopes = ["ADJACENT", "ADJACENT_TO_OWN_LAKE" "GLOBAL", "OWN", "OTHER", "NONE"]
 resources = ["INCOME", "REPUTATION", "POPULATION", "MONEY", "NONE"]
-whens = ["ALWAYS", "AFTER", "AFTER RED LINE"]
+whens = ["ALWAYS", "AFTER", "AFTER_RED_LINE"]
 types = icons + colors + ["BURROUGH"]
 attributes = ["name", "color", "icon", "price", "letter", "immediate", "triggers"]
 
