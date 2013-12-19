@@ -5,7 +5,7 @@ import json
 import shutil
 
 
-icons = ["AIRPORT", "OFFICE", "RESTAURANT", "SCHOOL", "NEW CAR DEALERSHIP", "SKYSCRAPER", "NONE"]
+icons = ["AIRPORT", "OFFICE", "RESTAURANT", "SCHOOL", "NEW_CAR_DEALERSHIP", "SKYSCRAPER", "NONE"]
 colors = ["BLUE", "GREY", "YELLOW", "GREEN", "LAKE"]
 letters = ["A", "B", "C", "BASE"]
 scopes = ["ADJACENT", "GLOBAL", "OWN", "OTHER", "NONE"]
@@ -152,7 +152,7 @@ def main():
 
     while(True):
         try:
-            operation = prompt_value("Create/Edit/Remove/Quit? ", ["CREATE", "EDIT", "REMOVE", "QUIT"])
+            operation = prompt_value("Create/Edit/Remove/List/Quit? ", ["CREATE", "EDIT", "REMOVE", "LIST", "QUIT"])
 
             if operation == "CREATE":
                 tiles.append(prompt_tile())
@@ -180,6 +180,10 @@ def main():
                         values = attribute_to_values[attribute + "s"]
                         value = prompt_value("%s:" % attribute, values)
                         tile[attribute] = value
+
+            elif operation == "LIST":
+                print "%d tiles in json file:" % len(tiles)
+                print '; '.join(sorted(map(lambda tile: tile['name'], tiles)))
 
             elif operation == "QUIT":
                 raise Exception
