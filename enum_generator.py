@@ -17,10 +17,7 @@ public enum %s
 
 file_header = """
 using System;
-namespace AssemblyCsharp
-{
 %s
-}
 """
 
 
