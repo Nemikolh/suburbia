@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import sys
+import os
 from json_generator import icons, colors, letters, scopes, resources, whens
 
 
@@ -26,10 +26,11 @@ def create_enum(enum_name, values):
     return enum_template % (enum_name, enum_values)
 
 
-def create_enums():
+def create_enums(folder):
     i = 0
     for enum_name in enum_names:
         file_name = enum_name + ".cs"
+        file_name = os.path.join(folder, file_name)
         try:
             with open(file_name, 'w') as f:
                 f.write(file_header % create_enum(enum_name, enum_values[i]))
@@ -39,7 +40,8 @@ def create_enums():
 
 
 def main():
-    return create_enums()
+    folder = "enums"
+    return create_enums(folder)
 
 
 if __name__ == '__main__':
