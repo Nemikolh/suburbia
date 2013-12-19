@@ -7,7 +7,7 @@ import shutil
 
 icons = ["AIRPORT", "OFFICE", "RESTAURANT", "SCHOOL", "NEW CAR DEALERSHIP", "SKYSCRAPER", "NONE"]
 colors = ["BLUE", "GREY", "YELLOW", "GREEN", "LAKE"]
-letters = ["A", "B", "C"]
+letters = ["A", "B", "C", "BASE"]
 scopes = ["ADJACENT", "GLOBAL", "OWN", "OTHER", "NONE"]
 resources = ["INCOME", "REPUTATION", "POPULATION", "MONEY", "NONE"]
 whens = ["ALWAYS", "AFTER", "AFTER RED LINE"]
@@ -152,10 +152,10 @@ def main():
 
     while(True):
         try:
-            operation = prompt_value("Create/Edit/Remove? ", ["CREATE", "EDIT", "REMOVE"])
+            operation = prompt_value("Create/Edit/Remove/Quit? ", ["CREATE", "EDIT", "REMOVE", "QUIT"])
 
             if operation == "CREATE":
-                tile = prompt_tile()
+                tiles.append(prompt_tile())
             elif operation in ["EDIT", "REMOVE"]:
                 name = prompt_value("Name: ", map(lambda tile: str(tile['name']), tiles), upper=False)
                 tile = filter(lambda tile: tile['name'] == name, tiles)[0]
@@ -180,11 +180,16 @@ def main():
                         values = attribute_to_values[attribute + "s"]
                         value = prompt_value("%s:" % attribute, values)
                         tile[attribute] = value
+
+            elif operation == "QUIT":
+                raise Exception
+
         except:
             break
 
     with open("tiles.json", "w") as f:
         f.write(json.dumps(tiles))
+    print "Successfully saved %d tiles in %s" % (len(tiles), "tiles.json")
 
 
 if __name__ == '__main__':
