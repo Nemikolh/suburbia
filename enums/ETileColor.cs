@@ -1,7 +1,5 @@
 
 using System;
-namespace AssemblyCsharp
-{
 
 public enum ETileColor
 {
@@ -12,4 +10,3 @@ GREEN,
 LAKE
 }
 
-}

@@ -1,7 +1,5 @@
 
 using System;
-namespace AssemblyCsharp
-{
 
 public enum ETileResource
 {
@@ -12,4 +10,3 @@ MONEY,
 NONE
 }
 
-}

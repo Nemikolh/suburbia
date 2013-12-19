@@ -1,7 +1,5 @@
 
 using System;
-namespace AssemblyCsharp
-{
 
 public enum ETileIcon
 {
@@ -14,4 +12,3 @@ SKYSCRAPER,
 NONE
 }
 
-}

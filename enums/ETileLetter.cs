@@ -1,7 +1,5 @@
 
 using System;
-namespace AssemblyCsharp
-{
 
 public enum ETileLetter
 {
@@ -11,4 +9,3 @@ C,
 BASE
 }
 
-}

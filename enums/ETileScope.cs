@@ -1,15 +1,12 @@
 
 using System;
-namespace AssemblyCsharp
-{
 
 public enum ETileScope
 {
 ADJACENT,
-ADJACENT_TO_LAKEGLOBAL,
+ADJACENT_TO_OWN_LAKEGLOBAL,
 OWN,
 OTHER,
 NONE
 }
 
-}
