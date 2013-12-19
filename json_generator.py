@@ -8,7 +8,7 @@ import shutil
 icons = ["AIRPORT", "OFFICE", "RESTAURANT", "SCHOOL", "NEW_CAR_DEALERSHIP", "SKYSCRAPER", "NONE"]
 colors = ["BLUE", "GREY", "YELLOW", "GREEN", "LAKE"]
 letters = ["A", "B", "C", "BASE"]
-scopes = ["ADJACENT", "ADJACENT_TO_OWN_LAKE" "GLOBAL", "OWN", "OTHER", "NONE"]
+scopes = ["ADJACENT", "ADJACENT_TO_OWN_LAKE", "GLOBAL", "OWN", "OTHER", "NONE"]
 resources = ["INCOME", "REPUTATION", "POPULATION", "MONEY", "NONE"]
 whens = ["ALWAYS", "AFTER", "AFTER_RED_LINE"]
 types = icons + colors + ["BURROUGH"]
