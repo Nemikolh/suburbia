@@ -11,8 +11,8 @@ letters = ["A", "B", "C", "BASE"]
 scopes = ["ADJACENT", "ADJACENT_TO_OWN_LAKE", "GLOBAL", "OWN", "OTHER", "NONE"]
 resources = ["INCOME", "REPUTATION", "POPULATION", "MONEY", "NONE"]
 whens = ["ALWAYS", "AFTER", "AFTER_RED_LINE"]
-types = icons + colors + ["BURROUGH"]
-attributes = ["name", "color", "icon", "price", "letter", "immediate", "triggers"]
+types = icons + colors
+attributes = ["name", "color", "icon", "price", "letter", "number", "immediate", "triggers"]
 
 attribute_to_values = {
     "icons": icons,
@@ -23,7 +23,8 @@ attribute_to_values = {
     "whens": whens,
     "types": types,
     "names": None,
-    "prices": None
+    "prices": None,
+    "numbers": None
 }
 
 
@@ -127,6 +128,7 @@ def prompt_tile():
     icon = prompt_value("Icon: ", icons)
     price = prompt_value_int("Price: ")
     letter = prompt_value("Letter: ", letters)
+    number = prompt_value_int("Number: ")
 
     print "Immediate effect:"
     immediate = prompt_effect()
@@ -139,6 +141,7 @@ def prompt_tile():
         "icon": icon,
         "price": price,
         "letter": letter,
+        "number": number,
         "immediate": immediate,
         "triggers": triggers
     }
