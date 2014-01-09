@@ -3,6 +3,9 @@
 # C extensions
 *.so
 
+# C sharp / Mono Develop
+*.cs.meta
+
 # Packages
 *.egg
 *.egg-info
