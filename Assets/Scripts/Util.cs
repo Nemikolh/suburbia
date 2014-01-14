@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
-using Newtonsoft.Json.Linq;
+using SimpleJSON;
 
 public class Util
 {
@@ -16,11 +16,11 @@ public class Util
 		{
 		}
 
-		public static T getValue<T> (JObject p_json, string p_attribute)
-		{
-				//JToken o = JToken.Parse (p_json);
-				return (T)p_json.SelectToken (p_attribute);
-		}
+//		public static T getValue<T> (JSONClass p_json, string p_attribute)
+//		{
+//				//JToken o = JToken.Parse (p_json);
+//				return p_json[p_attribute].;
+//		}
 
 		public static T parseEnum<T> (string p_value)
 		{

@@ -8,17 +8,46 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public sealed class RealEstateMarket
 {
 		private RealEstateMarket ()
 		{
+        m_availables_tiles = new List<TileInstance>();
 		}
 
-	private 
+		private TileStacks m_tileStacks;
+		private List<TileInstance> m_availables_tiles;
 
+		public TileInstance Pick (int n)
+		{
+				if (n < 0 || n > m_availables_tiles.Count) {
+						Debug.Log ("Trying to pick an unbound tile ! Value : " + n);
+						return null;
+				}
 
-	public static 
+				TileInstance tile = m_availables_tiles [n];
+				m_availables_tiles.Remove (tile);
+				// We may here add a null tile. This is a desired behavior.
+				// A null tile is considered has a hole in the real estate market.
+				m_availables_tiles.Insert (0, m_tileStacks.PopNextTile ());
+
+				return tile;
+		}
+
+		/// <summary>
+		/// Gets the current real estate market.
+		/// </summary>
+		/// <value>The current.</value>
+		public static RealEstateMarket Current {
+				get {
+						return m_instance;
+				}
+		}
+	
+		private static readonly RealEstateMarket m_instance = new RealEstateMarket ();
 }
 
 

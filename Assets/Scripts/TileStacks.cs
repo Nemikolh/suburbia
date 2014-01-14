@@ -7,107 +7,128 @@
 //     le code est régénéré.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
 using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using SimpleJSON;
 using UnityEngine;
 
 public class TileStacks
 {
-		private Stack<TileInstance> m_tilesA;
-		private Stack<TileInstance> m_tilesB;
-		private Stack<TileInstance> m_tilesC;
-		private List<Tile> m_tiles_availables;
+    private Stack<TileInstance> m_tilesA;
+    private Stack<TileInstance> m_tilesB;
+    private Stack<TileInstance> m_tilesC;
+    private List<Tile> m_tiles_availables;
 
-		public TileStacks (int p_nb_players)
-		{
+    public TileStacks (int p_nb_players)
+    {
 
-				m_tiles_availables = new List<Tile> ();
-				
-				//Application.dataPath
-				using (StreamReader reader = File.OpenText(@"Data/tiles.json")) {
+        m_tiles_availables = new List<Tile> ();
+                
+        //Application.dataPath
+        using (StreamReader reader = File.OpenText(@"Data/tiles.json")) {
 
-						JArray tiles = (JArray)JToken.ReadFrom (new JsonTextReader (reader));
-						// TODO all tiles types have been instanciated
-				}
+            JSONArray tiles = (JSONArray)JSON.Parse (reader.ReadToEnd ());
+                        
+            // TODO all tiles types have been instanciated
+        }
 
-				foreach (Tile tile in m_tiles_availables) {
-				
-						Stack<TileInstance> tiles_stack;
+        foreach (Tile tile in m_tiles_availables) {
+                
+            Stack<TileInstance> tiles_stack;
 
-						switch (tile.letter) {
-						case ETileLetter.A:
-								tiles_stack = m_tilesA;
-								break;
-						case ETileLetter.B:
-								tiles_stack = m_tilesB;
-								break;
-						case ETileLetter.C:
-								tiles_stack = m_tilesC;
-								break;
-						default:
-								continue;
-						}
+            switch (tile.letter) {
+            case ETileLetter.A:
+                tiles_stack = m_tilesA;
+                break;
+            case ETileLetter.B:
+                tiles_stack = m_tilesB;
+                break;
+            case ETileLetter.C:
+                tiles_stack = m_tilesC;
+                break;
+            default:
+                continue;
+            }
 
-						for (int i = 0; i < tile.number; ++i) {
-								tiles_stack.Push (new TileInstance (tile));
-						}
-				}
+            for (int i = 0; i < tile.number; ++i) {
+                tiles_stack.Push (new TileInstance (tile));
+            }
+        }
 
-				m_tilesA = Shuffle (m_tilesA);
-				m_tilesB = Shuffle (m_tilesB);
-				m_tilesC = Shuffle (m_tilesC);
-					
-				TrimDownTo (m_tilesA, 15 + (p_nb_players - 2) * 3);
-				TrimDownTo (m_tilesB, 15 + (p_nb_players - 2) * 3);
-				TrimDownTo (m_tilesC, 25 + (p_nb_players - 2) * 6);
+        m_tilesA = Shuffle (m_tilesA);
+        m_tilesB = Shuffle (m_tilesB);
+        m_tilesC = Shuffle (m_tilesC);
+                    
+        TrimDownTo (m_tilesA, 15 + (p_nb_players - 2) * 3);
+        TrimDownTo (m_tilesB, 15 + (p_nb_players - 2) * 3);
+        TrimDownTo (m_tilesC, 25 + (p_nb_players - 2) * 6);
 
-				m_tilesC = InsertOneMoreRoundTile (m_tilesC, p_nb_players);
+        m_tilesC = InsertOneMoreRoundTile (m_tilesC, p_nb_players);
 
-		}
+    }
 
-		private void TrimDownTo (Stack<TileInstance> p_stack, int p_nb)
-		{
-				while (p_stack.Count > p_nb) {
-						p_stack.Pop ();
-				}
-		}
+    public TileInstance PopNextTile ()
+    {
+        if (m_tilesA.Count == 0) {
+            if (m_tilesB.Count == 0) {
+                if (m_tilesC.Count == 0)
+                    return null;
 
-		private Stack<TileInstance> Shuffle (Stack<TileInstance>  p_stack)
-		{
-				List<TileInstance> list = new List<TileInstance> (p_stack);
+                TileInstance tile = m_tilesC.Pop ();
 
-				Random rng = new Random ();
-				int n = list.Count;
+                if (tile is TileInstanceOneMoreRound) {
+                    // Last Turn starting !
+                    Suburbia.Bus.fireEvent(new EventLastTurn());
+                    return null;
+                }
 
-				while (n > 1) {
-						n--;
-						int k = rng.Next (n + 1);
-						TileInstance tile = list [k];
-						list [k] = list [n];
-						list [n] = tile;
-				}
+                return tile;
+            }
+            return m_tilesB.Pop ();
+        }
+        return m_tilesA.Pop ();
+    }
 
-				return new Stack<TileInstance> (list);
-		}
+    private void TrimDownTo (Stack<TileInstance> p_stack, int p_nb)
+    {
+        while (p_stack.Count > p_nb) {
+            p_stack.Pop ();
+        }
+    }
 
-		private Stack<TileInstance> InsertOneMoreRoundTile (Stack<TileInstance> p_stack, int p_nb_players)
-		{
-				TileInstance last = new TileInstanceOneMoreRound ();
+    private Stack<TileInstance> Shuffle (Stack<TileInstance>  p_stack)
+    {
+        List<TileInstance> list = new List<TileInstance> (p_stack);
 
-				List<TileInstance> list = new List<TileInstance> (p_stack);
+        System.Random rng = new System.Random ();
+        int n = list.Count;
 
-				Random rng = new Random ();
+        while (n > 1) {
+            n--;
+            int k = rng.Next (n + 1);
+            TileInstance tile = list [k];
+            list [k] = list [n];
+            list [n] = tile;
+        }
 
-				int n = list.Count;
-				int k = rng.Next (n - 10 - (p_nb_players - 2) * 3, n - 4);
+        return new Stack<TileInstance> (list);
+    }
 
-				list.Insert (k, last);
+    private Stack<TileInstance> InsertOneMoreRoundTile (Stack<TileInstance> p_stack, int p_nb_players)
+    {
+        TileInstance last = new TileInstanceOneMoreRound ();
 
-				return new Stack<TileInstance>(list);
-		}
+        List<TileInstance> list = new List<TileInstance> (p_stack);
+
+        System.Random rng = new System.Random ();
+
+        int n = list.Count;
+        int k = rng.Next (n - 10 - (p_nb_players - 2) * 3, n - 4);
+
+        list.Insert (k, last);
+
+        return new Stack<TileInstance> (list);
+    }
 }
 
 

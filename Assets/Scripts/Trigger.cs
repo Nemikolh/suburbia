@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using SimpleJSON;
 
 public class Trigger
 {
@@ -18,7 +18,7 @@ public class Trigger
 		private readonly ETileWhen m_when;
 		private readonly Effect m_effect;
 
-		public static Trigger LoadFromJson (JObject p_json)
+		public static Trigger LoadFromJson (JSONClass p_json)
 		{
 				// TODO
 				return null;
