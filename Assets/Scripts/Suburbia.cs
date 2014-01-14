@@ -14,10 +14,16 @@ public sealed class Suburbia
 
     private Suburbia ()
     {
-        m_eventBus = new EventBus();
+        m_eventBus = new EventBus ();
     }
 
     private EventBus m_eventBus;
+    private RealEstateMarket m_market;
+
+    public void StartGame (int p_nb_players)
+    {
+        m_market = new RealEstateMarket (p_nb_players);
+    }
 
     public static Suburbia App {
         get {
@@ -31,7 +37,13 @@ public sealed class Suburbia
         }
     }
 
-    private static readonly Suburbia m_instance = new Suburbia();
+    public static RealEstateMarket Market {
+        get {
+            return m_instance.m_market;
+        }
+    }
+
+    private static readonly Suburbia m_instance = new Suburbia ();
 }
 
 

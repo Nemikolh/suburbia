@@ -25,10 +25,14 @@ public class TileStacks
         m_tiles_availables = new List<Tile> ();
                 
         //Application.dataPath
-        using (StreamReader reader = File.OpenText(@"Data/tiles.json")) {
+        using (StreamReader reader = File.OpenText(@"Assets/Data/tiles.json")) {
 
             JSONArray tiles = (JSONArray)JSON.Parse (reader.ReadToEnd ());
-                        
+
+            m_tilesA = new Stack<TileInstance> ();
+            m_tilesB = new Stack<TileInstance> ();
+            m_tilesC = new Stack<TileInstance> ();
+
             // TODO all tiles types have been instanciated
         }
 
@@ -63,8 +67,13 @@ public class TileStacks
         TrimDownTo (m_tilesB, 15 + (p_nb_players - 2) * 3);
         TrimDownTo (m_tilesC, 25 + (p_nb_players - 2) * 6);
 
-        m_tilesC = InsertOneMoreRoundTile (m_tilesC, p_nb_players);
+        if(m_tilesC.Count < 5)
+        {
+            Debug.Log("Error ! Not enough tiles !");
+            return;
+        }
 
+        m_tilesC = InsertOneMoreRoundTile (m_tilesC, p_nb_players);
     }
 
     public TileInstance PopNextTile ()
@@ -78,7 +87,7 @@ public class TileStacks
 
                 if (tile is TileInstanceOneMoreRound) {
                     // Last Turn starting !
-                    Suburbia.Bus.fireEvent(new EventLastTurn());
+                    Suburbia.Bus.fireEvent (new EventLastTurn ());
                     return null;
                 }
 

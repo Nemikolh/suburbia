@@ -13,41 +13,30 @@ using UnityEngine;
 
 public sealed class RealEstateMarket
 {
-		private RealEstateMarket ()
-		{
-        m_availables_tiles = new List<TileInstance>();
-		}
+    public RealEstateMarket (int p_nb_players)
+    {
+        m_availables_tiles = new List<TileInstance> ();
+        m_tileStacks = new TileStacks(p_nb_players);
+    }
 
-		private TileStacks m_tileStacks;
-		private List<TileInstance> m_availables_tiles;
+    private TileStacks m_tileStacks;
+    private List<TileInstance> m_availables_tiles;
 
-		public TileInstance Pick (int n)
-		{
-				if (n < 0 || n > m_availables_tiles.Count) {
-						Debug.Log ("Trying to pick an unbound tile ! Value : " + n);
-						return null;
-				}
+    public TileInstance Pick (int n)
+    {
+        if (n < 0 || n > m_availables_tiles.Count) {
+            Debug.Log ("Trying to pick an unbound tile ! Value : " + n);
+            return null;
+        }
 
-				TileInstance tile = m_availables_tiles [n];
-				m_availables_tiles.Remove (tile);
-				// We may here add a null tile. This is a desired behavior.
-				// A null tile is considered has a hole in the real estate market.
-				m_availables_tiles.Insert (0, m_tileStacks.PopNextTile ());
+        TileInstance tile = m_availables_tiles [n];
+        m_availables_tiles.Remove (tile);
+        // We may here add a null tile. This is a desired behavior.
+        // A null tile is considered has a hole in the real estate market.
+        m_availables_tiles.Insert (0, m_tileStacks.PopNextTile ());
 
-				return tile;
-		}
-
-		/// <summary>
-		/// Gets the current real estate market.
-		/// </summary>
-		/// <value>The current.</value>
-		public static RealEstateMarket Current {
-				get {
-						return m_instance;
-				}
-		}
-	
-		private static readonly RealEstateMarket m_instance = new RealEstateMarket ();
+        return tile;
+    }
 }
 
 
