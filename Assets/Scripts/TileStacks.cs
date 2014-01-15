@@ -21,15 +21,27 @@ public class TileStacks
 
     public TileStacks (int p_nb_players)
     {
+        m_tilesA = new Stack<TileInstance> ();
+        m_tilesB = new Stack<TileInstance> ();
+        m_tilesC = new Stack<TileInstance> ();
 
         m_tiles_availables = new List<Tile> ();
                 
-        //Application.dataPath
-        using (StreamReader reader = File.OpenText(@"Data/tiles.json")) {
+        // Application.dataPath ?
+        using (StreamReader reader = File.OpenText(@"Assets/Data/tiles.json")) {
 
             JSONArray tiles = (JSONArray)JSON.Parse (reader.ReadToEnd ());
-                        
-            // TODO all tiles types have been instanciated
+           
+            Debug.Log (tiles.Count + " tiles to load from JSON.");
+
+            foreach (JSONNode child in tiles) {
+                // We load each tile.
+                Debug.Log("Tile : " + child["name"]);
+                m_tiles_availables.Add (Tile.LoadFromJson (child.AsObject));
+            }
+
+            // All tiles types have been instanciated
+            Debug.Log (m_tiles_availables.Count + " tiles have been loaded.");
         }
 
         foreach (Tile tile in m_tiles_availables) {
@@ -63,8 +75,12 @@ public class TileStacks
         TrimDownTo (m_tilesB, 15 + (p_nb_players - 2) * 3);
         TrimDownTo (m_tilesC, 25 + (p_nb_players - 2) * 6);
 
-        m_tilesC = InsertOneMoreRoundTile (m_tilesC, p_nb_players);
+        if (m_tilesC.Count < 5) {
+            Debug.LogWarning ("Not enough tiles to add one more round tile!");
+            return;
+        }
 
+        m_tilesC = InsertOneMoreRoundTile (m_tilesC, p_nb_players);
     }
 
     public TileInstance PopNextTile ()
@@ -78,7 +94,7 @@ public class TileStacks
 
                 if (tile is TileInstanceOneMoreRound) {
                     // Last Turn starting !
-                    Suburbia.Bus.fireEvent(new EventLastTurn());
+                    Suburbia.Bus.fireEvent (new EventLastTurn ());
                     return null;
                 }
 

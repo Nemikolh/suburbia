@@ -4,7 +4,11 @@
 *.so
 
 # C sharp / Mono Develop
+*.booproj
+*.csproj
 *.cs.meta
+Library
+obj
 
 # Packages
 *.egg
