@@ -14,16 +14,15 @@ public class TileInstance
 {
     private readonly Tile m_tile_description;
     private List<TriggerInstance> m_triggers;
-    // TODO : Position
+    private TilePosition m_position;
     private Player m_owner;
 
     public TileInstance (Tile p_tile)
     {
         m_tile_description = p_tile;
-        m_triggers = new List<TriggerInstance> ();      
+        m_triggers = new List<TriggerInstance> ();
 
         foreach (Trigger trigger in m_tile_description.triggers) {
-
             m_triggers.Add (new TriggerInstance (trigger, this));
         }
 
@@ -58,6 +57,16 @@ public class TileInstance
         }
     }
 
+    public TilePosition position {
+        get {
+            return this.m_position;
+        }
+
+        set {
+            this.m_position = value;
+        }
+    }
+
     public List<TileType> types {
         get {
             return this.m_tile_description.types;
@@ -66,8 +75,9 @@ public class TileInstance
 
     public bool IsAdjacentTo (TileInstance p_other)
     {
-        // TODO !!
-        return true;
+        if (this.owner == p_other.owner)
+            return this.position.IsAdjacentTo (p_other.position);
+        return false;
     }
 
     public void ApplyImmediateEffect ()

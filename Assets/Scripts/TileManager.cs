@@ -20,9 +20,6 @@ public sealed class TileManager
     private static List<TileInstance> m_tiles = new List<TileInstance> ();
     private static Dictionary<TileType, List<TriggerInstance>> m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
 
-    //public static void 
-
-
     public static List<TileInstance> GetAdjacent (TileInstance p_tile)
     {
         // TODO
@@ -62,15 +59,15 @@ public sealed class TileManager
             }
 
             List<TileInstance> tile_instances = null;
-                    
+
             switch (trigger.trigger.scope) {
             case ETileScope.ADJACENT:
-                                
+
                 tile_instances = GetAdjacent (p_new_tile);
                 break;
 
             case ETileScope.OWN:
-                            
+
                 tile_instances = GetTileOfPlayer (p_new_tile.owner);
                 break;
 
@@ -114,14 +111,14 @@ public sealed class TileManager
 
     public static void EmitNewTileEvent (TileInstance p_new_tile)
     {
-                
+
         foreach (TileType type in p_new_tile.types) {
 
             List<TriggerInstance> subscribed_triggers;
             m_subscribers.TryGetValue (type, out subscribed_triggers);
-                    
+
             subscribed_triggers.Sort (
-                            (p_trigger1, p_trigger2) => 
+                            (p_trigger1, p_trigger2) =>
             // On serre très fort les fesses.
                             - p_trigger1.owner.IsAdjacentTo (p_new_tile).CompareTo (p_trigger2.owner.IsAdjacentTo (p_new_tile))
             );
@@ -142,10 +139,10 @@ public sealed class TileManager
         TileType type_trigger = p_trigger.trigger.type;
         List<TriggerInstance> list;
         if (!m_subscribers.ContainsKey (type_trigger)) {
-                        
+
             list = new List<TriggerInstance> ();
             list.Add (p_trigger);
-             
+
             m_subscribers.Add (type_trigger, list);
 
         } else {
