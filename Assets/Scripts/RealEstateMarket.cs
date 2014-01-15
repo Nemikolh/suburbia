@@ -25,7 +25,7 @@ public sealed class RealEstateMarket
     public TileInstance Pick (int n)
     {
         if (n < 0 || n > m_availables_tiles.Count) {
-            Debug.Log ("Trying to pick an unbound tile ! Value : " + n);
+            Debug.LogError ("Trying to pick an unbound tile ! Value : " + n);
             return null;
         }
 

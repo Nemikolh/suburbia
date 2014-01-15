@@ -91,12 +91,12 @@ public sealed class TileManager
 
             case ETileScope.NONE:
 
-                Debug.Log ("Bug found ! No tile here with a when always and a scope equal to none...");
+                Debug.LogError ("Bug found ! No tile here with a when always and a scope equal to none...");
                 continue;
             }
 
             if (tile_instances == null) {
-                Debug.Log ("Tile instances empty !");
+                Debug.LogWarning ("Tile instances empty !");
                 continue;
             }
 

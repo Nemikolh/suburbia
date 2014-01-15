@@ -17,24 +17,39 @@ public class Tile
     public static Tile LoadFromJson (JSONClass p_json)
     {
         try {
-//                      string name = Util.getValue<string> (p_json, "name");
-//                      ETileColor color = Util.parseEnum<ETileColor> (Util.getValue<string> (p_json, "color"));
-//                      ETileIcon icon = Util.parseEnum<ETileIcon> (Util.getValue<string> (p_json, "icon"));
-//                      int price = Util.getValue<int> (p_json, "price");
-//                      ETileLetter letter = Util.parseEnum<ETileLetter> (Util.getValue<string> (p_json, "letter"));
-//                      int number = Util.getValue<int> (p_json, "number");
-//                      List<Trigger> triggers = new List<Trigger> ();
-//                      // TODO load triggers
-            return null;
-//                      return new Tile (name, color, icon, price, letter, number, triggers);
+            string name = Util.getValue<string> (p_json, "name");
+            ETileColor color = Util.parseEnum<ETileColor> (Util.getValue<string> (p_json, "color"));
+            ETileIcon icon = Util.parseEnum<ETileIcon> (Util.getValue<string> (p_json, "icon"));
+            int price = Util.getValue<int> (p_json, "price");
+            ETileLetter letter = Util.parseEnum<ETileLetter> (Util.getValue<string> (p_json, "letter"));
+            int number = Util.getValue<int> (p_json, "number");
+
+            List<Trigger> triggers = new List<Trigger> ();
+
+            if (p_json ["triggers"] != null) {
+                foreach (JSONNode trigger in p_json["triggers"].AsArray) {
+                    triggers.Add (Trigger.LoadFromJson (trigger.AsObject));
+                }
+            }
+
             // TODO : load immediate Effect
+            Effect immediate_effect = null;
+            if(p_json["immediate"] != null)
+            {
+                immediate_effect = new Effect(Util.parseEnum<ETileResource>(p_json["immediate"]["resource"].Value), 
+                                              p_json["immediate"]["value"].AsInt);
+            }
+
+            return new Tile (name, color, icon, price, letter, number, triggers, immediate_effect);
+
         } catch (ArgumentException) {
-            Debug.Log ("Error while loading Tile from Json !");
+            Debug.LogError ("Error while loading Tile from Json !");
             return null;
         }
     }
 
-    private Tile (string p_name, ETileColor p_color, ETileIcon p_icon, int p_price, ETileLetter p_letter, int p_number, List<Trigger> p_triggers)
+    private Tile (string p_name, ETileColor p_color, ETileIcon p_icon, int p_price, ETileLetter p_letter, 
+                  int p_number, List<Trigger> p_triggers, Effect p_immediate_effect)
     {
         m_name = p_name;
         m_color = p_color;
@@ -43,6 +58,7 @@ public class Tile
         m_letter = p_letter;
         m_number = p_number;
         m_triggers = p_triggers;
+        m_immediate_effect = p_immediate_effect;
     }
 
     public bool IsOfType (TileType p_type)
@@ -55,7 +71,7 @@ public class Tile
             return m_icon == p_type.icon;
         }
 
-        Debug.Log ("TileType is not an icon or a color !");
+        Debug.LogError ("TileType is not an icon or a color !");
         return false;
     }
 

@@ -49,7 +49,7 @@ public class Effect
             p_owner.reputation += m_value;
             break;
         case ETileResource.NONE:
-            Debug.Log ("Effect with None resource !");
+            Debug.LogError ("Effect with None resource !");
             break;
         }
     }
@@ -57,7 +57,7 @@ public class Effect
     public void Apply (Player p_owner, int n)
     {
         if (n < 0) {
-            Debug.Log ("Negative integer for apply effect !");
+            Debug.LogError ("Negative integer for apply effect !");
             return;
         }
         for (int i = 0; i < n; ++i) {
