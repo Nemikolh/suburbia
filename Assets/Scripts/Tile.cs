@@ -34,7 +34,7 @@ public class Tile
 
             // TODO : load immediate Effect
             Effect immediate_effect = null;
-            if(p_json["immediate"] != null)
+            if(p_json["immediate"] != null && p_json["immediate"].Value != "NONE")
             {
                 immediate_effect = new Effect(Util.parseEnum<ETileResource>(p_json["immediate"]["resource"].Value), 
                                               p_json["immediate"]["value"].AsInt);
