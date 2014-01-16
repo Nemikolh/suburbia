@@ -17,25 +17,40 @@ public sealed class TileManager
     {
     }
 
-    private static List<TileInstance> m_tiles = new List<TileInstance> ();
+    private static List<Player> m_players = new List<Player>();
     private static Dictionary<TileType, List<TriggerInstance>> m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
 
     public static List<TileInstance> GetAdjacent (TileInstance p_tile)
     {
-        // TODO
+        return p_tile.GetAdjacentInstances();
+    }
+
+    public static List<TileInstance> GetAllTiles ()
+    {
+        List<TileInstance> tiles = new List<TileInstance>();
+        foreach (Player player in m_players) {
+            tiles.AddRange(player.tiles);
+        }
+
+        return tiles;
+    }
+
+    public static List<TileInstance> GetTilesOfPlayer (Player p_player)
+    {
+        if (Manages(p_player))
+            return p_player.tiles;
         return null;
     }
 
-    public static List<TileInstance> GetTileOfPlayer (Player p_player)
+    public static List<TileInstance> GetTilesOfOtherPlayers (Player p_player)
     {
-        // TODO
-        return null;
-    }
+        List<TileInstance> tiles = new List<TileInstance>();
+        foreach (Player player in m_players) {
+            if (player != p_player)
+                tiles.AddRange(player.tiles);
+        }
 
-    public static List<TileInstance> GetTileOfOtherPlayers (Player p_player)
-    {
-        //TODO
-        return null;
+        return tiles;
     }
 
     public static List<TileInstance> GetAdjacentToOwnLake (Player p_player)
@@ -68,17 +83,17 @@ public sealed class TileManager
 
             case ETileScope.OWN:
 
-                tile_instances = GetTileOfPlayer (p_new_tile.owner);
+                tile_instances = GetTilesOfPlayer (p_new_tile.owner);
                 break;
 
             case ETileScope.GLOBAL:
 
-                tile_instances = m_tiles;
+                tile_instances = GetAllTiles();
                 break;
 
             case ETileScope.OTHER:
 
-                tile_instances = GetTileOfOtherPlayers (p_new_tile.owner);
+                tile_instances = GetTilesOfOtherPlayers (p_new_tile.owner);
                 break;
 
             case ETileScope.ADJACENT_TO_OWN_LAKE:
@@ -129,11 +144,6 @@ public sealed class TileManager
         }
     }
 
-    public static void AddTile (TileInstance p_tile)
-    {
-        //TODO m_tiles.Add (p_tile);
-    }
-
     public static void AddSubscriber (TriggerInstance p_trigger)
     {
         TileType type_trigger = p_trigger.trigger.type;
@@ -149,6 +159,21 @@ public sealed class TileManager
             m_subscribers.TryGetValue (type_trigger, out list);
             list.Add (p_trigger);
         }
+    }
+
+    public static void AddPlayer(Player p_player)
+    {
+        m_players.Add(p_player);
+    }
+
+    public static void RemovePlayer (Player p_player)
+    {
+        m_players.Remove(p_player);
+    }
+
+    public static bool Manages(Player p_player)
+    {
+        return m_players.Contains(p_player);
     }
 }
 
