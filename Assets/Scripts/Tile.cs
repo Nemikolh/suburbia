@@ -32,7 +32,6 @@ public class Tile
                 }
             }
 
-            // TODO : load immediate Effect
             Effect immediate_effect = null;
             if(p_json["immediate"] != null && p_json["immediate"].Value != "NONE")
             {
@@ -48,8 +47,7 @@ public class Tile
         }
     }
 
-    // public for test purposes
-    public Tile (string p_name, ETileColor p_color, ETileIcon p_icon, int p_price, ETileLetter p_letter,
+    private Tile (string p_name, ETileColor p_color, ETileIcon p_icon, int p_price, ETileLetter p_letter,
                   int p_number, List<Trigger> p_triggers, Effect p_immediate_effect)
     {
         m_name = p_name;

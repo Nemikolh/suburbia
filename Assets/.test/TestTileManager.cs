@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SimpleJSON;
 
 using NUnit.Framework;
 
@@ -146,8 +147,8 @@ public class TestTileManager
         Assert.AreEqual(0, adjacent_to_lake.Count);
 
         // We put a lake on the right of the park and the factory
-        Tile description = new Tile("Lake", ETileColor.LAKE, ETileIcon.NONE, 0, ETileLetter.BASE, 0,
-                                    new List<Trigger>(), null);
+        string lake_description = "{\"name\": \"Lake\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"BLUE\"}], \"color\": \"LAKE\", \"price\": 0, \"number\": 0, \"immediate\": \"NONE\", \"letter\": \"BASE\", \"icon\": \"NONE\"}";
+        Tile description = Tile.LoadFromJson(JSON.Parse(lake_description) as JSONClass);
         TileInstance lake = new TileInstance(description);
         TilePosition pos = new TilePosition(1, 3);
         lake.position = pos;
