@@ -16,10 +16,27 @@ public class Player
     private int m_income;
     private int m_reputation;
     private int m_population;
-    private List<Tile> m_tiles;
+    private List<TileInstance> m_tileinstances;
+
+    public static List<int> m_RedLines = new List<int>()
+    {
+        15, 22, 29, 35, 41, 47, 53, 59, 64, 69, 74, 78, 82, 86, 89, 92, 95, 98, 101, 103, 105, 107, 109,
+        111, 113, 115, 117, 119, 121, 123, 125, 127, 129, 131, 133, 135, 137, 139, 141, 143, 145, 147, 149
+    };
 
     public Player ()
     {
+        m_tileinstances = new List<TileInstance>();
+        m_money = 15;
+        m_income = 0;
+        m_reputation = 1;
+        m_population = 2;
+    }
+
+    public void CleanUp()
+    {
+        this.m_money += this.m_income;
+        this.m_population += this.m_reputation;
     }
 
     private int clampIncomeReputation (int p_value)
@@ -35,7 +52,7 @@ public class Player
     {
         if (p_value < 0) {
             if (m_money >= p_value)
-                m_money -= p_value;
+                m_money += p_value;
             else
                 m_money = 0;
             return 0;
@@ -43,11 +60,46 @@ public class Player
         return p_value;
     }
 
+    // public for test purposes
+    public static int GetNumberRedLinesBetween(int p_population_old, int p_population_new)
+    {
+        if (p_population_old == p_population_new)
+            return 0;
+
+        int nb_red_lines = 0;
+        int sign = Math.Sign(p_population_new - p_population_old);
+
+        if (sign == 1)
+        {
+            for (int i = p_population_old + 1; i <= p_population_new; i++)
+            {
+                if (m_RedLines.Contains(i))
+                    nb_red_lines++;
+            }
+        }
+        else
+        {
+            for (int i = p_population_old - 1; i >= p_population_new; i--)
+            {
+                if (m_RedLines.Contains(i + 1))
+                    nb_red_lines--;
+            }
+        }
+
+        return nb_red_lines;
+    }
+
+    private void AdjustReputationIncome(int p_nb_red_lines)
+    {
+        this.m_income -= p_nb_red_lines;
+        this.m_reputation -= p_nb_red_lines;
+    }
+
     private int clampMoney (int p_value)
     {
         if (p_value < 0) {
             if (m_population >= p_value)
-                m_population -= p_value;
+                m_population += p_value;
             else
                 m_population = 0;
             return 0;
@@ -87,8 +139,22 @@ public class Player
             return this.m_population;
         }
         set {
+            int old_population = this.m_population;
             this.m_population = clampPopulation (value);
+            int nb_red_lines = Player.GetNumberRedLinesBetween(old_population, this.m_population);
+            AdjustReputationIncome(nb_red_lines);
+
+            Suburbia.Bus.fireEvent(new EventRedLine(this, nb_red_lines));
+        }
+    }
+
+    public void AddTileInstance(TileInstance p_tileinstance) {
+        this.m_tileinstances.Add(p_tileinstance);
+    }
+
+    public List<TileInstance> tiles {
+        get {
+            return this.m_tileinstances;
         }
     }
 }
-
