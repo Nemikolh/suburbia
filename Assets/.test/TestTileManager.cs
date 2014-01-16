@@ -135,6 +135,31 @@ public class TestTileManager
     }
 
     [Test]
+    public void TestGetAdjacentToOwnLake ()
+    {
+        List<TileInstance> adjacent_to_lake;
+
+        Assert.AreEqual(null, TileManager.GetAdjacentToOwnLake(player));
+
+        TileManager.AddPlayer(player);
+        adjacent_to_lake = TileManager.GetAdjacentToOwnLake(player);
+        Assert.AreEqual(0, adjacent_to_lake.Count);
+
+        // We put a lake on the right of the park and the factory
+        Tile description = new Tile("Lake", ETileColor.LAKE, ETileIcon.NONE, 0, ETileLetter.BASE, 0,
+                                    new List<Trigger>(), null);
+        TileInstance lake = new TileInstance(description);
+        TilePosition pos = new TilePosition(1, 3);
+        lake.position = pos;
+        lake.owner = player;
+
+        adjacent_to_lake = TileManager.GetAdjacentToOwnLake(player);
+        Assert.AreEqual(2, adjacent_to_lake.Count);
+        Assert.AreEqual(true, adjacent_to_lake.Contains(park));
+        Assert.AreEqual(true, adjacent_to_lake.Contains(factory));
+    }
+
+    [Test]
     public void Manages ()
     {
         Assert.AreEqual (false, TileManager.Manages (player));

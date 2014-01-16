@@ -100,6 +100,17 @@ public class TileInstance : System.Object
         return false;
     }
 
+    public bool IsAdjacentToLake()
+    {
+        List<TileInstance> adjacent_instances = GetAdjacentInstances();
+
+        foreach (TileInstance instance in adjacent_instances) {
+            if (instance.description != null && instance.description.IsOfType(new TileType(ETileColor.LAKE)))
+                return true;
+        }
+        return false;
+    }
+
     public List<TileInstance> GetAdjacentInstances ()
     {
         // We get the adjacent positions

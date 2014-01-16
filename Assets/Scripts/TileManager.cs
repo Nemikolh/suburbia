@@ -56,8 +56,16 @@ public sealed class TileManager
 
     public static List<TileInstance> GetAdjacentToOwnLake (Player p_player)
     {
-        // TODO
-        return null;
+        if (!Manages(p_player))
+            return null;
+
+        List<TileInstance> tiles = new List<TileInstance>();
+        foreach (TileInstance tile in p_player.tiles) {
+            if (tile.IsAdjacentToLake())
+                tiles.Add(tile);
+        }
+
+        return tiles;
     }
 
     public static List<TilePosition> GetFreePositionsForPlayer(Player p_player)
