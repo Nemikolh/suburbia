@@ -23,6 +23,7 @@ public sealed class Suburbia
     public void StartGame (int p_nb_players)
     {
         m_market = new RealEstateMarket (p_nb_players);
+        TileView.InitTextures();
     }
 
     public static Suburbia App {
