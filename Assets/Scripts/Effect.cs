@@ -21,13 +21,13 @@ public class Effect
         m_value = p_value;
     }
 
-    ETileResource resource {
+    public ETileResource resource {
         get {
             return m_resource;
         }
     }
 
-    int value {
+    public int value {
         get {
             return m_value;
         }
