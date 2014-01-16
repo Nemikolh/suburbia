@@ -15,6 +15,7 @@
 ProjectSettings
 Library
 obj
+Temp
 
 # Packages
 *.egg
