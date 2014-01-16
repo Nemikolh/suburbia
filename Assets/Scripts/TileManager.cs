@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public sealed class TileManager
@@ -57,6 +58,20 @@ public sealed class TileManager
     {
         // TODO
         return null;
+    }
+
+    public static List<TilePosition> GetFreePositionsForPlayer(Player p_player)
+    {
+        if (!Manages(p_player))
+            return null;
+
+        HashSet<TilePosition> free_pos = new HashSet<TilePosition>();
+
+        foreach(TileInstance tile in p_player.tiles) {
+            free_pos.UnionWith(tile.GetAdjacentFreePositions());
+        }
+
+        return free_pos.ToList();
     }
 
     public static void HandleNewTileImmediateEffect (TileInstance p_new_tile)
