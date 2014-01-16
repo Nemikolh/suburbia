@@ -1,5 +1,5 @@
 // --------------------------------------------------------------- //
-// 
+//
 // Project : Suburbia
 // Author  : Nemikolh
 // All Wrongs Reserved.
@@ -112,6 +112,20 @@ public class TileInstance : System.Object
         adjacent_instances = (from instance in adjacent_instances where adjacent_pos.Contains (instance.position) select instance).ToList ();
 
         return adjacent_instances;
+    }
+
+    public List<TilePosition> GetAdjacentFreePositions ()
+    {
+        // We get the adjacent positions
+        List<TilePosition> adjacent_pos = this.m_position.GetAdjacentPositions ();
+
+        // We get the occupied adjacent positions
+        List<TilePosition> occupied_pos = (from instance in GetAdjacentInstances() select instance.position).ToList();
+
+        // And do the difference
+        List<TilePosition> free_pos = (from pos in adjacent_pos where !occupied_pos.Contains(pos) select pos).ToList();
+
+        return free_pos;
     }
 
     public void ApplyImmediateEffect ()
