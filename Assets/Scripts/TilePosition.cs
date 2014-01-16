@@ -16,6 +16,7 @@ public class TilePosition : System.Object
 {
     private readonly int m_x;
     private readonly int m_y;
+    private TileInstance m_parent;
 
     public TilePosition(int p_x, int p_y)
     {
@@ -24,6 +25,7 @@ public class TilePosition : System.Object
 
         m_x = p_x;
         m_y = p_y;
+        m_parent = null;
     }
 
     public bool IsAdjacentTo(TilePosition p_pos)
@@ -55,6 +57,17 @@ public class TilePosition : System.Object
        get {
             return this.m_y;
         }
+    }
+
+    public TileInstance parent {
+        get {
+            return this.m_parent;
+        }
+
+        set {
+            this.m_parent = value;
+        }
+
     }
 
     public static bool IsValidPosition(int p_x, int p_y)
