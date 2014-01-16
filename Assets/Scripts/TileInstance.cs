@@ -54,6 +54,12 @@ public class TileInstance
         }
     }
 
+    public string name {
+        get {
+            return this.m_tile_description.name;
+        }
+    }
+
     public ETileColor color {
         get {
             return this.m_tile_description.color;
