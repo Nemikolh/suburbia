@@ -19,11 +19,13 @@ public sealed class Suburbia
 
     private EventBus m_eventBus;
     private RealEstateMarket m_market;
+    private TileManager m_game_manager;
 
     public void StartGame (int p_nb_players)
     {
         m_market = new RealEstateMarket (p_nb_players);
         TileView.InitTextures();
+        m_game_manager = new TileManager(p_nb_players);
     }
 
     public static Suburbia App {
@@ -41,6 +43,12 @@ public sealed class Suburbia
     public static RealEstateMarket Market {
         get {
             return m_instance.m_market;
+        }
+    }
+
+    public static TileManager Manager {
+        get {
+            return m_instance.m_game_manager;
         }
     }
 

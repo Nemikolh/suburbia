@@ -14,80 +14,96 @@ using UnityEngine;
 
 public sealed class TileManager
 {
-    private TileManager ()
+    public TileManager (int p_nb_player)
     {
+        m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
     }
 
-    private static List<Player> m_players = new List<Player>();
-    private static Dictionary<TileType, List<TriggerInstance>> m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
+    private List<Player> m_players;
+    private Dictionary<TileType, List<TriggerInstance>> m_subscribers;
 
-    public static List<TileInstance> GetAdjacent (TileInstance p_tile)
+    private void InitPlayers (int p_nb_player)
     {
-        return p_tile.GetAdjacentInstances();
+        m_players = new List<Player> ();
+
+        for (int i = 0; i < p_nb_player; i++) {
+            m_players.Add (new Player ());
+        }
     }
 
-    public static List<TileInstance> GetAllTiles ()
+    public Player this [int index] {
+        get {
+            return this.m_players [index];
+        }
+    }
+
+    public List<TileInstance> GetAdjacent (TileInstance p_tile)
     {
-        List<TileInstance> tiles = new List<TileInstance>();
+        return p_tile.GetAdjacentInstances ();
+    }
+
+    public List<TileInstance> GetAllTiles ()
+    {
+        List<TileInstance> tiles = new List<TileInstance> ();
         foreach (Player player in m_players) {
-            tiles.AddRange(player.tiles);
+            tiles.AddRange (player.tiles);
         }
 
         return tiles;
     }
 
-    public static List<TileInstance> GetTilesOfPlayer (Player p_player)
+    public List<TileInstance> GetTilesOfPlayer (Player p_player)
     {
-        if (Manages(p_player))
+        if (Manages (p_player))
             return p_player.tiles;
         return null;
     }
 
-    public static List<TileInstance> GetTilesOfOtherPlayers (Player p_player)
+    public List<TileInstance> GetTilesOfOtherPlayers (Player p_player)
     {
-        List<TileInstance> tiles = new List<TileInstance>();
+        List<TileInstance> tiles = new List<TileInstance> ();
         foreach (Player player in m_players) {
             if (player != p_player)
-                tiles.AddRange(player.tiles);
+                tiles.AddRange (player.tiles);
         }
 
         return tiles;
     }
 
-    public static List<TileInstance> GetAdjacentToOwnLake (Player p_player)
+    public List<TileInstance> GetAdjacentToOwnLake (Player p_player)
     {
-        if (!Manages(p_player))
+        if (!Manages (p_player))
             return null;
 
-        List<TileInstance> tiles = new List<TileInstance>();
+        List<TileInstance> tiles = new List<TileInstance> ();
         foreach (TileInstance tile in p_player.tiles) {
-            if (tile.IsAdjacentToLake())
-                tiles.Add(tile);
+            if (tile.IsAdjacentToLake ())
+                tiles.Add (tile);
         }
 
         return tiles;
     }
 
-    public static List<TilePosition> GetFreePositionsForPlayer(Player p_player)
+    public List<TilePosition> GetFreePositionsForPlayer (Player p_player)
     {
-        if (!Manages(p_player))
+        if (!Manages (p_player))
             return null;
 
-        HashSet<TilePosition> free_pos = new HashSet<TilePosition>();
+        HashSet<TilePosition> free_pos = new HashSet<TilePosition> ();
 
-        foreach(TileInstance tile in p_player.tiles) {
-            free_pos.UnionWith(tile.GetAdjacentFreePositions());
+        foreach (TileInstance tile in p_player.tiles) {
+            free_pos.UnionWith (tile.GetAdjacentFreePositions ());
         }
 
-        return free_pos.ToList();
+        return free_pos.ToList ();
     }
 
-    public static void HandleNewTileImmediateEffect (TileInstance p_new_tile)
+    public void HandleNewTileImmediateEffect (TileInstance p_new_tile)
     {
         p_new_tile.ApplyImmediateEffect ();
     }
 
-    public static void HandleNewTileConditionalEffect (TileInstance p_new_tile)
+    public void HandleNewTileConditionalEffect (TileInstance p_new_tile)
     {
         // Apply all the triggers of the new tile :
 
@@ -111,7 +127,7 @@ public sealed class TileManager
 
             case ETileScope.GLOBAL:
 
-                tile_instances = GetAllTiles();
+                tile_instances = GetAllTiles ();
                 break;
 
             case ETileScope.OTHER:
@@ -147,7 +163,7 @@ public sealed class TileManager
         }
     }
 
-    public static void EmitNewTileEvent (TileInstance p_new_tile)
+    public void EmitNewTileEvent (TileInstance p_new_tile)
     {
 
         foreach (TileType type in p_new_tile.types) {
@@ -167,7 +183,7 @@ public sealed class TileManager
         }
     }
 
-    public static void AddSubscriber (TriggerInstance p_trigger)
+    public void AddSubscriber (TriggerInstance p_trigger)
     {
         TileType type_trigger = p_trigger.trigger.type;
         List<TriggerInstance> list;
@@ -184,19 +200,19 @@ public sealed class TileManager
         }
     }
 
-    public static void AddPlayer(Player p_player)
+    public void AddPlayer (Player p_player)
     {
-        m_players.Add(p_player);
+        m_players.Add (p_player);
     }
 
-    public static void RemovePlayer (Player p_player)
+    public void RemovePlayer (Player p_player)
     {
-        m_players.Remove(p_player);
+        m_players.Remove (p_player);
     }
 
-    public static bool Manages(Player p_player)
+    public bool Manages (Player p_player)
     {
-        return m_players.Contains(p_player);
+        return m_players.Contains (p_player);
     }
 }
 

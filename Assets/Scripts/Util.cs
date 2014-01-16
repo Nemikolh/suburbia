@@ -14,6 +14,11 @@ public sealed class Util
     {
     }
 
+    public static string convertToSignedStr(int p_value)
+    {
+        return ((p_value > 0) ? "+" + p_value : "" + p_value);
+    }
+
     public static T getValue<T> (JSONClass p_json, string p_attribute)
     {
         object temp = null;
