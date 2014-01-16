@@ -12,62 +12,76 @@ using System.Collections.Generic;
 
 public class TileType
 {
-		private readonly ETileColor m_color;
-		private readonly ETileIcon m_icon;
+    private readonly ETileColor m_color;
+    private readonly ETileIcon m_icon;
 
-		public static TileType LoadFromValue (string p_value)
-		{
-				ETileColor color_type = Util.tryEnum<ETileColor> (p_value);
-				if (color_type != ETileColor.NULL)
-						return new TileType (color_type);
-				ETileIcon icon_type = Util.tryEnum<ETileIcon> (p_value);
-				if (icon_type != ETileIcon.NULL && icon_type != ETileIcon.NONE)
-						return new TileType (icon_type);
+    public static TileType LoadFromValue (string p_value)
+    {
+        ETileColor color_type = Util.tryEnum<ETileColor> (p_value);
+        if (color_type != ETileColor.NULL)
+            return new TileType (color_type);
+        ETileIcon icon_type = Util.tryEnum<ETileIcon> (p_value);
+        if (icon_type != ETileIcon.NULL && icon_type != ETileIcon.NONE)
+            return new TileType (icon_type);
 
-				return null;
-		}
+        return null;
+    }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TileType"/> class to represent color type
-		/// </summary>
-		/// <param name="p_color">P_color.</param>
-		public TileType (ETileColor p_color)
-		{
-				m_color = p_color;
-				m_icon = ETileIcon.NULL;
-		}
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TileType"/> class to represent color type
+    /// </summary>
+    /// <param name="p_color">P_color.</param>
+    public TileType (ETileColor p_color)
+    {
+        m_color = p_color;
+        m_icon = ETileIcon.NULL;
+    }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="TileType"/> class to represent icon type.
-		/// </summary>
-		/// <param name="p_icon">P_icon.</param>
-		public TileType (ETileIcon p_icon)
-		{
-				m_color = ETileColor.NULL;
-				m_icon = p_icon;
-		}
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TileType"/> class to represent icon type.
+    /// </summary>
+    /// <param name="p_icon">P_icon.</param>
+    public TileType (ETileIcon p_icon)
+    {
+        m_color = ETileColor.NULL;
+        m_icon = p_icon;
+    }
 
-		public ETileColor color {
-				get {
-						return m_color;
-				}
-		}
+    public ETileColor color {
+        get {
+            return m_color;
+        }
+    }
 
-		public ETileIcon icon {
-				get {
-						return m_icon;
-				}
-		}
+    public ETileIcon icon {
+        get {
+            return m_icon;
+        }
+    }
 
-		public bool IsColor ()
-		{
-				return this.m_color != ETileColor.NULL;
-		}
+    public bool IsColor ()
+    {
+        return this.m_color != ETileColor.NULL;
+    }
 
-		public bool IsIcon ()
-		{
-				return this.m_icon != ETileIcon.NULL;
-		}
+    public bool IsIcon ()
+    {
+        return this.m_icon != ETileIcon.NULL;
+    }
+
+    public override bool Equals (System.Object p_obj)
+    {
+        if (p_obj == null) {
+            return false;
+        }
+
+        TileType type = p_obj as TileType;
+        if ((System.Object)type == null) {
+            return false;
+        }
+
+        return (this.color == type.color && this.icon == type.icon);
+    }
 }
 
 
