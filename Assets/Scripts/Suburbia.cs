@@ -24,6 +24,7 @@ public sealed class Suburbia
     public void StartGame (int p_nb_players)
     {
         m_market = new RealEstateMarket (p_nb_players);
+        TileManager.LoadSetupTiles(m_market.Stacks.LoadedTiles);
         TileView.InitTextures();
         m_game_manager = new TileManager(p_nb_players);
     }

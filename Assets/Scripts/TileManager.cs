@@ -8,27 +8,84 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using SimpleJSON;
 
 public sealed class TileManager
 {
     public TileManager (int p_nb_players)
     {
         m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
-        InitPlayers(p_nb_players);
+        InitPlayers (p_nb_players);
     }
 
     private List<Player> m_players;
     private Dictionary<TileType, List<TriggerInstance>> m_subscribers;
+    private static List<SetUpTile> m_setup_tiles;
+
+    private class SetUpTile
+    {
+        public SetUpTile (Tile p_tile, int p_x, int p_y)
+        {
+            this.tile = p_tile;
+            this.x = p_x;
+            this.y = p_y;
+        }
+
+        public Tile tile {
+            get;
+            set;
+        }
+
+        public int x {
+            get;
+            set;
+        }
+
+        public int y {
+            get;
+            set;
+        }
+    }
+
+    public static void LoadSetupTiles (List<Tile> p_all_possible_tiles)
+    {
+        m_setup_tiles = new List<SetUpTile> ();
+
+        using (StreamReader reader = File.OpenText(@"Assets/Data/setup_tiles.json")) {
+            JSONArray arr = JSON.Parse (reader.ReadToEnd ()) as JSONArray;
+
+            foreach (JSONNode pos_tile in arr) {
+                int x = pos_tile ["x"].AsInt;
+                int y = pos_tile ["y"].AsInt;
+                string name = pos_tile ["tile_name"].Value;
+                m_setup_tiles.AddRange (from tile in p_all_possible_tiles where tile.name == name select new SetUpTile (tile, x, y));
+            }
+        }
+    }
 
     private void InitPlayers (int p_nb_players)
     {
         m_players = new List<Player> ();
 
         for (int i = 0; i < p_nb_players; i++) {
-            m_players.Add (new Player ());
+            Player player = new Player ();
+            m_players.Add (player);
+            SetUpTilesForPlayer (player);
+        }
+    }
+
+    private void SetUpTilesForPlayer (Player p_player)
+    {
+        if (TileManager.m_setup_tiles != null) {
+            foreach (var setupTile in m_setup_tiles) {
+                TileInstance tileInstance = new TileInstance (setupTile.tile);
+                p_player.AddTileInstance (tileInstance);
+                tileInstance.position = new TilePosition (setupTile.x, setupTile.y);
+            }
         }
     }
 

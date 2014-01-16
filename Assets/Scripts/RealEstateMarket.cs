@@ -47,6 +47,12 @@ public sealed class RealEstateMarket
             return this.m_availables_tiles;
         }
     }
+
+    public TileStacks Stacks {
+        get {
+            return this.m_tileStacks;
+        }
+    }
 }
 
 
