@@ -7,6 +7,12 @@
 *.booproj
 *.csproj
 *.cs.meta
+*.sln
+*.v12.suo
+*.userprefs
+*.unityproj
+*.meta
+ProjectSettings
 Library
 obj
 
