@@ -116,7 +116,7 @@ public class Tile
         }
     }
 
-    public Effect effect {
+    public Effect immediate_effect {
         get {
             return this.m_immediate_effect;
         }

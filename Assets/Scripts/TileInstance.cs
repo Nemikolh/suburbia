@@ -141,7 +141,7 @@ public class TileInstance : System.Object
 
     public void ApplyImmediateEffect ()
     {
-        m_tile_description.effect.Apply (m_owner);
+        m_tile_description.immediate_effect.Apply (m_owner);
     }
 
     public override bool Equals (System.Object p_obj)
