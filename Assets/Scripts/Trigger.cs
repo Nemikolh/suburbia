@@ -26,7 +26,7 @@ public class Trigger
                                         p_json ["effect"] ["value"].AsInt);
 
             return new Trigger (scope, when, tile_type, effect);
-        } catch (ArgumentException ex) {
+        } catch (ArgumentException) {
             Debug.LogError ("Error while trying to load trigger");
             return null;
         }
@@ -84,8 +84,8 @@ public class Trigger
             return false;
         }
 
-        return (this.effect.Equals(trigger.effect) && this.scope == trigger.scope
-                && this.type == trigger.type && this.when == trigger.when);
+        return (this.effect.Equals(trigger.effect) && this.scope.Equals(trigger.scope)
+                && this.type.Equals (trigger.type) && this.when.Equals (trigger.when));
     }
 }
 
