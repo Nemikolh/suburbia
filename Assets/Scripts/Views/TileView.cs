@@ -20,19 +20,23 @@ public class TileView : MonoBehaviour
 
     public static void InitTextures ()
     {
-        m_textures.Add (ETileColor.BLUE, Resources.Load ("Textures/tile_top_blue.png") as Texture);
-        m_textures.Add (ETileColor.YELLOW, Resources.Load ("Textures/tile_top_yellow.png") as Texture);
-        m_textures.Add (ETileColor.GREEN, Resources.Load ("Textures/tile_top_green.png") as Texture);
-        m_textures.Add (ETileColor.GREY, Resources.Load ("Textures/tile_top_blue.png") as Texture);
-        m_textures.Add (ETileColor.LAKE, Resources.Load ("Textures/tile_top_blue.png") as Texture);
+        m_textures.Add (ETileColor.BLUE, Resources.Load ("Textures/tile_top_blue") as Texture);
+        m_textures.Add (ETileColor.YELLOW, Resources.Load ("Textures/tile_top_yellow") as Texture);
+        m_textures.Add (ETileColor.GREEN, Resources.Load ("Textures/tile_top_green") as Texture);
+        m_textures.Add (ETileColor.GREY, Resources.Load ("Textures/tile_top_blue") as Texture);
+        m_textures.Add (ETileColor.LAKE, Resources.Load ("Textures/tile_top_blue") as Texture);
         m_textures.Add (ETileColor.NULL, null);
     }
 
-    public static TileView Instantiate (TileInstance p_instance, Vector3 p_position)
+    public static TileView Instantiate (TileInstance p_instance, Vector3 p_position, float p_scale)
     {
         try {
             // Creation of the new instance.
             GameObject _new_instance = UnityEngine.Object.Instantiate (m_tile_prefab) as GameObject;
+            _new_instance.transform.position = p_position;
+            _new_instance.transform.localScale = new Vector3(p_scale, p_scale, p_scale);
+            _new_instance.transform.localRotation = Quaternion.Euler(0,180,-30);
+            _new_instance.layer = 8;
 
             // Set tthe appropriate texture.
             _new_instance.renderer.material.SetTexture ("_PathTex", m_textures [p_instance.color]);
@@ -41,11 +45,15 @@ public class TileView : MonoBehaviour
             // Get the script associated with the new tile.
             TileView _this = _new_instance.GetComponent<TileView> ();
             _this.m_tile = p_instance;
-            _new_instance.transform.position = p_position;
+
+            // Set an other script to this instance linked
+            _new_instance.AddComponent<SmoothTranslation>().InitWith(p_position + new Vector3(0, 0.5f, 0));
+
+            Debug.Log("Tile : " + p_instance.name + " loaded to market place.");
 
             return _this;
-        } catch (KeyNotFoundException e) {
-            Debug.LogError (e.Data);
+        } catch (Exception e) {
+            Debug.LogError ("Error while instanciating tile !");
             return null;
         }
     }
@@ -56,5 +64,15 @@ public class TileView : MonoBehaviour
 
     void Update ()
     {
+    }
+
+    void OnMouseEnter()
+    {
+        Suburbia.Bus.fireEvent(new EventShowTileInformation (true, this.m_tile.description));
+    }
+
+    void OnMouseLeave()
+    {
+        Suburbia.Bus.fireEvent(new EventShowTileInformation (false, this.m_tile.description));
     }
 }

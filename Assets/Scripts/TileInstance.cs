@@ -54,7 +54,13 @@ public class TileInstance : System.Object
         set {
             this.m_owner = value;
             // We add the tile instance to the player's tile instances
-            value.AddTileInstance(this);
+            value.AddTileInstance (this);
+        }
+    }
+
+    public string name {
+        get {
+            return this.m_tile_description.name;
         }
     }
 
@@ -78,6 +84,12 @@ public class TileInstance : System.Object
     public List<TileType> types {
         get {
             return this.m_tile_description.types;
+        }
+    }
+
+    public Tile description {
+        get {
+            return this.m_tile_description;
         }
     }
 
@@ -107,20 +119,18 @@ public class TileInstance : System.Object
         m_tile_description.effect.Apply (m_owner);
     }
 
-    public override bool Equals(System.Object p_obj)
+    public override bool Equals (System.Object p_obj)
     {
-        if (p_obj == null)
-        {
+        if (p_obj == null) {
             return false;
         }
 
         TileInstance p_instance = p_obj as TileInstance;
-        if ((System.Object) p_instance == null)
-        {
+        if ((System.Object)p_instance == null) {
             return false;
         }
 
-        return (this.position.Equals(p_instance.position)) && (this.owner == p_instance.owner);
+        return (this.position.Equals (p_instance.position)) && (this.owner == p_instance.owner);
     }
 }
 

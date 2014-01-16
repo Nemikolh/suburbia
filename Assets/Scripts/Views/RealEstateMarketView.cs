@@ -10,6 +10,16 @@ using System.Collections.Generic;
 public class RealEstateMarketView : MonoBehaviour
 {
 
+//    public float Scale {
+//        get {
+//            return m_scale;
+//        }
+//        set {
+//            m_scale = value > 0.0f ? value : 1.0f;
+//        }
+//    }
+
+    public float m_scale;
     private RealEstateMarket m_market;
     private List<TileView> m_tiles;
 
@@ -24,15 +34,16 @@ public class RealEstateMarketView : MonoBehaviour
         Debug.Log("Loading Real Estate Market...");
         m_market = Suburbia.Market;
         m_tiles = new List<TileView> ();
+        Camera _camera = GameObject.FindWithTag("RealEstateCamera").camera;
 
-        Vector3 screenPoint = new Vector3 (50, 50, 20);
+        Vector3 screenPoint = new Vector3 (50, 50, _camera.nearClipPlane + 5);
 
         foreach (var tile in m_market.tiles) {
 
-            screenPoint.x += 50;
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint (screenPoint);
+            screenPoint.x += 85;
+            Vector3 worldPos = _camera.ScreenToWorldPoint (screenPoint);
 
-            m_tiles.Add (TileView.Instantiate (tile, worldPos));
+            m_tiles.Add (TileView.Instantiate (tile, worldPos, m_scale));
         }
     }
     
