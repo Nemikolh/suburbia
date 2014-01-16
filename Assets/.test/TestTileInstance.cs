@@ -69,6 +69,29 @@ public class TestTileInstance
     }
 
     [Test]
+    public void TestGetAdjacentFreePositions ()
+    {
+        List<TilePosition> free_pos;
+
+        // Free positions adjacent to the suburbs tile
+        free_pos = suburbs.GetAdjacentFreePositions();
+        Assert.AreEqual(2, free_pos.Count);
+        Assert.AreEqual(true, free_pos.Contains(new TilePosition(-1, 1)));
+        Assert.AreEqual(true, free_pos.Contains(new TilePosition(1, 1)));
+        Assert.AreEqual(false, free_pos.Contains(park.position));
+
+        // Free positions adjacent to the factory tile
+        free_pos = factory.GetAdjacentFreePositions();
+        Assert.AreEqual(5, free_pos.Count);
+        Assert.AreEqual(true, free_pos.Contains(new TilePosition(1, 3)));
+        Assert.AreEqual(true, free_pos.Contains(new TilePosition(1, 5)));
+        Assert.AreEqual(true, free_pos.Contains(new TilePosition(0, 6)));
+        Assert.AreEqual(true, free_pos.Contains(new TilePosition(-1, 5)));
+        Assert.AreEqual(true, free_pos.Contains(new TilePosition(-1, 3)));
+        Assert.AreEqual(false, free_pos.Contains(park.position));
+    }
+
+    [Test]
     public void TestAssignPosition()
     {
         TileInstance instance = new TileInstance();

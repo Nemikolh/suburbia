@@ -36,7 +36,7 @@ public class Tile
             Effect immediate_effect = null;
             if(p_json["immediate"] != null && p_json["immediate"].Value != "NONE")
             {
-                immediate_effect = new Effect(Util.parseEnum<ETileResource>(p_json["immediate"]["resource"].Value), 
+                immediate_effect = new Effect(Util.parseEnum<ETileResource>(p_json["immediate"]["resource"].Value),
                                               p_json["immediate"]["value"].AsInt);
             }
 
@@ -48,7 +48,8 @@ public class Tile
         }
     }
 
-    private Tile (string p_name, ETileColor p_color, ETileIcon p_icon, int p_price, ETileLetter p_letter, 
+    // public for test purposes
+    public Tile (string p_name, ETileColor p_color, ETileIcon p_icon, int p_price, ETileLetter p_letter,
                   int p_number, List<Trigger> p_triggers, Effect p_immediate_effect)
     {
         m_name = p_name;
@@ -80,7 +81,7 @@ public class Tile
             return this.m_triggers;
         }
     }
-        
+
     public string name {
         get {
             return m_name;
