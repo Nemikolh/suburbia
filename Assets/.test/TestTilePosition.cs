@@ -76,7 +76,7 @@ public class TestTilePosition
     }
 
     [Test]
-    public void TestGetAdjacents()
+    public void TestGetAdjacent()
     {
         List<TilePosition> neighbors;
 
