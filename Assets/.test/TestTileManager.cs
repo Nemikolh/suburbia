@@ -7,6 +7,7 @@ using NUnit.Framework;
 [TestFixture]
 public class TestTileManager
 {
+    private TileManager manager;
     private TileInstance suburbs;
     private TileInstance park;
     private TileInstance factory;
@@ -19,6 +20,8 @@ public class TestTileManager
     [SetUp]
     public void Init ()
     {
+        manager = new TileManager(0);
+
         player = new Player ();
         player_other = new Player ();
 
@@ -50,26 +53,26 @@ public class TestTileManager
     [TearDown]
     public void CleanUp ()
     {
-        TileManager.RemovePlayer (player);
-        TileManager.RemovePlayer (player_other);
+        manager.RemovePlayer (player);
+        manager.RemovePlayer (player_other);
     }
 
     [Test]
     public void TestGetAllTiles ()
     {
-        Assert.AreEqual (0, TileManager.GetAllTiles ().Count);
+        Assert.AreEqual (0, manager.GetAllTiles ().Count);
 
-        TileManager.AddPlayer (player);
-        Assert.AreEqual (3, TileManager.GetAllTiles ().Count);
+        manager.AddPlayer (player);
+        Assert.AreEqual (3, manager.GetAllTiles ().Count);
 
-        TileManager.AddPlayer (player_other);
-        Assert.AreEqual (6, TileManager.GetAllTiles ().Count);
+        manager.AddPlayer (player_other);
+        Assert.AreEqual (6, manager.GetAllTiles ().Count);
 
         TileInstance tile = new TileInstance ();
         TilePosition pos = new TilePosition (0, 0);
         tile.position = pos;
         tile.owner = player;
-        Assert.AreEqual (7, TileManager.GetAllTiles ().Count);
+        Assert.AreEqual (7, manager.GetAllTiles ().Count);
     }
 
     [Test]
@@ -77,17 +80,17 @@ public class TestTileManager
     {
         List<TileInstance> tiles;
 
-        Assert.AreEqual (null, TileManager.GetTilesOfPlayer (player));
+        Assert.AreEqual (null, manager.GetTilesOfPlayer (player));
 
-        TileManager.AddPlayer (player);
-        tiles = TileManager.GetTilesOfPlayer (player);
+        manager.AddPlayer (player);
+        tiles = manager.GetTilesOfPlayer (player);
         Assert.AreEqual (3, tiles.Count);
         foreach (TileInstance tile in tiles) {
             Assert.AreEqual (player, tile.owner);
         }
 
-        TileManager.AddPlayer (player_other);
-        tiles = TileManager.GetTilesOfPlayer (player);
+        manager.AddPlayer (player_other);
+        tiles = manager.GetTilesOfPlayer (player);
         Assert.AreEqual (3, tiles.Count);
         foreach (TileInstance tile in tiles) {
             Assert.AreEqual (player, tile.owner);
@@ -99,17 +102,17 @@ public class TestTileManager
     {
         List<TileInstance> tiles;
 
-        Assert.AreEqual (0, TileManager.GetTilesOfOtherPlayers (player_other).Count);
+        Assert.AreEqual (0, manager.GetTilesOfOtherPlayers (player_other).Count);
 
-        TileManager.AddPlayer (player);
-        tiles = TileManager.GetTilesOfOtherPlayers (player_other);
+        manager.AddPlayer (player);
+        tiles = manager.GetTilesOfOtherPlayers (player_other);
         Assert.AreEqual (3, tiles.Count);
         foreach (TileInstance tile in tiles) {
             Assert.AreNotEqual (player_other, tile.owner);
         }
 
-        TileManager.AddPlayer (player_other);
-        tiles = TileManager.GetTilesOfOtherPlayers (player_other);
+        manager.AddPlayer (player_other);
+        tiles = manager.GetTilesOfOtherPlayers (player_other);
         Assert.AreEqual (3, tiles.Count);
         foreach (TileInstance tile in tiles) {
             Assert.AreNotEqual (player_other, tile.owner);
@@ -121,10 +124,10 @@ public class TestTileManager
     {
         List<TilePosition> free_pos;
 
-        Assert.AreEqual (null, TileManager.GetFreePositionsForPlayer (player));
+        Assert.AreEqual (null, manager.GetFreePositionsForPlayer (player));
 
-        TileManager.AddPlayer (player);
-        free_pos = TileManager.GetFreePositionsForPlayer (player);
+        manager.AddPlayer (player);
+        free_pos = manager.GetFreePositionsForPlayer (player);
         Assert.AreEqual (7, free_pos.Count);
         Assert.AreEqual (true, free_pos.Contains (new TilePosition (-1, 1)));
         Assert.AreEqual (true, free_pos.Contains (new TilePosition (-1, 3)));
@@ -140,10 +143,10 @@ public class TestTileManager
     {
         List<TileInstance> adjacent_to_lake;
 
-        Assert.AreEqual(null, TileManager.GetAdjacentToOwnLake(player));
+        Assert.AreEqual(null, manager.GetAdjacentToOwnLake(player));
 
-        TileManager.AddPlayer(player);
-        adjacent_to_lake = TileManager.GetAdjacentToOwnLake(player);
+        manager.AddPlayer(player);
+        adjacent_to_lake = manager.GetAdjacentToOwnLake(player);
         Assert.AreEqual(0, adjacent_to_lake.Count);
 
         // We put a lake on the right of the park and the factory
@@ -154,7 +157,7 @@ public class TestTileManager
         lake.position = pos;
         lake.owner = player;
 
-        adjacent_to_lake = TileManager.GetAdjacentToOwnLake(player);
+        adjacent_to_lake = manager.GetAdjacentToOwnLake(player);
         Assert.AreEqual(2, adjacent_to_lake.Count);
         Assert.AreEqual(true, adjacent_to_lake.Contains(park));
         Assert.AreEqual(true, adjacent_to_lake.Contains(factory));
@@ -163,24 +166,24 @@ public class TestTileManager
     [Test]
     public void Manages ()
     {
-        Assert.AreEqual (false, TileManager.Manages (player));
-        Assert.AreEqual (false, TileManager.Manages (player_other));
+        Assert.AreEqual (false, manager.Manages (player));
+        Assert.AreEqual (false, manager.Manages (player_other));
 
-        TileManager.AddPlayer (player);
-        Assert.AreEqual (true, TileManager.Manages (player));
-        Assert.AreEqual (false, TileManager.Manages (player_other));
+        manager.AddPlayer (player);
+        Assert.AreEqual (true, manager.Manages (player));
+        Assert.AreEqual (false, manager.Manages (player_other));
 
-        TileManager.AddPlayer (player_other);
-        Assert.AreEqual (true, TileManager.Manages (player));
-        Assert.AreEqual (true, TileManager.Manages (player_other));
+        manager.AddPlayer (player_other);
+        Assert.AreEqual (true, manager.Manages (player));
+        Assert.AreEqual (true, manager.Manages (player_other));
 
-        TileManager.RemovePlayer (player);
-        Assert.AreEqual (false, TileManager.Manages (player));
-        Assert.AreEqual (true, TileManager.Manages (player_other));
+        manager.RemovePlayer (player);
+        Assert.AreEqual (false, manager.Manages (player));
+        Assert.AreEqual (true, manager.Manages (player_other));
 
-        TileManager.RemovePlayer (player_other);
-        Assert.AreEqual (false, TileManager.Manages (player));
-        Assert.AreEqual (false, TileManager.Manages (player_other));
+        manager.RemovePlayer (player_other);
+        Assert.AreEqual (false, manager.Manages (player));
+        Assert.AreEqual (false, manager.Manages (player_other));
 
 
     }

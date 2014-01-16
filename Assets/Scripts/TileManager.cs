@@ -14,19 +14,20 @@ using UnityEngine;
 
 public sealed class TileManager
 {
-    public TileManager (int p_nb_player)
+    public TileManager (int p_nb_players)
     {
         m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
+        InitPlayers(p_nb_players);
     }
 
     private List<Player> m_players;
     private Dictionary<TileType, List<TriggerInstance>> m_subscribers;
 
-    private void InitPlayers (int p_nb_player)
+    private void InitPlayers (int p_nb_players)
     {
         m_players = new List<Player> ();
 
-        for (int i = 0; i < p_nb_player; i++) {
+        for (int i = 0; i < p_nb_players; i++) {
             m_players.Add (new Player ());
         }
     }
