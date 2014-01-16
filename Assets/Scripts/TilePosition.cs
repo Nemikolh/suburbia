@@ -18,9 +18,9 @@ public class TilePosition : System.Object
     private readonly int m_y;
     private TileInstance m_parent;
 
-    public TilePosition(int p_x, int p_y)
+    public TilePosition (int p_x, int p_y)
     {
-        if (!IsValidPosition(p_x, p_y))
+        if (!IsValidPosition (p_x, p_y))
             Debug.Log ("TilePosition is incorrect!");
 
         m_x = p_x;
@@ -28,17 +28,15 @@ public class TilePosition : System.Object
         m_parent = null;
     }
 
-    public bool IsAdjacentTo(TilePosition p_pos)
+    public bool IsAdjacentTo (TilePosition p_pos)
     {
-        if (p_pos.x == this.x)
-        {
+        if (p_pos.x == this.x) {
             // Directly above/below tile
             if (p_pos.y == this.y - 2 || p_pos.y == this.y + 2)
                 return true;
             return false;
         }
-        if (p_pos.x == this.x - 1 || p_pos.x == this.x + 1)
-        {
+        if (p_pos.x == this.x - 1 || p_pos.x == this.x + 1) {
             // Side tile
             if (p_pos.y == this.y - 1 || p_pos.y == this.y + 1)
                 return true;
@@ -54,7 +52,7 @@ public class TilePosition : System.Object
     }
 
     public int y {
-       get {
+        get {
             return this.m_y;
         }
     }
@@ -70,7 +68,7 @@ public class TilePosition : System.Object
 
     }
 
-    public static bool IsValidPosition(int p_x, int p_y)
+    public static bool IsValidPosition (int p_x, int p_y)
     {
         // If y is positive and x and y share the same parity, it's good
         if (p_y >= 0 && (p_x + p_y) % 2 == 0)
@@ -78,66 +76,75 @@ public class TilePosition : System.Object
         return false;
     }
 
-    delegate void func (List<TilePosition> p_list, int x_, int y_);
+    delegate void func (List<TilePosition> p_list,int x_,int y_);
 
-    public List<TilePosition> GetAdjacentPositions()
+    public List<TilePosition> GetAdjacentPositions ()
     {
-        List<TilePosition> adjacent_pos = new List<TilePosition>();
+        List<TilePosition> adjacent_pos = new List<TilePosition> ();
         int x, y;
 
         func AddIfValid = (List<TilePosition> p_list, int x_, int y_) =>
         {
-            if (TilePosition.IsValidPosition(x_, y_))
-                adjacent_pos.Add(new TilePosition(x_, y_));
+            if (TilePosition.IsValidPosition (x_, y_))
+                adjacent_pos.Add (new TilePosition (x_, y_));
         };
 
         // Above
         x = this.x;
         y = this.y - 2;
-        AddIfValid(adjacent_pos, x, y);
+        AddIfValid (adjacent_pos, x, y);
         // Below
         x = this.x;
         y = this.y + 2;
-        AddIfValid(adjacent_pos, x, y);
+        AddIfValid (adjacent_pos, x, y);
         // Top left
         x = this.x - 1;
         y = this.y - 1;
-        AddIfValid(adjacent_pos, x, y);
+        AddIfValid (adjacent_pos, x, y);
         // Bottom left
         x = this.x - 1;
         y = this.y + 1;
-        AddIfValid(adjacent_pos, x, y);
+        AddIfValid (adjacent_pos, x, y);
         // Top right
         x = this.x + 1;
         y = this.y - 1;
-        AddIfValid(adjacent_pos, x, y);
+        AddIfValid (adjacent_pos, x, y);
         // Bottom right
         x = this.x + 1;
         y = this.y + 1;
-        AddIfValid(adjacent_pos, x, y);
+        AddIfValid (adjacent_pos, x, y);
 
         return adjacent_pos;
     }
 
     public static implicit operator Vector3 (TilePosition p_pos)
     {
-        return new Vector3(p_pos.x, p_pos.y, 0);
+        return new Vector3 (p_pos.x, p_pos.y, 0);
     }
 
-    public override bool Equals(System.Object p_obj)
+    public override bool Equals (System.Object p_obj)
     {
-        if (p_obj == null)
-        {
+        if (p_obj == null) {
             return false;
         }
 
         TilePosition p_pos = p_obj as TilePosition;
-        if ((System.Object) p_pos == null)
-        {
+        if ((System.Object)p_pos == null) {
             return false;
         }
 
         return (this.x == p_pos.x) && (this.y == p_pos.y);
+    }
+
+    public override int GetHashCode ()
+    {
+        //https://stackoverflow.com/questions/5221396/what-is-an-appropriate-gethashcode-algorithm-for-a-2d-point-struct-avoiding
+        unchecked {
+            int hash = 17;
+            hash = hash * 23 + x.GetHashCode ();
+            hash = hash * 23 + y.GetHashCode ();
+            return hash;
+        }
     }
 }
 

@@ -120,10 +120,10 @@ public class TileInstance : System.Object
         List<TilePosition> adjacent_pos = this.m_position.GetAdjacentPositions ();
 
         // We get the occupied adjacent positions
-        List<TilePosition> occupied_pos = (from instance in GetAdjacentInstances() select instance.position).ToList();
+        List<TilePosition> occupied_pos = (from instance in GetAdjacentInstances () select instance.position).ToList ();
 
         // And do the difference
-        List<TilePosition> free_pos = (from pos in adjacent_pos where !occupied_pos.Contains(pos) select pos).ToList();
+        List<TilePosition> free_pos = (from pos in adjacent_pos where !occupied_pos.Contains (pos) select pos).ToList ();
 
         return free_pos;
     }
@@ -145,6 +145,17 @@ public class TileInstance : System.Object
         }
 
         return (this.position.Equals (p_instance.position)) && (this.owner == p_instance.owner);
+    }
+
+    public override int GetHashCode ()
+    {
+        //https://stackoverflow.com/questions/5221396/what-is-an-appropriate-gethashcode-algorithm-for-a-2d-point-struct-avoiding
+        unchecked {
+            int hash = 17;
+            hash = hash * 23 + position.GetHashCode();
+            hash = hash * 23 + owner.GetHashCode ();
+            return hash;
+        }
     }
 }
 
