@@ -8,9 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
-public class TileInstance
+public class TileInstance : System.Object
 {
     private readonly Tile m_tile_description;
     private List<TriggerInstance> m_triggers;
@@ -29,7 +30,8 @@ public class TileInstance
         m_owner = null;
     }
 
-    protected TileInstance ()
+    // public for test purposes
+    public TileInstance ()
     {
         m_tile_description = null;
         m_triggers = null;
@@ -54,6 +56,8 @@ public class TileInstance
 
         set {
             this.m_owner = value;
+            // We add the tile instance to the player's tile instances
+            value.AddTileInstance(this);
         }
     }
 
@@ -64,6 +68,7 @@ public class TileInstance
 
         set {
             this.m_position = value;
+            value.parent = this;
         }
     }
 
@@ -80,9 +85,39 @@ public class TileInstance
         return false;
     }
 
+    public List<TileInstance> GetAdjacentInstances ()
+    {
+        // We get the adjacent positions
+        List<TilePosition> adjacent_pos = this.m_position.GetAdjacentPositions ();
+
+        // We get the tile instances from the player
+        List<TileInstance> adjacent_instances = this.owner.tiles;
+
+        // And only keep those corresponding to the positions
+        adjacent_instances = (from instance in adjacent_instances where adjacent_pos.Contains (instance.position) select instance).ToList ();
+
+        return adjacent_instances;
+    }
+
     public void ApplyImmediateEffect ()
     {
         m_tile_description.effect.Apply (m_owner);
+    }
+
+    public override bool Equals(System.Object p_obj)
+    {
+        if (p_obj == null)
+        {
+            return false;
+        }
+
+        TileInstance p_instance = p_obj as TileInstance;
+        if ((System.Object) p_instance == null)
+        {
+            return false;
+        }
+
+        return (this.position.Equals(p_instance.position)) && (this.owner == p_instance.owner);
     }
 }
 
