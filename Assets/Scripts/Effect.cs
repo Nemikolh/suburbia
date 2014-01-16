@@ -64,6 +64,20 @@ public class Effect
             this.Apply (p_owner);
         }
     }
+
+    public override bool Equals (System.Object p_obj)
+    {
+        if (p_obj == null) {
+            return false;
+        }
+
+        Effect effect = p_obj as Effect;
+        if ((System.Object)effect == null) {
+            return false;
+        }
+
+        return (this.resource == effect.resource && this.value == effect.value);
+    }
 }
 
 

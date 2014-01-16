@@ -1,9 +1,9 @@
 // --------------------------------------------------------------- //
-// 
+//
 // Project : Suburbia
 // Author  : Nemikolh
 // All Wrongs Reserved.
-// --------------------------------------------------------------- // 
+// --------------------------------------------------------------- //
 using System;
 using System.Collections.Generic;
 using SimpleJSON;
@@ -22,12 +22,12 @@ public class Trigger
             TileType tile_type = TileType.LoadFromValue (Util.getValue<string> (p_json, "type"));
             ETileScope scope = Util.parseEnum<ETileScope> (Util.getValue<string> (p_json, "scope"));
             ETileWhen when = Util.parseEnum<ETileWhen> (Util.getValue<string> (p_json, "when"));
-            Effect effect = new Effect (Util.parseEnum<ETileResource> (p_json ["effect"] ["resource"].Value), 
+            Effect effect = new Effect (Util.parseEnum<ETileResource> (p_json ["effect"] ["resource"].Value),
                                         p_json ["effect"] ["value"].AsInt);
 
             return new Trigger (scope, when, tile_type, effect);
         } catch (ArgumentException ex) {
-            Debug.LogError ("Error while trying to load trigger");    
+            Debug.LogError ("Error while trying to load trigger");
             return null;
         }
     }
@@ -71,6 +71,21 @@ public class Trigger
             return;
 
         m_effect.Apply (p_owner);
+    }
+
+    public override bool Equals (System.Object p_obj)
+    {
+        if (p_obj == null) {
+            return false;
+        }
+
+        Trigger trigger = p_obj as Trigger;
+        if ((System.Object)trigger == null) {
+            return false;
+        }
+
+        return (this.effect.Equals(trigger.effect) && this.scope == trigger.scope
+                && this.type == trigger.type && this.when == trigger.when);
     }
 }
 
