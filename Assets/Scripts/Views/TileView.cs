@@ -94,16 +94,5 @@ public class TileView : MonoBehaviour
         p_tile.renderer.material.SetTexture ("_PathTex", m_textures [_this.m_tile.color]);
         p_tile.renderer.material.SetTexture ("_PathMask", m_textures [_this.m_tile.color]);
 
-    void Update ()
-    {
-    }
-
-    void OnMouseEnter()
-    {
-        Suburbia.Bus.FireEvent(new EventShowTileInformation (true, this.m_tile.description));
-    }
-
-    void Start ()
-    {
     }
 }
