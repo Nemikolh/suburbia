@@ -36,7 +36,7 @@ public class TileStacks
                 m_tiles_availables.Add (Tile.LoadFromJson (child.AsObject));
             }
 
-            // All tiles types have been instanciated
+            // All tiles types have been instantiated
             Debug.Log (m_tiles_availables.Count + " tiles have been loaded.");
         }
 
@@ -77,6 +77,12 @@ public class TileStacks
         }
 
         m_tilesC = InsertOneMoreRoundTile (m_tilesC, p_nb_players);
+    }
+
+    public List<Tile> LoadedTiles {
+        get {
+            return this.m_tiles_availables;
+        }
     }
 
     public TileInstance PopNextTile ()
