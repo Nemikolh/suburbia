@@ -227,6 +227,17 @@ public sealed class TileManager
         }
     }
 
+    // public for test purposes
+    public static List<TriggerInstance> SortSubscribedTriggers(List<TriggerInstance> p_subscribed_triggers, TileInstance p_new_tile)
+    {
+        p_subscribed_triggers.Sort (
+            (p_trigger1, p_trigger2) =>
+            - p_trigger1.owner.IsAdjacentTo (p_new_tile).CompareTo (p_trigger2.owner.IsAdjacentTo (p_new_tile))
+        );
+
+        return p_subscribed_triggers;
+    }
+
     public void EmitNewTileEvent (TileInstance p_new_tile)
     {
 
@@ -236,11 +247,7 @@ public sealed class TileManager
             List<TriggerInstance> subscribed_triggers;
             m_subscribers.TryGetValue (type, out subscribed_triggers);
 
-            subscribed_triggers.Sort (
-                            (p_trigger1, p_trigger2) =>
-            // On serre très fort les fesses.
-                            - p_trigger1.owner.IsAdjacentTo (p_new_tile).CompareTo (p_trigger2.owner.IsAdjacentTo (p_new_tile))
-            );
+            subscribed_triggers = SortSubscribedTriggers(subscribed_triggers, p_new_tile);
 
             foreach (TriggerInstance trigger in subscribed_triggers) {
                 trigger.Apply (p_new_tile);
@@ -263,7 +270,7 @@ public sealed class TileManager
             m_subscribers.TryGetValue (type_trigger, out list);
             list.Add (p_trigger);
         }
-      
+
     }
 
     public void AddSubscriber (TileInstance p_tile)

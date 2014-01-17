@@ -261,6 +261,29 @@ public class TestTileManager
     }
 
     [Test]
+    public void TestSortSubscribedTriggers()
+    {
+        // We subscribe all player's tiles
+        manager.AddSubscriber(suburbs);
+        manager.AddSubscriber(park);
+        manager.AddSubscriber(factory);
+
+        // We add a park beneath the player's factory
+        TileInstance park_new = new TileInstance(park_);
+        park_new.position = new TilePosition(0, 6);
+        park_new.owner = player;
+
+        List<TriggerInstance> green_subscribers = new List<TriggerInstance>();
+        manager.subscribers.TryGetValue(new TileType(ETileColor.GREEN), out green_subscribers);
+        Assert.AreEqual(2, green_subscribers.Count);  // factory and park
+        green_subscribers = TileManager.SortSubscribedTriggers(green_subscribers, park_new);
+        // The first green subscriber is the factory (adjacent)
+        Assert.AreEqual(factory, green_subscribers[0].owner);
+        // The second one is the park (not adjacent)
+        Assert.AreEqual(park, green_subscribers[1].owner);
+    }
+
+    [Test]
     public void TestEmitNewTileEvent()
     {
         player.income = 0;
@@ -277,8 +300,6 @@ public class TestTileManager
         manager.EmitNewTileEvent(park_new);
         // And check that his reputation decreased by 1 (condtional effect of adjacent factory)
         Assert.AreEqual(-1, player.reputation);
-
-        // And now the edge case with the ADJACENT and GLOBAL scopes
     }
 
     [Test]
