@@ -12,6 +12,9 @@ public class TestPlayer
     public void Init()
     {
         player = new Player();
+        // Base values
+        player.reputation = 1;
+        player.population = 2;
     }
 
     [Test]
@@ -46,19 +49,29 @@ public class TestPlayer
         player.money = 200;
         Assert.AreEqual(200, player.money);
 
+        // If not enough money, the player loses population
         Assert.AreEqual(2, player.population);
         player.money = -1;
         Assert.AreEqual(0, player.money);
         Assert.AreEqual(1, player.population);
+
+        // If not enough money and population, both are zeroed
+        player.population = 0;
+        player.money = 0;
+        player.money = -1;
+        Assert.AreEqual(0, player.money);
+        Assert.AreEqual(0, player.population);
+
+        player.money = 0;
+        player.population = 0;
+        player.population = -1;
+        Assert.AreEqual(0, player.money);
+        Assert.AreEqual(0, player.population);
     }
 
     [Test]
     public void TestClampPopulation ()
     {
-        Assert.AreEqual(2, player.population);
-        Assert.AreEqual(1, player.reputation);
-        Assert.AreEqual(0, player.income);
-
         // No red lines
         player.population = 10;
         Assert.AreEqual(10, player.population);
@@ -121,13 +134,13 @@ public class TestPlayer
         Assert.AreEqual(15, player.money);
         Assert.AreEqual(2, player.population);
         Assert.AreEqual(1, player.reputation);
-        Assert.AreEqual(0, player.income);
+        player.income = 1;
 
         player.CleanUp();
-        Assert.AreEqual(15, player.money);
+        Assert.AreEqual(16, player.money);
         Assert.AreEqual(3, player.population);
         Assert.AreEqual(1, player.reputation);
-        Assert.AreEqual(0, player.income);
+        Assert.AreEqual(1, player.income);
     }
 
 

@@ -19,6 +19,7 @@ public class TestEffect
     public void TestApply ()
     {
         Player player = new Player();
+        player.reputation = 1;
 
         Assert.AreEqual(1, player.reputation);
         Assert.AreEqual(15, player.money);

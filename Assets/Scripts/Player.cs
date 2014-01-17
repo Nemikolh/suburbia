@@ -29,8 +29,8 @@ public class Player
         m_tileinstances = new List<TileInstance>();
         m_money = 15;
         m_income = 0;
-        m_reputation = 1;
-        m_population = 2;
+        m_reputation = 0;
+        m_population = 0;
     }
 
     public void CleanUp()
@@ -51,10 +51,22 @@ public class Player
     private int clampPopulation (int p_value)
     {
         if (p_value < 0) {
-            if (m_money >= p_value)
+            if (m_money + p_value >= 0)
                 m_money += p_value;
             else
                 m_money = 0;
+            return 0;
+        }
+        return p_value;
+    }
+
+    private int clampMoney (int p_value)
+    {
+        if (p_value < 0) {
+            if (m_population + p_value >= 0)
+                m_population += p_value;
+            else
+                m_population = 0;
             return 0;
         }
         return p_value;
@@ -93,18 +105,6 @@ public class Player
     {
         this.m_income -= p_nb_red_lines;
         this.m_reputation -= p_nb_red_lines;
-    }
-
-    private int clampMoney (int p_value)
-    {
-        if (p_value < 0) {
-            if (m_population >= p_value)
-                m_population += p_value;
-            else
-                m_population = 0;
-            return 0;
-        }
-        return p_value;
     }
 
     public int money {
