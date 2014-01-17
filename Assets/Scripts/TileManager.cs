@@ -14,7 +14,8 @@ using System.Linq;
 using UnityEngine;
 using SimpleJSON;
 
-public sealed class TileManager : HandlerTilePlayed
+
+public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 {
     public TileManager (int p_nb_players)
     {
@@ -23,6 +24,9 @@ public sealed class TileManager : HandlerTilePlayed
 
         // Listen on TilePlayed
         Suburbia.Bus.AddHandler(EventTilePlayed.TYPE, this);
+
+        // Listen on RedLine
+        Suburbia.Bus.AddHandler(EventRedLine.TYPE, this);
     }
 
     private List<Player> m_players;
@@ -113,6 +117,29 @@ public sealed class TileManager : HandlerTilePlayed
         HandleNewTileConditionalEffect(p_new_tile);
         EmitNewTileEvent(p_new_tile);
         AddSubscriber(p_new_tile);
+    }
+
+    public void HandleRedLinePassed (EventRedLine p_event)
+    {
+        if (!Manages (p_event.player))
+            return;
+
+        if (p_event.nb_red_lines <= 0)
+            return;
+
+        List<TriggerInstance> all_triggers = new List<TriggerInstance> ();
+        foreach (List<TriggerInstance> list in m_subscribers.Values) {
+            all_triggers.AddRange(list);
+        }
+
+        List<TriggerInstance> triggers_red_line = (from trigger in all_triggers
+                                                    where trigger.trigger.when == ETileWhen.AFTER_RED_LINE
+                                                    select trigger).ToList();
+
+        foreach (TriggerInstance trigger in triggers_red_line) {
+            trigger.trigger.effect.Apply(trigger.owner.owner, p_event.nb_red_lines);
+        }
+
     }
 
     public List<TileInstance> GetAdjacent (TileInstance p_tile)
@@ -272,6 +299,7 @@ public sealed class TileManager : HandlerTilePlayed
     public void AddSubscriber (TriggerInstance p_trigger)
     {
         TileType type_trigger = p_trigger.trigger.type;
+
         List<TriggerInstance> list;
         if (!m_subscribers.ContainsKey (type_trigger)) {
 

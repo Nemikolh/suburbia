@@ -74,6 +74,8 @@ public class TestTileManager
         manager.RemoveAllSubscribers();
     }
 
+    /*
+
     [Test]
     public void TestGetAllTiles ()
     {
@@ -402,6 +404,41 @@ public class TestTileManager
 
         Suburbia.Bus.FireEvent(new EventTilePlayed(waterfront_realty));
         Assert.AreEqual(8, player.money);  // 2 adjacent tiles + waterfront realty
+    }*/
+
+    [Test]
+    public void TestHandleRedLinePassed()
+    {
+        player.income = 0;
+        player.reputation = 0;
+        manager.AddPlayer(player);
+
+        // We add a casino to player's burrough
+        string casino_description = "{\"name\": \"Casino\", \"triggers\": [{\"scope\": \"NONE\", \"when\": \"AFTER_RED_LINE\", \"effect\": {\"resource\": \"INCOME\", \"value\": 1}, \"type\": \"NONE\"}], \"color\": \"BLUE\", \"price\": 22, \"number\": 2, \"immediate\": {\"resource\": \"REPUTATION\", \"value\": -3}, \"letter\": \"B\", \"icon\": \"NONE\"}";
+        Tile description = GetTileFromString(casino_description);
+        TileInstance casino = new TileInstance(description);
+        casino.position = new TilePosition(0, 6);
+        casino.owner = player;
+        manager.AddSubscriber(casino);
+
+        // player passes 3 red lines backward
+        Suburbia.Bus.FireEvent(new EventRedLine(player, -3));
+        // And nothing happens
+        Assert.AreEqual(0, player.income);
+        Assert.AreEqual(0, player.reputation);
+
+        // player passes 3 red lines forward
+        Suburbia.Bus.FireEvent(new EventRedLine(player, 3));
+        // And it triggers the casino's effect
+        Assert.AreEqual(3, player.income);
+        Assert.AreEqual(0, player.reputation);
+
+        player.income = 0;
+
+        //And now we don't directly fire the event, we adjust the player's population
+        player.population = 22;
+        Assert.AreEqual(0, player.income);  // the casino's effect negated the red line
+        Assert.AreEqual(-2, player.reputation);  // but the reputation did take a hit
     }
 }
 
