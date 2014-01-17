@@ -87,6 +87,18 @@ public class Trigger
         return (this.effect.Equals(trigger.effect) && this.scope.Equals(trigger.scope)
                 && this.type.Equals (trigger.type) && this.when.Equals (trigger.when));
     }
+
+    public override int GetHashCode ()
+    {
+        unchecked {
+            int hash = 17;
+            hash = hash * 23 + this.effect.GetHashCode ();
+            hash = hash * 23 + this.scope.GetHashCode ();
+            hash = hash * 23 + this.type.GetHashCode ();
+            hash = hash * 23 + this.when.GetHashCode ();
+            return hash;
+        }
+    }
 }
 
 

@@ -78,6 +78,16 @@ public class Effect
 
         return (this.resource == effect.resource && this.value == effect.value);
     }
+
+    public override int GetHashCode ()
+    {
+        unchecked {
+            int hash = 17;
+            hash = hash * 23 + this.resource.GetHashCode ();
+            hash = hash * 23 + this.value.GetHashCode ();
+            return hash;
+        }
+    }
 }
 
 
