@@ -371,7 +371,37 @@ public class TestTileManager
         Suburbia.Bus.FireEvent(new EventTilePlayed(park_new));
         Assert.AreEqual(-1, player.income);  // Immediate effect of the new park
         Assert.AreEqual(0, player.reputation);  // The reputation effects of the new park and the factory negate each other
+        Assert.AreEqual(0, player_other.income);
+        Assert.AreEqual(0, player_other.reputation);  // Other player was not affected
     }
 
+    [Test]
+    public void TestWaterfrontRealty()
+    {
+        // We add a lake on the right of the park and the suburbs
+        string lake_description = "{\"name\": \"Lake\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"BLUE\"}], \"color\": \"LAKE\", \"price\": 0, \"number\": 0, \"immediate\": \"NONE\", \"letter\": \"BASE\", \"icon\": \"NONE\"}";
+        Tile description = GetTileFromString(lake_description);
+        TileInstance lake = new TileInstance (description);
+        lake.position = new TilePosition (1, 1);
+        lake.owner = player;
+
+        player.money = 0;
+        manager.AddPlayer(player);
+        manager.AddSubscriber(suburbs);
+        manager.AddSubscriber(park);
+        manager.AddSubscriber(factory);
+        Suburbia.Bus.FireEvent(new EventTilePlayed(lake));
+        Assert.AreEqual(4, player.money);  // 2 adjacent tiles
+
+        // We add a waterfront realty
+        string waterfront_description = "{\"name\": \"Waterfront Realty\", \"triggers\": [{\"scope\": \"ADJACENT_TO_OWN_LAKE\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT_TO_OWN_LAKE\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT_TO_OWN_LAKE\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT_TO_OWN_LAKE\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"BLUE\"}], \"color\": \"BLUE\", \"price\": 6, \"number\": 2, \"immediate\": \"NONE\", \"letter\": \"A\", \"icon\": \"NONE\"}";
+        Tile description_ = GetTileFromString(waterfront_description);
+        TileInstance waterfront_realty = new TileInstance(description_);
+        waterfront_realty.position = new TilePosition(0, 6);
+        waterfront_realty.owner = player;
+
+        Suburbia.Bus.FireEvent(new EventTilePlayed(waterfront_realty));
+        Assert.AreEqual(8, player.money);  // 2 adjacent tiles + waterfront realty
+    }
 }
 
