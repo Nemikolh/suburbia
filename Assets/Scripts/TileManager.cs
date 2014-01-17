@@ -14,12 +14,15 @@ using System.Linq;
 using UnityEngine;
 using SimpleJSON;
 
-public sealed class TileManager
+public sealed class TileManager : HandlerTilePlayed
 {
     public TileManager (int p_nb_players)
     {
         m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
         InitPlayers (p_nb_players);
+
+        // Listen on TilePlayed
+        Suburbia.Bus.AddHandler(EventTilePlayed.TYPE, this);
     }
 
     private List<Player> m_players;
@@ -99,6 +102,15 @@ public sealed class TileManager
         get {
             return this.m_subscribers;
         }
+    }
+
+    public void HandleTilePlayed(EventTilePlayed p_event)
+    {
+        TileInstance p_new_tile = p_event.tile_played;
+        HandleNewTileImmediateEffect(p_new_tile);
+        HandleNewTileConditionalEffect(p_new_tile);
+        EmitNewTileEvent(p_new_tile);
+        AddSubscriber(p_new_tile);
     }
 
     public List<TileInstance> GetAdjacent (TileInstance p_tile)

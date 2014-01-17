@@ -345,5 +345,26 @@ public class TestTileManager
 
         Assert.AreEqual(0, manager.subscribers.Count);
     }
+
+    [Test]
+    public void HandleTilePlayed()
+    {
+        player.income = 0;
+        player.reputation = 0;
+        manager.AddPlayer(player);
+        manager.AddSubscriber(suburbs);
+        manager.AddSubscriber(park);
+        manager.AddSubscriber(factory);
+
+        // We add a Park on the right between the park and the factory
+        TileInstance park_new = new TileInstance(park_);
+        park_new.position = new TilePosition(1, 3);
+        park_new.owner = player;
+
+        // We fire the event linked to the new tile being played
+        Suburbia.Bus.FireEvent(new EventTilePlayed(park_new));
+        Assert.AreEqual(-1, player.income);  // Immediate effect of the new park
+        Assert.AreEqual(0, player.reputation);  // The reputation effects of the new park and the factory negate each other
+    }
 }
 
