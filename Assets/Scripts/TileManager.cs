@@ -107,6 +107,8 @@ public sealed class TileManager : HandlerTilePlayed
     public void HandleTilePlayed(EventTilePlayed p_event)
     {
         TileInstance p_new_tile = p_event.tile_played;
+        if (!Manages(p_new_tile.owner))
+            return;
         HandleNewTileImmediateEffect(p_new_tile);
         HandleNewTileConditionalEffect(p_new_tile);
         EmitNewTileEvent(p_new_tile);
@@ -254,12 +256,12 @@ public sealed class TileManager : HandlerTilePlayed
     {
 
         foreach (TileType type in p_new_tile.types) {
-            Console.WriteLine(type.ToString());
-
-            List<TriggerInstance> subscribed_triggers;
+            List<TriggerInstance> subscribed_triggers = new List<TriggerInstance>();
             m_subscribers.TryGetValue (type, out subscribed_triggers);
+            if (subscribed_triggers == null)
+                continue;
 
-            subscribed_triggers = SortSubscribedTriggers(subscribed_triggers, p_new_tile);
+            subscribed_triggers = TileManager.SortSubscribedTriggers(subscribed_triggers, p_new_tile);
 
             foreach (TriggerInstance trigger in subscribed_triggers) {
                 trigger.Apply (p_new_tile);
@@ -291,6 +293,12 @@ public sealed class TileManager : HandlerTilePlayed
             AddSubscriber(trigger);
         }
 
+    }
+
+    // For testing purposes
+    public void RemoveAllSubscribers ()
+    {
+        m_subscribers = new Dictionary<TileType, List<TriggerInstance>>();
     }
 
     public void AddPlayer (Player p_player)

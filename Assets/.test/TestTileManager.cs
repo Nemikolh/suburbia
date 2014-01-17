@@ -69,10 +69,9 @@ public class TestTileManager
     }
 
     [TearDown]
-    public void CleanUp ()
+    public void TearDown()
     {
-        manager.RemovePlayer (player);
-        manager.RemovePlayer (player_other);
+        manager.RemoveAllSubscribers();
     }
 
     [Test]
@@ -309,7 +308,7 @@ public class TestTileManager
 
         Assert.AreEqual(0, manager.subscribers.Count);
 
-        // We subscripe a trigger
+        // We subscribe a trigger
         string trigger_description = "{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}";
         Trigger trigger_ = Trigger.LoadFromJson(JSON.Parse(trigger_description) as JSONClass);
         TriggerInstance trigger = new TriggerInstance(trigger_, suburbs);  // Bogus TileInstance
@@ -347,7 +346,7 @@ public class TestTileManager
     }
 
     [Test]
-    public void HandleTilePlayed()
+    public void TestHandleTilePlayed()
     {
         player.income = 0;
         player.reputation = 0;
@@ -355,6 +354,13 @@ public class TestTileManager
         manager.AddSubscriber(suburbs);
         manager.AddSubscriber(park);
         manager.AddSubscriber(factory);
+
+        player_other.income = 0;
+        player_other.reputation = 0;
+        manager.AddPlayer(player_other);
+        manager.AddSubscriber(suburbs_other);
+        manager.AddSubscriber(park_other);
+        manager.AddSubscriber(factory_other);
 
         // We add a Park on the right between the park and the factory
         TileInstance park_new = new TileInstance(park_);
@@ -366,5 +372,6 @@ public class TestTileManager
         Assert.AreEqual(-1, player.income);  // Immediate effect of the new park
         Assert.AreEqual(0, player.reputation);  // The reputation effects of the new park and the factory negate each other
     }
+
 }
 
