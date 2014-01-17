@@ -144,7 +144,7 @@ public class Player
             int nb_red_lines = Player.GetNumberRedLinesBetween(old_population, this.m_population);
             AdjustReputationIncome(nb_red_lines);
 
-            Suburbia.Bus.fireEvent(new EventRedLine(this, nb_red_lines));
+            Suburbia.Bus.FireEvent(new EventRedLine(this, nb_red_lines));
         }
     }
 

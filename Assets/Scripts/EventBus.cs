@@ -21,12 +21,12 @@ public class EventBus
     {
         private static int m_nextHashCode = 0;
         private int m_index;
-            
+
         public Type ()
         {
             m_index = m_nextHashCode++;
         }
-            
+
         public override int  GetHashCode ()
         {
             return m_index;
@@ -35,30 +35,30 @@ public class EventBus
 
     private Dictionary<Type, List<IHandler>> m_handlers;
 
-    public void fireEvent<H> (IEvent<H> p_event)
+    public void FireEvent<H> (IEvent<H> p_event)
             where H : class, IHandler
     {
         List<IHandler> list;
         // ------------------- DECLARE -------------------- //
-        
+
         list = null;
         // --------------------- INIT --------------------- //
-        
+
         if (m_handlers.ContainsKey (p_event.GetEventType()) == false) {
             return;
         }
-        
+
         list = m_handlers [p_event.GetEventType ()];
-        
+
         // Dispatch event among handler.
         foreach (var handler in list) {
             H _handler = handler as H;
             p_event.Dispatch (_handler);
         }
-    
+
     }
 
-    public void addHandler<H> (Type p_type, H p_handler)
+    public void AddHandler<H> (Type p_type, H p_handler)
         where H : class, IHandler
     {
         if (m_handlers.ContainsKey (p_type)) {

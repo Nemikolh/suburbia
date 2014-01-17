@@ -1,5 +1,5 @@
 // --------------------------------------------------------------- //
-// 
+//
 // Project : Suburbia
 // Author  : Nemikolh
 // All Wrongs Reserved.
@@ -68,12 +68,12 @@ public class TileView : MonoBehaviour
 
     void OnMouseEnter()
     {
-        Suburbia.Bus.fireEvent(new EventShowTileInformation (true, this.m_tile.description));
+        Suburbia.Bus.FireEvent(new EventShowTileInformation (true, this.m_tile.description));
     }
 
     void OnMouseExit()
     {
-        Suburbia.Bus.fireEvent(new EventShowTileInformation (false, this.m_tile.description));
+        Suburbia.Bus.FireEvent(new EventShowTileInformation (false, this.m_tile.description));
     }
 
     void OnMouseDown()
