@@ -141,6 +141,8 @@ public class TileInstance : System.Object
 
     public void ApplyImmediateEffect ()
     {
+        if (m_tile_description.immediate_effect == null)
+            return;
         m_tile_description.immediate_effect.Apply (m_owner);
     }
 
