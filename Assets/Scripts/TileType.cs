@@ -23,6 +23,8 @@ public class TileType
         ETileIcon icon_type = Util.tryEnum<ETileIcon> (p_value);
         if (icon_type != ETileIcon.NULL && icon_type != ETileIcon.NONE)
             return new TileType (icon_type);
+        if (icon_type != ETileIcon.NULL && icon_type == ETileIcon.NONE)
+            return new TileType (ETileIcon.NULL);
 
         return null;
     }
