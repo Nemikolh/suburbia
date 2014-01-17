@@ -6,7 +6,7 @@
 // --------------------------------------------------------------- //
 using System;
 
-public interface HandlerClickOnTileFromREM
+public interface HandlerClickOnTileFromREM : IHandler
 {
     void HandleClickOnTileFromREM(EventClickOnTileFromREM p_event);
 }

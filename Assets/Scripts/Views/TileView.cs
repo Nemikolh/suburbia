@@ -15,9 +15,9 @@ public class TileView : MonoBehaviour
     private static float m_offset_x;
     private static float m_offset_y;
 
-    private TileInstance m_tile;
+    protected TileInstance m_tile;
 
-    private TileView ()
+    protected TileView ()
     {
     }
 
@@ -44,11 +44,11 @@ public class TileView : MonoBehaviour
             _new_instance.transform.parent = p_parent;
 
             // Get the script associated with the new tile.
-            TileView = _new_instance.AddComponent<TileView> ();
+            TileView _this = _new_instance.AddComponent<TileView> ();
             _this.m_tile = p_instance;
 
             // Set the common properties
-            SetTileProperties(_new_instance, p_instance);
+            SetTileProperties(_new_instance, _this);
 
             return _this;
 
@@ -58,7 +58,7 @@ public class TileView : MonoBehaviour
         }
     }
 
-    public static TileViewREM InstantiateForRealEstateMarket (TileInstance p_instance, Vector3 p_position, float p_scale)
+    public static TileREMView InstantiateForRealEstateMarket (TileInstance p_instance, Vector3 p_position, float p_scale)
     {
         try {
             // Creation of the new instance.
@@ -70,7 +70,7 @@ public class TileView : MonoBehaviour
             _new_instance.layer = 8;
 
             // Get the script associated with the new tile.
-            TileREMView = _new_instance.AddComponent<TileREMView> ();
+            TileREMView _this = _new_instance.AddComponent<TileREMView> ();
             _this.m_tile = p_instance;
 
             // Set the common properties
@@ -94,16 +94,5 @@ public class TileView : MonoBehaviour
         p_tile.renderer.material.SetTexture ("_PathTex", m_textures [_this.m_tile.color]);
         p_tile.renderer.material.SetTexture ("_PathMask", m_textures [_this.m_tile.color]);
 
-    void Update ()
-    {
-    }
-
-    void OnMouseEnter()
-    {
-        Suburbia.Bus.FireEvent(new EventShowTileInformation (true, this.m_tile.description));
-    }
-
-    void Start ()
-    {
     }
 }
