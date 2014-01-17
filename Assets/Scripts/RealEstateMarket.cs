@@ -17,7 +17,6 @@ public sealed class RealEstateMarket
         m_availables_tiles = new List<TileInstance> ();
         m_tileStacks = new TileStacks (p_nb_players);
 
-        // TODO : Hard coded max value for 
         for (int i = 0; i < MAX_TILES; i++) {
             m_availables_tiles.Add (m_tileStacks.PopNextTile ());
         }
@@ -40,6 +39,18 @@ public sealed class RealEstateMarket
         m_availables_tiles.Insert (0, m_tileStacks.PopNextTile ());
 
         return tile;
+    }
+
+    public int PriceOverheadForTileNumber(int p_tile_index)
+    {
+        if(p_tile_index < 0 || p_tile_index > MAX_TILES)
+        {
+            Debug.LogError("Asking price overhead for tile number : " + p_tile_index);
+            return 0;
+        }
+        // By convention tile number 0 is the newly arrived tile. So it worth 10$ more than the others.
+        int overhead = 10 - p_tile_index * 2;
+        return overhead > 0 ? overhead : 0;
     }
 
     public List<TileInstance> tiles {

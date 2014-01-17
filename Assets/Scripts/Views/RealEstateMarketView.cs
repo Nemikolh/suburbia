@@ -9,47 +9,61 @@ using System.Collections.Generic;
 
 public class RealEstateMarketView : MonoBehaviour
 {
-
-//    public float Scale {
-//        get {
-//            return m_scale;
-//        }
-//        set {
-//            m_scale = value > 0.0f ? value : 1.0f;
-//        }
-//    }
-
-    public float m_scale;
     private RealEstateMarket m_market;
     private List<TileView> m_tiles;
+    private int m_width_tiles;
+    private int m_delta_tile;
+    private Camera m_cam;
 
     public RealEstateMarketView ()
     {
         m_market = null;
     }
 
+    private void SetPositionOfTiles ()
+    {
+        m_width_tiles = m_delta_tile * m_market.tiles.Count;
+        Vector3 screenPoint = new Vector3 ((Screen.width - m_width_tiles) / 2, 70, m_cam.nearClipPlane + 5);
+        
+        foreach (var tile in m_market.tiles) {
+            
+            Vector3 worldPos = m_cam.ScreenToWorldPoint (screenPoint);
+            m_tiles.Add (TileView.Instantiate (tile, worldPos, 1));
+
+            screenPoint.x += m_delta_tile;
+        }
+    }
+
     // Use this for initialization
     void Start ()
     {
-        Debug.Log("Loading Real Estate Market...");
+        Debug.Log ("Loading Real Estate Market...");
         m_market = Suburbia.Market;
         m_tiles = new List<TileView> ();
-        Camera _camera = GameObject.FindWithTag("RealEstateCamera").camera;
+        m_cam = GameObject.FindWithTag ("RealEstateCamera").camera;
 
-        Vector3 screenPoint = new Vector3 (50, 50, _camera.nearClipPlane + 5);
-
-        foreach (var tile in m_market.tiles) {
-
-            screenPoint.x += 85;
-            Vector3 worldPos = _camera.ScreenToWorldPoint (screenPoint);
-
-            m_tiles.Add (TileView.Instantiate (tile, worldPos, m_scale));
+        if(m_market.tiles.Count > 0)
+        {
+            Vector3 value = m_cam.WorldToScreenPoint(new Vector3(2,0));
+            m_delta_tile = (int) value.x - Screen.width / 2;
         }
+        else
+            m_delta_tile = 85;
+        SetPositionOfTiles ();
     }
     
-    // Update is called once per frame
-    void Update ()
+    // On GUI is called on every event linked to GUI plus user input.
+    void OnGUI ()
     {
+        int top = Screen.height - 30;
+        int offset = (Screen.width - m_width_tiles) / 2 - m_delta_tile / 2;
+        GUI.Box (new Rect (offset, top, m_width_tiles, 25), "");
+        int index = 0;
+        foreach (var tile in m_tiles) {
 
+            GUI.Label (new Rect (offset + m_delta_tile / 2 -10, top, 100, 25), "$ " + m_market.PriceOverheadForTileNumber (index++));
+
+            offset += m_delta_tile;
+        }
     }
 }

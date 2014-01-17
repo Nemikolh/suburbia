@@ -20,11 +20,11 @@ public class TileView : MonoBehaviour
 
     public static void InitTextures ()
     {
-        m_textures.Add (ETileColor.BLUE, Resources.Load ("Textures/tile_top_blue") as Texture);
-        m_textures.Add (ETileColor.YELLOW, Resources.Load ("Textures/tile_top_yellow") as Texture);
-        m_textures.Add (ETileColor.GREEN, Resources.Load ("Textures/tile_top_green") as Texture);
-        m_textures.Add (ETileColor.GREY, Resources.Load ("Textures/tile_top_blue") as Texture);
-        m_textures.Add (ETileColor.LAKE, Resources.Load ("Textures/tile_top_blue") as Texture);
+        m_textures.Add (ETileColor.BLUE, Resources.Load<Texture> ("Textures/tile_top_blue"));
+        m_textures.Add (ETileColor.YELLOW, Resources.Load<Texture> ("Textures/tile_top_yellow") );
+        m_textures.Add (ETileColor.GREEN, Resources.Load<Texture> ("Textures/tile_top_green") );
+        m_textures.Add (ETileColor.GREY, Resources.Load<Texture>("Textures/tile_top_blue") );
+        m_textures.Add (ETileColor.LAKE, Resources.Load<Texture> ("Textures/tile_top_blue") );
         m_textures.Add (ETileColor.NULL, null);
     }
 
@@ -47,7 +47,7 @@ public class TileView : MonoBehaviour
             _this.m_tile = p_instance;
 
             // Set an other script to this instance linked
-            _new_instance.AddComponent<SmoothTranslation>().InitWith(p_position + new Vector3(0, 0.5f, 0));
+            _new_instance.AddComponent<SmoothTranslationMarket>().InitWith(p_position + new Vector3(0, 0.5f, 0));
 
             Debug.Log("Tile : " + p_instance.name + " loaded to market place.");
 
@@ -71,8 +71,13 @@ public class TileView : MonoBehaviour
         Suburbia.Bus.fireEvent(new EventShowTileInformation (true, this.m_tile.description));
     }
 
-    void OnMouseLeave()
+    void OnMouseExit()
     {
         Suburbia.Bus.fireEvent(new EventShowTileInformation (false, this.m_tile.description));
+    }
+
+    void OnMouseDown()
+    {
+
     }
 }
