@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class RealEstateMarketView : MonoBehaviour
 {
     private RealEstateMarket m_market;
-    private List<TileView> m_tiles;
+    private List<TileREMView> m_tiles;
     private int m_width_tiles;
     private int m_delta_tile;
     private Camera m_cam;
@@ -39,7 +39,7 @@ public class RealEstateMarketView : MonoBehaviour
     {
         Debug.Log ("Loading Real Estate Market...");
         m_market = Suburbia.Market;
-        m_tiles = new List<TileView> ();
+        m_tiles = new List<TileREMView> ();
         m_cam = GameObject.FindWithTag ("RealEstateCamera").camera;
 
         if(m_market.tiles.Count > 0)
