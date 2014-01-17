@@ -259,5 +259,70 @@ public class TestTileManager
         // And check that the player's money has increased by 4 (conditional effect only)
         Assert.AreEqual(4, player.money);
     }
+
+    [Test]
+    public void TestEmitNewTileEvent()
+    {
+        player.income = 0;
+        player.reputation = 0;
+        manager.AddPlayer (player);
+        manager.AddSubscriber(suburbs);
+        manager.AddSubscriber(park);
+        manager.AddSubscriber(factory);
+
+        // We add a park beneath the player's factory
+        TileInstance park_new = new TileInstance(park_);
+        park_new.position = new TilePosition(0, 6);
+        park_new.owner = player;
+        manager.EmitNewTileEvent(park_new);
+        // And check that his reputation decreased by 1 (condtional effect of adjacent factory)
+        Assert.AreEqual(-1, player.reputation);
+
+        // And now the edge case with the ADJACENT and GLOBAL scopes
+    }
+
+    [Test]
+    public void TestAddSubscriber()
+    {
+        List<TriggerInstance> listeners = new List<TriggerInstance>();
+
+        Assert.AreEqual(0, manager.subscribers.Count);
+
+        // We subscripe a trigger
+        string trigger_description = "{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}";
+        Trigger trigger_ = Trigger.LoadFromJson(JSON.Parse(trigger_description) as JSONClass);
+        TriggerInstance trigger = new TriggerInstance(trigger_, suburbs);  // Bogus TileInstance
+        manager.AddSubscriber(trigger);
+
+        Assert.AreEqual(1, manager.subscribers.Count);
+        TileType type_green = new TileType(ETileColor.GREEN);
+        Assert.AreEqual(true, manager.subscribers.ContainsKey(type_green));
+        manager.subscribers.TryGetValue(type_green, out listeners);
+        Assert.AreEqual(1, listeners.Count);
+        Assert.AreEqual(true, listeners.Contains(trigger));
+
+        // We subscribe a tile with a trigger
+        manager = new TileManager(0);
+        Assert.AreEqual(0, manager.subscribers.Count);
+        string mint_description = "{\"name\": \"Mint\", \"triggers\": [{\"scope\": \"OWN\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}], \"color\": \"GREY\", \"price\": 15, \"number\": 2, \"immediate\": {\"resource\": \"INCOME\", \"value\": 3}, \"letter\": \"A\", \"icon\": \"NONE\"}";
+        Tile mint_ = GetTileFromString(mint_description);
+        TileInstance mint = new TileInstance(mint_);
+        mint.position = new TilePosition(0, 6);
+        mint.owner = player;
+        manager.AddSubscriber(mint);
+
+        Assert.AreEqual(1, manager.subscribers.Count);
+        TileType type_grey = new TileType(ETileColor.GREY);
+        Assert.AreEqual(true, manager.subscribers.ContainsKey(type_grey));
+        manager.subscribers.TryGetValue(type_grey, out listeners);
+        Assert.AreEqual(true, listeners.Contains(mint.triggers[0]));
+
+        // We subscribe a tile with no trigger
+        manager = new TileManager(0);
+        Assert.AreEqual(0, manager.subscribers.Count);
+        manager.AddSubscriber(suburbs);
+
+        Assert.AreEqual(0, manager.subscribers.Count);
+    }
 }
 
