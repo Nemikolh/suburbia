@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class TileView : MonoBehaviour
 {
-    private static UnityEngine.Object m_tile_prefab = Resources.Load ("Prefabs/Tile");
+    private static UnityEngine.Object RESOURCE = Resources.Load ("Prefabs/Tile");
     private static Dictionary<ETileColor, Texture> m_textures = new Dictionary<ETileColor, Texture> ();
     private static float m_offset_x;
     private static float m_offset_y;
@@ -40,7 +40,7 @@ public class TileView : MonoBehaviour
     {
         try {
             // Creation of the new instance.
-            GameObject _new_instance = UnityEngine.Object.Instantiate (m_tile_prefab) as GameObject;
+            GameObject _new_instance = UnityEngine.Object.Instantiate (RESOURCE) as GameObject;
             _new_instance.transform.parent = p_parent;
 
             // Get the script associated with the new tile.
@@ -62,7 +62,7 @@ public class TileView : MonoBehaviour
     {
         try {
             // Creation of the new instance.
-            GameObject _new_instance = UnityEngine.Object.Instantiate (m_tile_prefab) as GameObject;
+            GameObject _new_instance = UnityEngine.Object.Instantiate (RESOURCE) as GameObject;
 
             _new_instance.transform.position = p_position;
             _new_instance.transform.localScale = new Vector3 (p_scale, p_scale, p_scale);
@@ -94,5 +94,10 @@ public class TileView : MonoBehaviour
         p_tile.renderer.material.SetTexture ("_PathTex", m_textures [_this.m_tile.color]);
         p_tile.renderer.material.SetTexture ("_PathMask", m_textures [_this.m_tile.color]);
 
+        // Set the initial position if one does exists.
+        if(_this.m_tile.position != null)
+        {
+            p_tile.transform.position = new Vector3(_this.m_tile.position.x * m_offset_x, _this.m_tile.position.y * m_offset_y);
+        }
     }
 }
