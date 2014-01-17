@@ -66,7 +66,6 @@ public class Trigger
 
     public void Apply (Player p_owner, bool p_adjacent)
     {
-        // TODO ADJACENT_TO_OWN_LAKE
         if (m_scope == ETileScope.ADJACENT && !p_adjacent)
             return;
 
