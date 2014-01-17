@@ -23,6 +23,11 @@ public class TestTileManager
     private Player player;
     private Player player_other;
 
+    public Tile GetTileFromString(string json_string)
+    {
+        return Tile.LoadFromJson (JSON.Parse (json_string) as JSONClass);
+    }
+
     [SetUp]
     public void Init ()
     {
@@ -34,9 +39,9 @@ public class TestTileManager
         suburbs_description = "{\"name\": \"Suburbs\", \"triggers\": [], \"color\": \"GREEN\", \"price\": 3, \"number\": \"0\", \"immediate\": {\"resource\": \"POPULATION\", \"value\": 2}, \"letter\": \"BASE\", \"icon\": \"NONE\"}";
         park_description = "{\"name\": \"Community Park\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"REPUTATION\", \"value\": 1}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"REPUTATION\", \"value\": 1}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"REPUTATION\", \"value\": 1}, \"type\": \"BLUE\"}], \"color\": \"GREY\", \"price\": 4, \"number\": \"0\", \"immediate\": {\"resource\": \"INCOME\", \"value\": -1}, \"letter\": \"BASE\", \"icon\": \"NONE\"}";
         factory_description = "{\"name\": \"Heavy Factory\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"REPUTATION\", \"value\": -1}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"REPUTATION\", \"value\": -1}, \"type\": \"GREEN\"}], \"color\": \"YELLOW\", \"price\": 3, \"number\": \"0\", \"immediate\": {\"resource\": \"INCOME\", \"value\": 1}, \"letter\": \"BASE\", \"icon\": \"NONE\"}";
-        suburbs_ = Tile.LoadFromJson (JSON.Parse (suburbs_description) as JSONClass);
-        park_ = Tile.LoadFromJson (JSON.Parse (park_description) as JSONClass);
-        factory_ = Tile.LoadFromJson (JSON.Parse (factory_description) as JSONClass);
+        suburbs_ = GetTileFromString(suburbs_description);
+        park_ = GetTileFromString(park_description);
+        factory_ = GetTileFromString(factory_description);
 
         // We create the first three base tiles instances for both players
         suburbs = new TileInstance (suburbs_);
@@ -164,7 +169,8 @@ public class TestTileManager
 
         // We put a lake on the right of the park and the factory
         string lake_description = "{\"name\": \"Lake\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"BLUE\"}], \"color\": \"LAKE\", \"price\": 0, \"number\": 0, \"immediate\": \"NONE\", \"letter\": \"BASE\", \"icon\": \"NONE\"}";
-        Tile description = Tile.LoadFromJson (JSON.Parse (lake_description) as JSONClass);
+
+        Tile description = GetTileFromString(lake_description);
         TileInstance lake = new TileInstance (description);
         TilePosition pos = new TilePosition (1, 3);
         lake.position = pos;
@@ -218,8 +224,6 @@ public class TestTileManager
     public void TestHandleNewTileConditionalEffectAdjacent ()
     {
         player.income = 0;
-        player.reputation = 0;
-        player.money = 0;
         manager.AddPlayer (player);
 
         // We add a park on the right between the park and the suburbs
@@ -237,6 +241,23 @@ public class TestTileManager
         manager.HandleNewTileConditionalEffect(park_new_);
         // And check that player's reputation hasn't moved (park doesn't trigger on adjacent grey)
         Assert.AreEqual(1, player.reputation);
+    }
+
+    [Test]
+    public void TestHandleNewTileConditionalEffectOwn ()
+    {
+        player.money = 0;
+        manager.AddPlayer (player);
+
+        // We add a Mint to player's burrough
+        string mint_description = "{\"name\": \"Mint\", \"triggers\": [{\"scope\": \"OWN\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}], \"color\": \"GREY\", \"price\": 15, \"number\": 2, \"immediate\": {\"resource\": \"INCOME\", \"value\": 3}, \"letter\": \"A\", \"icon\": \"NONE\"}";
+        Tile mint_ = GetTileFromString(mint_description);
+        TileInstance mint = new TileInstance(mint_);
+        mint.position = new TilePosition(0, 6);
+        mint.owner = player;
+        manager.HandleNewTileConditionalEffect(mint);
+        // And check that the player's money has increased by 4 (conditional effect only)
+        Assert.AreEqual(4, player.money);
     }
 }
 
