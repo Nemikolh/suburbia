@@ -22,7 +22,7 @@ public sealed class TileManager : HandlerTilePlayed
         InitPlayers (p_nb_players);
 
         // Listen on TilePlayed
-        Suburbia.Bus.AddHandler(EventTilePlayed.TYPE, this);
+        Suburbia.Bus.AddHandler (EventTilePlayed.TYPE, this);
     }
 
     private List<Player> m_players;
@@ -79,6 +79,20 @@ public sealed class TileManager : HandlerTilePlayed
             m_players.Add (player);
             SetUpTilesForPlayer (player);
         }
+
+        CreatePlayersBurroughs(m_players);
+    }
+    
+    private void CreatePlayersBurroughs (ICollection<Player> p_players)
+    {
+        int i = 0;
+        foreach (Player player in p_players) {
+                    
+            GameObject player_place = PlayerBurrough.Instantiate(player).gameObject;
+            player_place.transform.position = new Vector3 (50 * i / 2, 0, 0);
+            player_place.transform.rotation = Quaternion.Euler (new Vector3 (0, i % 2 == 0 ? 0 : 180, 0));
+            ++i;
+        }
     }
 
     private void SetUpTilesForPlayer (Player p_player)
@@ -104,9 +118,10 @@ public sealed class TileManager : HandlerTilePlayed
         }
     }
 
-    public void HandleTilePlayed(EventTilePlayed p_event)
+    public void HandleTilePlayed (EventTilePlayed p_event)
     {
         TileInstance p_new_tile = p_event.tile_played;
+
         if (!Manages(p_new_tile.owner))
             return;
         HandleNewTileImmediateEffect(p_new_tile);
@@ -242,7 +257,7 @@ public sealed class TileManager : HandlerTilePlayed
     }
 
     // public for test purposes
-    public static List<TriggerInstance> SortSubscribedTriggers(List<TriggerInstance> p_subscribed_triggers, TileInstance p_new_tile)
+    public static List<TriggerInstance> SortSubscribedTriggers (List<TriggerInstance> p_subscribed_triggers, TileInstance p_new_tile)
     {
         p_subscribed_triggers.Sort (
             (p_trigger1, p_trigger2) =>
@@ -257,6 +272,7 @@ public sealed class TileManager : HandlerTilePlayed
 
         foreach (TileType type in p_new_tile.types) {
             List<TriggerInstance> subscribed_triggers = new List<TriggerInstance>();
+
             m_subscribers.TryGetValue (type, out subscribed_triggers);
             if (subscribed_triggers == null)
                 continue;
@@ -290,7 +306,7 @@ public sealed class TileManager : HandlerTilePlayed
     public void AddSubscriber (TileInstance p_tile)
     {
         foreach (TriggerInstance trigger in p_tile.triggers) {
-            AddSubscriber(trigger);
+            AddSubscriber (trigger);
         }
 
     }
