@@ -12,44 +12,74 @@ public class TileView : MonoBehaviour
 {
     private static UnityEngine.Object m_tile_prefab = Resources.Load ("Prefabs/Tile");
     private static Dictionary<ETileColor, Texture> m_textures = new Dictionary<ETileColor, Texture> ();
+    private static float m_offset_x;
+    private static float m_offset_y;
+
     private TileInstance m_tile;
 
     private TileView ()
     {
     }
 
-    public static void InitTextures ()
+    public static void InitProperties ()
     {
         m_textures.Add (ETileColor.BLUE, Resources.Load<Texture> ("Textures/tile_top_blue"));
-        m_textures.Add (ETileColor.YELLOW, Resources.Load<Texture> ("Textures/tile_top_yellow") );
-        m_textures.Add (ETileColor.GREEN, Resources.Load<Texture> ("Textures/tile_top_green") );
-        m_textures.Add (ETileColor.GREY, Resources.Load<Texture>("Textures/tile_top_blue") );
-        m_textures.Add (ETileColor.LAKE, Resources.Load<Texture> ("Textures/tile_top_blue") );
+        m_textures.Add (ETileColor.YELLOW, Resources.Load<Texture> ("Textures/tile_top_yellow"));
+        m_textures.Add (ETileColor.GREEN, Resources.Load<Texture> ("Textures/tile_top_green"));
+        m_textures.Add (ETileColor.GREY, Resources.Load<Texture> ("Textures/tile_top_blue"));
+        m_textures.Add (ETileColor.LAKE, Resources.Load<Texture> ("Textures/tile_top_blue"));
         m_textures.Add (ETileColor.NULL, null);
+
+        GameObject tile = Instantiate(Resources.Load("Prefabs/Tile")) as GameObject;
+        m_offset_x = tile.GetComponent<SphereCollider>().bounds.size.x;
+        m_offset_y = 1.80f;
+        Destroy(tile);
     }
 
-    public static TileView Instantiate (TileInstance p_instance, Vector3 p_position, float p_scale)
+    public static TileView InstantiateWithParent (TileInstance p_instance, Transform p_parent)
     {
         try {
             // Creation of the new instance.
             GameObject _new_instance = UnityEngine.Object.Instantiate (m_tile_prefab) as GameObject;
-            _new_instance.transform.position = p_position;
-            _new_instance.transform.localScale = new Vector3(p_scale, p_scale, p_scale);
-            _new_instance.transform.localRotation = Quaternion.Euler(0,180,-30);
-            _new_instance.layer = 8;
-
-            // Set tthe appropriate texture.
-            _new_instance.renderer.material.SetTexture ("_PathTex", m_textures [p_instance.color]);
-            _new_instance.renderer.material.SetTexture ("_PathMask", m_textures [p_instance.color]);
+            _new_instance.transform.parent = p_parent;
 
             // Get the script associated with the new tile.
-            TileView _this = _new_instance.GetComponent<TileView> ();
+            TileView = _new_instance.AddComponent<TileView> ();
             _this.m_tile = p_instance;
 
-            // Set an other script to this instance linked
-            _new_instance.AddComponent<SmoothTranslationMarket>().InitWith(p_position + new Vector3(0, 0.5f, 0));
+            // Set the common properties
+            SetTileProperties(_new_instance, p_instance);
 
-            Debug.Log("Tile : " + p_instance.name + " loaded to market place.");
+            return _this;
+
+        } catch (Exception) {
+            Debug.LogError ("Error while instantiating !");
+            return null;
+        }
+    }
+
+    public static TileViewREM InstantiateForRealEstateMarket (TileInstance p_instance, Vector3 p_position, float p_scale)
+    {
+        try {
+            // Creation of the new instance.
+            GameObject _new_instance = UnityEngine.Object.Instantiate (m_tile_prefab) as GameObject;
+
+            _new_instance.transform.position = p_position;
+            _new_instance.transform.localScale = new Vector3 (p_scale, p_scale, p_scale);
+            _new_instance.transform.localRotation = Quaternion.Euler (0, 180, -30);
+            _new_instance.layer = 8;
+
+            // Get the script associated with the new tile.
+            TileREMView = _new_instance.AddComponent<TileREMView> ();
+            _this.m_tile = p_instance;
+
+            // Set the common properties
+            SetTileProperties(_new_instance, _this);
+
+            // Set an other script to this instance linked
+            _new_instance.AddComponent<SmoothTranslationMarket> ().InitWith (p_position + new Vector3 (0, 0.5f, 0));
+
+            Debug.Log ("Tile : " + p_instance.name + " loaded to market place.");
 
             return _this;
         } catch (Exception e) {
@@ -58,9 +88,11 @@ public class TileView : MonoBehaviour
         }
     }
 
-    void Start ()
+    private static void SetTileProperties(GameObject p_tile, TileView _this)
     {
-    }
+        // Set tthe appropriate texture.
+        p_tile.renderer.material.SetTexture ("_PathTex", m_textures [_this.m_tile.color]);
+        p_tile.renderer.material.SetTexture ("_PathMask", m_textures [_this.m_tile.color]);
 
     void Update ()
     {
@@ -71,13 +103,7 @@ public class TileView : MonoBehaviour
         Suburbia.Bus.FireEvent(new EventShowTileInformation (true, this.m_tile.description));
     }
 
-    void OnMouseExit()
+    void Start ()
     {
-        Suburbia.Bus.FireEvent(new EventShowTileInformation (false, this.m_tile.description));
-    }
-
-    void OnMouseDown()
-    {
-
     }
 }

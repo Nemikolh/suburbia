@@ -28,7 +28,7 @@ public class RealEstateMarketView : MonoBehaviour
         foreach (var tile in m_market.tiles) {
             
             Vector3 worldPos = m_cam.ScreenToWorldPoint (screenPoint);
-            m_tiles.Add (TileView.Instantiate (tile, worldPos, 1));
+            m_tiles.Add (TileView.InstantiateForRealEstateMarket (tile, worldPos, 1));
 
             screenPoint.x += m_delta_tile;
         }

@@ -18,7 +18,7 @@ public class Player
     private int m_population;
     private List<TileInstance> m_tileinstances;
 
-    public static List<int> m_RedLines = new List<int>()
+    private static List<int> m_RedLines = new List<int>()
     {
         15, 22, 29, 35, 41, 47, 53, 59, 64, 69, 74, 78, 82, 86, 89, 92, 95, 98, 101, 103, 105, 107, 109,
         111, 113, 115, 117, 119, 121, 123, 125, 127, 129, 131, 133, 135, 137, 139, 141, 143, 145, 147, 149
