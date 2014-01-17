@@ -95,6 +95,12 @@ public sealed class TileManager
         }
     }
 
+    public Dictionary<TileType, List<TriggerInstance>> subscribers {
+        get {
+            return this.m_subscribers;
+        }
+    }
+
     public List<TileInstance> GetAdjacent (TileInstance p_tile)
     {
         return p_tile.GetAdjacentInstances ();
@@ -225,6 +231,7 @@ public sealed class TileManager
     {
 
         foreach (TileType type in p_new_tile.types) {
+            Console.WriteLine(type.ToString());
 
             List<TriggerInstance> subscribed_triggers;
             m_subscribers.TryGetValue (type, out subscribed_triggers);
@@ -256,6 +263,15 @@ public sealed class TileManager
             m_subscribers.TryGetValue (type_trigger, out list);
             list.Add (p_trigger);
         }
+      
+    }
+
+    public void AddSubscriber (TileInstance p_tile)
+    {
+        foreach (TriggerInstance trigger in p_tile.triggers) {
+            AddSubscriber(trigger);
+        }
+
     }
 
     public void AddPlayer (Player p_player)

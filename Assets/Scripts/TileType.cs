@@ -82,6 +82,19 @@ public class TileType
 
         return (this.color == type.color && this.icon == type.icon);
     }
+
+    public override int GetHashCode()
+    {
+        unchecked {
+            int hash = 17;
+            hash = hash * 23 + this.color.GetHashCode ();
+            hash = hash * 23 + this.icon.GetHashCode ();
+            return hash;
+        }
+    }
+
+    public override string ToString()
+    {
+        return "Color: " + m_color + "; Icon: " + m_icon;
+    }
 }
-
-
