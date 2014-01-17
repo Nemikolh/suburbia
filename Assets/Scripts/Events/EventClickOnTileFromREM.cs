@@ -6,7 +6,7 @@
 // --------------------------------------------------------------- //
 using System;
 
-public class EventClickedOnTileFromREM : IEvent<HandlerClickOnTileFromREM>
+public class EventClickOnTileFromREM : IEvent<HandlerClickOnTileFromREM>
 {
     public static Type<HandlerClickOnTileFromREM> TYPE = new Type<HandlerClickOnTileFromREM> ();
 
@@ -18,7 +18,7 @@ public class EventClickedOnTileFromREM : IEvent<HandlerClickOnTileFromREM>
         }
     }
 
-    public EventClickedOnTileFromREM (TileInstance p_tile)
+    public EventClickOnTileFromREM (TileInstance p_tile)
     {
         m_tile = p_tile;
     }

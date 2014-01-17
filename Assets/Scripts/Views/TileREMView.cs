@@ -20,7 +20,7 @@ public class TileREMView : TileView
     
     public void OnMouseDown ()
     {
-        Suburbia.Bus.fireEvent (new EventClickedOnTileFromRealEstateMarket (this.m_tile));
+        Suburbia.Bus.fireEvent (new EventClickOnTileFromREM (this.m_tile));
     }
 }
 
