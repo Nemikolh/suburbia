@@ -82,7 +82,7 @@ public class TileView : MonoBehaviour
             Debug.Log ("Tile : " + p_instance.name + " loaded to market place.");
 
             return _this;
-        } catch (Exception e) {
+        } catch (Exception) {
             Debug.LogError ("Error while instanciating tile !");
             return null;
         }
