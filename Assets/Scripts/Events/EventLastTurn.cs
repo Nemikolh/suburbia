@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿// --------------------------------------------------------------- //
+// 
+// Project : Suburbia
+// Authors : Nemikolh, Pierre mourlanne
+// All Wrongs Reserved.
+// --------------------------------------------------------------- //
+using UnityEngine;
 
 public class EventLastTurn : IEvent<HandlerLastTurn>
 {

@@ -41,27 +41,18 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
         m_free_positions = new List<FreePositionView> ();
     }
     
-    // Update is called once per frame
-    void Update ()
-    {
-    
-    }
-
     public void HandleClickOnTileFromREM (EventClickOnTileFromREM p_event)
     {
         if (m_free_positions.Count > 0) {
-            Debug.LogError ("Second click on tile from REM !");
             return;
         }
 
-        if (m_player == null) {
-            Debug.LogError ("Bad init for Player burrough");
+        if(m_player == p_event.current)
+        {
+            foreach (TilePosition pos in Suburbia.Manager.GetFreePositionsForPlayer (m_player)) {
+                m_free_positions.Add (FreePositionView.InstantiateWithParent (pos, this.transform, this.m_player));
+            }
         }
-
-        foreach (TilePosition pos in Suburbia.Manager.GetFreePositionsForPlayer (m_player)) {
-            m_free_positions.Add (FreePositionView.InstantiateWithParent (pos, this.transform, this.m_player));
-        }
-
     }
 
     public void HandleRemoveFreePositionOfPlayer (EventRemoveFreePositionOfPlayer p_event)
