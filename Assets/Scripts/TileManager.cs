@@ -95,7 +95,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         foreach (Player player in p_players) {
 
             GameObject player_place = PlayerBurrough.Instantiate(player).gameObject;
-            player_place.transform.position = new Vector3 (50 * i / 2, 0, 0);
+            player_place.transform.position = new Vector3 (10.0f * (i / 2), 0, 0);
             player_place.transform.rotation = Quaternion.Euler (new Vector3 (0, i % 2 == 0 ? 0 : 180, 0));
             ++i;
         }

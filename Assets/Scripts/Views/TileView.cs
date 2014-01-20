@@ -32,7 +32,7 @@ public class TileView : MonoBehaviour
 
         GameObject tile = Instantiate(Resources.Load("Prefabs/Tile")) as GameObject;
         m_offset_x = tile.GetComponent<SphereCollider>().bounds.size.x;
-        m_offset_y = 1.80f;
+        m_offset_y = m_offset_x * Mathf.Sqrt(3) / 2;
         Destroy(tile);
     }
 
@@ -97,7 +97,9 @@ public class TileView : MonoBehaviour
         // Set the initial position if one does exists.
         if(_this.m_tile.position != null)
         {
-            p_tile.transform.position = new Vector3(_this.m_tile.position.x * m_offset_x, _this.m_tile.position.y * m_offset_y);
+            p_tile.transform.position = new Vector3(_this.m_tile.position.x * m_offset_x, 0, (_this.m_tile.position.y * 0.5f + 0.5f ) * m_offset_y);
+            Vector3 eulerAngles = new Vector3 (270, 90, 0);
+            p_tile.transform.rotation = Quaternion.Euler(eulerAngles);
         }
     }
 }

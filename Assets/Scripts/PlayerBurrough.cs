@@ -23,12 +23,13 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
 
         // Set the common properties
         _this.m_player = p_owner;
+        _this.InitSetUpTiles ();
             
         return _this;
     }
     
     // Use this for initialization
-    void Start ()
+    private void InitSetUpTiles ()
     {
         Suburbia.Bus.AddHandler (EventClickOnTileFromREM.TYPE, this);
         Suburbia.Bus.AddHandler (EventRemoveFreePositionOfPlayer.TYPE, this);
@@ -51,6 +52,10 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
         if (m_free_positions.Count > 0) {
             Debug.LogError ("Second click on tile from REM !");
             return;
+        }
+
+        if (m_player == null) {
+            Debug.LogError ("Bad init for Player burrough");
         }
 
         foreach (TilePosition pos in Suburbia.Manager.GetFreePositionsForPlayer (m_player)) {

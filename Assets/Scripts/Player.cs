@@ -161,8 +161,10 @@ public class Player
         }
     }
 
-    public void AddTileInstance(TileInstance p_tileinstance) {
+    public void AddTileInstance(TileInstance p_tileinstance) 
+    {
         this.m_tileinstances.Add(p_tileinstance);
+        p_tileinstance.owner = this;
     }
 
     public List<TileInstance> tiles {
