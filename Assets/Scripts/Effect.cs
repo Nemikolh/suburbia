@@ -63,6 +63,8 @@ public class Effect
         for (int i = 0; i < n; ++i) {
             this.Apply (p_owner);
         }
+
+        Suburbia.Bus.FireEvent(new EventResourceAdjustment(p_owner, m_resource, m_value * n));
     }
 
     public override bool Equals (System.Object p_obj)
