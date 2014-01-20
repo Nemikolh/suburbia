@@ -41,7 +41,7 @@ public class TileREMView : TileView, HandlerSendTileToPosition
     {
         // TODO perform a smooth transition here instead of a rough destruction.
         if(p_event.index == this.m_index)
-            Destroy (this);
+            Destroy (this.gameObject);
     }
 }
 
