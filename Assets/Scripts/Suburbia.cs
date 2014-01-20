@@ -28,14 +28,17 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
 
     public void HandleEndOfTurn (EventEndOfTurn p_event)
     {
+        //TODO
     }
 
     public void HandleOneMoreTurn (EventLastTurn p_event)
     {
+        //TODO
     }
 
     public void HandleEndOfGame (EventEndOfGame p_event)
     {
+        //TODO
     }
 
 
