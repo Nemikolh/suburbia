@@ -12,11 +12,16 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
     private Suburbia ()
     {
         m_eventBus = new EventBus ();
+
+        m_eventBus.AddHandler(EventEndOfTurn.TYPE, this);
+        m_eventBus.AddHandler(EventLastTurn.TYPE, this);
+        m_eventBus.AddHandler(EventEndOfGame.TYPE, this);
     }
 
     private EventBus m_eventBus;
     private RealEstateMarket m_market;
     private TileManager m_game_manager;
+    private int m_remaining_turns;
 
     public void StartGame (int p_nb_players)
     {
@@ -24,16 +29,32 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
         TileManager.LoadSetupTiles (m_market.Stacks.LoadedTiles);
         TileView.InitProperties ();
         m_game_manager = new TileManager (p_nb_players);
+        m_remaining_turns = -1;
+    }
+
+    public void ClearGame()
+    {
+        m_market = null;
+        m_game_manager = null;
+        m_remaining_turns = -1;
     }
 
     public void HandleEndOfTurn (EventEndOfTurn p_event)
     {
-        //TODO
+        this.m_remaining_turns -= 1;
+        if (m_remaining_turns == 0)
+            Suburbia.Bus.FireEvent(new EventEndOfGame());
     }
 
     public void HandleOneMoreTurn (EventLastTurn p_event)
     {
-        //TODO
+        // We get the index of the player who just drew the tile
+        int index = m_game_manager.players.IndexOf(p_event.player);
+        if (index == -1)
+            Debug.Log("Could not find player!");
+        int nb_turns = m_game_manager.players.Count - index;  // To finish this turn
+        nb_turns += m_game_manager.players.Count;  // To play one more turn
+        m_remaining_turns = nb_turns;
     }
 
     public void HandleEndOfGame (EventEndOfGame p_event)
@@ -63,6 +84,12 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
     public static TileManager Manager {
         get {
             return m_instance.m_game_manager;
+        }
+    }
+
+    public static int nb_turns_remaining {
+        get {
+            return m_instance.m_remaining_turns;
         }
     }
 
