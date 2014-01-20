@@ -20,7 +20,7 @@ public class TileREMView : TileView
     
     public void OnMouseDown ()
     {
-        Suburbia.Bus.FireEvent (new EventClickOnTileFromREM (this.m_tile));
+        Suburbia.Bus.FireEvent (new EventClickOnTileFromREM (this.m_tile, Suburbia.ActivePlayer));
     }
 }
 

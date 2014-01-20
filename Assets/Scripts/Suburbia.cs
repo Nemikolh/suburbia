@@ -22,6 +22,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
     private RealEstateMarket m_market;
     private TileManager m_game_manager;
     private int m_remaining_turns;
+    private Player m_current_player;
 
     public void StartGame (int p_nb_players)
     {
@@ -90,6 +91,12 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
     public static int nb_turns_remaining {
         get {
             return m_instance.m_remaining_turns;
+        }
+    }
+
+    public static Player ActivePlayer {
+        get {
+            return m_instance.m_current_player;
         }
     }
 

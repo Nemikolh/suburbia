@@ -58,10 +58,12 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
             Debug.LogError ("Bad init for Player burrough");
         }
 
-        foreach (TilePosition pos in Suburbia.Manager.GetFreePositionsForPlayer (m_player)) {
-            m_free_positions.Add (FreePositionView.InstantiateWithParent (pos, this.transform, this.m_player));
+        if(m_player == p_event.current)
+        {
+            foreach (TilePosition pos in Suburbia.Manager.GetFreePositionsForPlayer (m_player)) {
+                m_free_positions.Add (FreePositionView.InstantiateWithParent (pos, this.transform, this.m_player));
+            }
         }
-
     }
 
     public void HandleRemoveFreePositionOfPlayer (EventRemoveFreePositionOfPlayer p_event)
