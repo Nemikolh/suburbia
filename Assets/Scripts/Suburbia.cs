@@ -1,5 +1,5 @@
 // --------------------------------------------------------------- //
-// 
+//
 // Project : Suburbia
 // Authors : Nemikolh, Pierre mourlanne
 // All Wrongs Reserved.
@@ -7,7 +7,7 @@
 using System;
 using UnityEngine;
 
-public sealed class Suburbia
+public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGame
 {
     private Suburbia ()
     {
@@ -25,6 +25,19 @@ public sealed class Suburbia
         TileView.InitProperties ();
         m_game_manager = new TileManager (p_nb_players);
     }
+
+    public void HandleEndOfTurn (EventEndOfTurn p_event)
+    {
+    }
+
+    public void HandleOneMoreTurn (EventLastTurn p_event)
+    {
+    }
+
+    public void HandleEndOfGame (EventEndOfGame p_event)
+    {
+    }
+
 
     public static Suburbia App {
         get {
