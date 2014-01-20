@@ -29,7 +29,7 @@ public class TileStacks
 
             JSONArray tiles = (JSONArray)JSON.Parse (reader.ReadToEnd ());
 
-            //Debug.Log (tiles.Count + " tiles to load from JSON.");
+            // Debug.Log (tiles.Count + " tiles to load from JSON.");
 
             foreach (JSONNode child in tiles) {
                 // We load each tile.
@@ -37,7 +37,7 @@ public class TileStacks
             }
 
             // All tiles types have been instantiated
-            Debug.Log (m_tiles_availables.Count + " tiles have been loaded.");
+            // Debug.Log (m_tiles_availables.Count + " tiles have been loaded.");
         }
 
         foreach (Tile tile in m_tiles_availables) {
