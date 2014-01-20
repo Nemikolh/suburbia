@@ -53,7 +53,14 @@ public class TileInstance : System.Object
 
         set {
             this.m_owner = value;
+            value.AddTileInstance(this);
         }
+    }
+
+    public void SetOwner(Player p_player)
+    {
+        // This method is only called by a Plaier who already "owns" this TileInstance
+        this.m_owner = p_player;
     }
 
     public string name {

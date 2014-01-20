@@ -116,6 +116,18 @@ public class TestTileInstance
         Assert.AreEqual(player, instance.owner);
         Assert.AreEqual(1, player.tiles.Count);
         Assert.AreEqual(true, player.tiles.Contains(instance));
+
+        // And now the other way around
+        instance = new TileInstance();
+        player = new Player();
+        instance.position = position;
+
+        Assert.AreEqual(0, player.tiles.Count);
+
+        player.AddTileInstance(instance);
+        Assert.AreEqual(player, instance.owner);
+        Assert.AreEqual(1, player.tiles.Count);
+        Assert.AreEqual(true, player.tiles.Contains(instance));
     }
 
     [Test]
