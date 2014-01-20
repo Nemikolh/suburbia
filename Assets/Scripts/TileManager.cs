@@ -140,10 +140,23 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 
         if (!Manages(p_new_tile.owner))
             return;
-        // TODO : The player has to PAY the tile!
+        // The player pays the tile
+        int full_price = p_new_tile.description.price + p_event.price_overhead;
+        if (p_new_tile.owner.money < full_price)
+        {
+            // This should not happen
+            Debug.Log("The player doesn't have enough money to play this tile!");
+            return;
+        }
+        p_new_tile.owner.money -= full_price;
+
+        // Immediate effect of the new tile
         HandleNewTileImmediateEffect(p_new_tile);
+        // Conditional effect of the new tile
         HandleNewTileConditionalEffect(p_new_tile);
+        // Conditional effect on the other tiles
         EmitNewTileEvent(p_new_tile);
+        // We subscribe the new tile for later conditional effects
         AddSubscriber(p_new_tile);
         // End of turn.
         Suburbia.Bus.FireEvent(new EventEndOfTurn(p_new_tile.owner));

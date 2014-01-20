@@ -45,6 +45,8 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
 
     public void HandleEndOfTurn (EventEndOfTurn p_event)
     {
+        if (m_game_manager == null)
+            return;
         m_current_player = (m_current_player + 1) % m_game_manager.players.Count;
         this.m_remaining_turns -= 1;
         if (m_remaining_turns == 0)
