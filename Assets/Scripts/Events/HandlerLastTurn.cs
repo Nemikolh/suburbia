@@ -12,7 +12,7 @@ using System;
 
 public interface HandlerLastTurn : IHandler
 {
-    void HandleOneMoreTurnEvent (EventLastTurn p_event);
+    void HandleOneMoreTurn (EventLastTurn p_event);
 }
 
 

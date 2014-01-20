@@ -10,7 +10,7 @@ public class EventLastTurn : IEvent<HandlerLastTurn>
 
     public override void Dispatch (HandlerLastTurn p_handler)
     {
-        p_handler.HandleOneMoreTurnEvent (this);
+        p_handler.HandleOneMoreTurn (this);
     }
 
     public override Type<HandlerLastTurn> GetEventType ()
