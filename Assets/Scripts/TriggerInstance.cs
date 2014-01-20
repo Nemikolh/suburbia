@@ -26,6 +26,13 @@ public class TriggerInstance
 				m_trigger.Apply (m_tile_owner.owner, m_tile_owner.IsAdjacentTo (p_other));
 		}
 
+		public void Apply (Player p_owner, int n)
+		{
+			m_trigger.Apply (p_owner, n);
+
+	        Suburbia.Bus.FireEvent(new EventResourceAdjustment(p_owner, m_trigger.effect.resource, m_trigger.effect.value * n, m_tile_owner));
+		}
+
 		public TileInstance owner {
 				get {
 						return this.m_tile_owner;

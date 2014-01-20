@@ -72,6 +72,11 @@ public class Trigger
         m_effect.Apply (p_owner, 1);
     }
 
+    public void Apply (Player p_owner, int n)
+    {
+        m_effect.Apply (p_owner, n);
+    }
+
     public override bool Equals (System.Object p_obj)
     {
         if (p_obj == null) {

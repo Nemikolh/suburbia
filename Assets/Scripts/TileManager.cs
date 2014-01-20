@@ -180,7 +180,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
                                                     select trigger).ToList();
 
         foreach (TriggerInstance trigger in triggers_red_line) {
-            trigger.trigger.effect.Apply (trigger.owner.owner, p_event.nb_red_lines);
+            trigger.Apply (trigger.owner.owner, p_event.nb_red_lines);
         }
 
     }
@@ -307,7 +307,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
                     number_of_tiles += 1;
             }
 
-            trigger.trigger.effect.Apply (p_new_tile.owner, number_of_tiles);
+            trigger.Apply (p_new_tile.owner, number_of_tiles);
         }
     }
 
