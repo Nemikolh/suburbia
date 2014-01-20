@@ -5,6 +5,7 @@
 // All Wrongs Reserved.
 // --------------------------------------------------------------- //
 using System;
+using UnityEngine;
 
 public sealed class PlayerTurnManager : HandlerClickOnTileFromREM, HandlerClickOnFreePosition
 {
@@ -29,18 +30,29 @@ public sealed class PlayerTurnManager : HandlerClickOnTileFromREM, HandlerClickO
         // The tile has been placed, we emit the tile played event.
         if (m_current_tile_chosen != null) {
 
-            // We place the new tile on the player ground :
-            m_current_tile_chosen.position = p_event.position;
-            Suburbia.ActivePlayer.AddTileInstance (m_current_tile_chosen);
-            Suburbia.Bus.FireEvent (new EventSendTileToPosition (Suburbia.ActivePlayer, p_event.position, m_index_in_REM));
+            int tile_price = Suburbia.Market.PriceOverheadForTileNumber (this.m_index_in_REM) 
+                + m_current_tile_chosen.description.price;
 
-            // Transmit sub events.
-            Suburbia.Bus.FireEvent (new EventRemoveFreePositionOfPlayer (Suburbia.ActivePlayer));
-            Suburbia.Bus.FireEvent (new EventTilePlayed (this.m_current_tile_chosen, 
+            if (Suburbia.ActivePlayer.money >= tile_price) {
+
+                // We place the new tile on the player ground :
+                m_current_tile_chosen.position = p_event.position;
+                Suburbia.ActivePlayer.AddTileInstance (m_current_tile_chosen);
+                Suburbia.Bus.FireEvent (new EventSendTileToPosition (Suburbia.ActivePlayer, p_event.position, m_index_in_REM));
+
+                // Transmit sub events.
+                Suburbia.Bus.FireEvent (new EventRemoveFreePositionOfPlayer (Suburbia.ActivePlayer));
+                Suburbia.Bus.FireEvent (new EventTilePlayed (this.m_current_tile_chosen, 
                                                          Suburbia.Market.PriceOverheadForTileNumber (this.m_index_in_REM)));
-            // We remove the tile in the REM.
-            Suburbia.Market.RemoveTile(this.m_index_in_REM);
-            m_current_tile_chosen = null;
+                // We remove the tile in the REM.
+                Suburbia.Market.RemoveTile (this.m_index_in_REM);
+                m_current_tile_chosen = null;
+            }
+            // Otherwise we tell him he can't play the tile !
+            else
+            {
+                Debug.LogError ("Can't play the tile bro !");
+            }
         }
     }
 
