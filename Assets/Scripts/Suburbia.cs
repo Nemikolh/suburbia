@@ -21,6 +21,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
     private EventBus m_eventBus;
     private RealEstateMarket m_market;
     private TileManager m_game_manager;
+    private PlayerTurnManager m_turn_manager;
     private int m_remaining_turns;
     private int m_current_player;
 
@@ -32,6 +33,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
         m_game_manager = new TileManager (p_nb_players);
         m_current_player = 0;
         m_remaining_turns = -1;
+        m_turn_manager = new PlayerTurnManager();
     }
 
     public void ClearGame()

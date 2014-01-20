@@ -56,7 +56,7 @@ public class FreePositionView : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log ("Click on the tile position !");
+        Suburbia.Bus.FireEvent(new EventClickOnFreePosition(this.m_player, this.m_position));
     }
 }
 

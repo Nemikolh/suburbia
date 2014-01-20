@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer
+public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer, HandlerClickOnFreePosition
 {
     private static Object RESOURCE = Resources.Load ("Prefabs/PlayerBurrough");
     private Player m_player;
@@ -50,7 +50,6 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
     public void HandleClickOnTileFromREM (EventClickOnTileFromREM p_event)
     {
         if (m_free_positions.Count > 0) {
-            Debug.LogError ("Second click on tile from REM !");
             return;
         }
 
