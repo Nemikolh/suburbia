@@ -74,8 +74,6 @@ public class TestTileManager
         manager.RemoveAllSubscribers();
     }
 
-    /*
-
     [Test]
     public void TestGetAllTiles ()
     {
@@ -404,7 +402,7 @@ public class TestTileManager
 
         Suburbia.Bus.FireEvent(new EventTilePlayed(waterfront_realty));
         Assert.AreEqual(8, player.money);  // 2 adjacent tiles + waterfront realty
-    }*/
+    }
 
     [Test]
     public void TestHandleRedLinePassed()
