@@ -368,7 +368,7 @@ public class TestTileManager
         park_new.owner = player;
 
         // We fire the event linked to the new tile being played
-        Suburbia.Bus.FireEvent(new EventTilePlayed(park_new));
+        Suburbia.Bus.FireEvent(new EventTilePlayed(park_new, 0));
         Assert.AreEqual(-1, player.income);  // Immediate effect of the new park
         Assert.AreEqual(0, player.reputation);  // The reputation effects of the new park and the factory negate each other
         Assert.AreEqual(0, player_other.income);
@@ -390,7 +390,7 @@ public class TestTileManager
         manager.AddSubscriber(suburbs);
         manager.AddSubscriber(park);
         manager.AddSubscriber(factory);
-        Suburbia.Bus.FireEvent(new EventTilePlayed(lake));
+        Suburbia.Bus.FireEvent(new EventTilePlayed(lake, 0));
         Assert.AreEqual(4, player.money);  // 2 adjacent tiles
 
         // We add a waterfront realty
@@ -400,7 +400,7 @@ public class TestTileManager
         waterfront_realty.position = new TilePosition(0, 6);
         waterfront_realty.owner = player;
 
-        Suburbia.Bus.FireEvent(new EventTilePlayed(waterfront_realty));
+        Suburbia.Bus.FireEvent(new EventTilePlayed(waterfront_realty, 0));
         Assert.AreEqual(8, player.money);  // 2 adjacent tiles + waterfront realty
     }
 

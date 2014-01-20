@@ -17,7 +17,6 @@ using SimpleJSON;
 // TODO
 // Handle pour une tile joué en tant que lake
 // PLayTileAsLake(Player p_player, TileInstance p_tile, TilePosition p_position)
-// Fire events linked to adjustments of resources
 
 
 public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
@@ -141,6 +140,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 
         if (!Manages(p_new_tile.owner))
             return;
+        // TODO : The player has to PAY the tile!
         HandleNewTileImmediateEffect(p_new_tile);
         HandleNewTileConditionalEffect(p_new_tile);
         EmitNewTileEvent(p_new_tile);
