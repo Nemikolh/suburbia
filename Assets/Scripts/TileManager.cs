@@ -145,6 +145,8 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         HandleNewTileConditionalEffect(p_new_tile);
         EmitNewTileEvent(p_new_tile);
         AddSubscriber(p_new_tile);
+        // End of turn.
+        Suburbia.Bus.FireEvent(new EventEndOfTurn(p_new_tile.owner));
     }
 
     public void HandleRedLinePassed (EventRedLine p_event)

@@ -22,7 +22,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
     private RealEstateMarket m_market;
     private TileManager m_game_manager;
     private int m_remaining_turns;
-    private Player m_current_player;
+    private int m_current_player;
 
     public void StartGame (int p_nb_players)
     {
@@ -30,6 +30,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
         TileManager.LoadSetupTiles (m_market.Stacks.LoadedTiles);
         TileView.InitProperties ();
         m_game_manager = new TileManager (p_nb_players);
+        m_current_player = 0;
         m_remaining_turns = -1;
     }
 
@@ -42,6 +43,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
 
     public void HandleEndOfTurn (EventEndOfTurn p_event)
     {
+        m_current_player = (m_current_player + 1) % m_game_manager.players.Count;
         this.m_remaining_turns -= 1;
         if (m_remaining_turns == 0)
             Suburbia.Bus.FireEvent(new EventEndOfGame());
@@ -96,7 +98,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
 
     public static Player ActivePlayer {
         get {
-            return m_instance.m_current_player;
+            return m_instance.m_game_manager[m_instance.m_current_player];
         }
     }
 
