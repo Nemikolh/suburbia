@@ -33,7 +33,7 @@ public class Effect
         }
     }
 
-    public void Apply (Player p_owner)
+    private void Apply (Player p_owner)
     {
         switch (m_resource) {
         case ETileResource.INCOME:

@@ -69,7 +69,7 @@ public class Trigger
         if (m_scope == ETileScope.ADJACENT && !p_adjacent)
             return;
 
-        m_effect.Apply (p_owner);
+        m_effect.Apply (p_owner, 1);
     }
 
     public override bool Equals (System.Object p_obj)

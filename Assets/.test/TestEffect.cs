@@ -24,10 +24,10 @@ public class TestEffect
         Assert.AreEqual(1, player.reputation);
         Assert.AreEqual(15, player.money);
 
-        effect_money.Apply(player);
+        effect_money.Apply (player, 1);
         Assert.AreEqual(25, player.money);
 
-        effect_reputation.Apply(player);
+        effect_reputation.Apply (player, 1);
         Assert.AreEqual(3, player.reputation);
     }
 

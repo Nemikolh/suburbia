@@ -14,6 +14,11 @@ using System.Linq;
 using UnityEngine;
 using SimpleJSON;
 
+// TODO
+// Handle pour une tile joué en tant que lake
+// PLayTileAsLake(Player p_player, TileInstance p_tile, TilePosition p_position)
+// Fire events linked to adjustments of resources
+
 
 public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 {
@@ -160,7 +165,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
                                                     select trigger).ToList();
 
         foreach (TriggerInstance trigger in triggers_red_line) {
-            trigger.trigger.effect.Apply(trigger.owner.owner, p_event.nb_red_lines);
+            trigger.trigger.effect.Apply (trigger.owner.owner, p_event.nb_red_lines);
         }
 
     }
