@@ -77,9 +77,11 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
     private void InitPlayers (int p_nb_players)
     {
         m_players = new List<Player> ();
+        string name;
 
         for (int i = 0; i < p_nb_players; i++) {
-            Player player = new Player ();
+            name = "Player " + i;
+            Player player = new Player (name);
             m_players.Add (player);
             SetUpTilesForPlayer (player);
         }

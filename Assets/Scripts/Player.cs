@@ -12,6 +12,7 @@ using System.Collections.Generic;
 
 public class Player
 {
+    private string m_name;
     private int m_money;
     private int m_income;
     private int m_reputation;
@@ -26,11 +27,17 @@ public class Player
 
     public Player ()
     {
+        m_name = "";
         m_tileinstances = new List<TileInstance>();
         m_money = 15;
         m_income = 0;
         m_reputation = 0;
         m_population = 0;
+    }
+
+    public Player (string p_name) : this()
+    {
+        m_name = p_name;
     }
 
     public void CleanUp()
@@ -105,6 +112,12 @@ public class Player
     {
         this.m_income -= p_nb_red_lines;
         this.m_reputation -= p_nb_red_lines;
+    }
+
+    public string name {
+        get {
+            return this.m_name;
+        }
     }
 
     public int money {
