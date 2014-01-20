@@ -118,6 +118,12 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         }
     }
 
+    public List<Player> players {
+        get {
+            return this.m_players;
+        }
+    }
+
     public Dictionary<TileType, List<TriggerInstance>> subscribers {
         get {
             return this.m_subscribers;
