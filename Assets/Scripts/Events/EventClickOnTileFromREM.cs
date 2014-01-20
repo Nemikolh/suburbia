@@ -11,6 +11,7 @@ public class EventClickOnTileFromREM : IEvent<HandlerClickOnTileFromREM>
     public static Type<HandlerClickOnTileFromREM> TYPE = new Type<HandlerClickOnTileFromREM> ();
     private readonly TileInstance m_tile;
     private readonly Player m_current;
+    private readonly int m_index_in_REM;
 
     public TileInstance tile {
         get {
@@ -24,8 +25,15 @@ public class EventClickOnTileFromREM : IEvent<HandlerClickOnTileFromREM>
         }
     }
 
-    public EventClickOnTileFromREM (TileInstance p_tile, Player p_player)
+    public int index_in_REM {
+        get {
+            return this.m_index_in_REM;
+        }
+    }
+
+    public EventClickOnTileFromREM (TileInstance p_tile, Player p_player, int p_index_in_REM)
     {
+        m_index_in_REM = p_index_in_REM;
         m_tile = p_tile;
         m_current = p_player;
     }

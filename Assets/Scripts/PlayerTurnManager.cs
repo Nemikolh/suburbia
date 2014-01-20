@@ -9,6 +9,7 @@ using System;
 public sealed class PlayerTurnManager : HandlerClickOnTileFromREM, HandlerClickOnFreePosition
 {
     private TileInstance m_current_tile_choosen;
+    private int m_price_overhead;
 
     public PlayerTurnManager ()
     {
@@ -20,6 +21,7 @@ public sealed class PlayerTurnManager : HandlerClickOnTileFromREM, HandlerClickO
     {
         // TODO check that the current guy has enough money
         m_current_tile_choosen = p_event.tile;
+        m_price_overhead = Suburbia.Market.PriceOverheadForTileNumber(p_event.index_in_REM);
     }
 
     public void HandleClickOnFreePosition (EventClickOnFreePosition p_event)
@@ -34,7 +36,7 @@ public sealed class PlayerTurnManager : HandlerClickOnTileFromREM, HandlerClickO
 
             // Transmit sub events.
             Suburbia.Bus.FireEvent (new EventRemoveFreePositionOfPlayer (Suburbia.ActivePlayer));
-            Suburbia.Bus.FireEvent (new EventTilePlayed (this.m_current_tile_choosen));
+            Suburbia.Bus.FireEvent (new EventTilePlayed (this.m_current_tile_choosen, this.m_price_overhead));
 
             m_current_tile_choosen = null;
         }

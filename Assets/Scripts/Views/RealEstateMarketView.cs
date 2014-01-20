@@ -24,11 +24,11 @@ public class RealEstateMarketView : MonoBehaviour
     {
         m_width_tiles = m_delta_tile * m_market.tiles.Count;
         Vector3 screenPoint = new Vector3 ((Screen.width - m_width_tiles) / 2, 70, m_cam.nearClipPlane + 5);
-        
+        int i = 0;
         foreach (var tile in m_market.tiles) {
             
             Vector3 worldPos = m_cam.ScreenToWorldPoint (screenPoint);
-            m_tiles.Add (TileView.InstantiateForRealEstateMarket (tile, worldPos, 1));
+            m_tiles.Add (TileView.InstantiateForRealEstateMarket (tile, i++, worldPos, 1));
 
             screenPoint.x += m_delta_tile;
         }

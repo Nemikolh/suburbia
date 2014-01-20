@@ -72,7 +72,7 @@ public class TileView : MonoBehaviour
         }
     }
 
-    public static TileREMView InstantiateForRealEstateMarket (TileInstance p_instance, Vector3 p_position, float p_scale)
+    public static TileREMView InstantiateForRealEstateMarket (TileInstance p_instance, int p_index, Vector3 p_position, float p_scale)
     {
         try {
             // Creation of the new instance.
@@ -86,6 +86,7 @@ public class TileView : MonoBehaviour
             // Get the script associated with the new tile.
             TileREMView _this = _new_instance.AddComponent<TileREMView> ();
             _this.m_tile = p_instance;
+            _this.index = p_index;
 
             // Set the common properties
             SetTileProperties (_new_instance, _this);
