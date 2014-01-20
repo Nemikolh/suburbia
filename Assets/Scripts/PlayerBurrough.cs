@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer
+public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer, HandlerSendTileToPosition
 {
     private static Object RESOURCE = Resources.Load ("Prefabs/PlayerBurrough");
     private Player m_player;
@@ -33,6 +33,7 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
     {
         Suburbia.Bus.AddHandler (EventClickOnTileFromREM.TYPE, this);
         Suburbia.Bus.AddHandler (EventRemoveFreePositionOfPlayer.TYPE, this);
+        Suburbia.Bus.AddHandler (EventSendTileToPosition.TYPE, this);
 
         foreach (TileInstance tile in m_player.tiles) {
             TileView.InstantiateWithParent (tile, this.transform);
@@ -47,8 +48,7 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
             return;
         }
 
-        if(m_player == p_event.current)
-        {
+        if (m_player == p_event.current) {
             foreach (TilePosition pos in Suburbia.Manager.GetFreePositionsForPlayer (m_player)) {
                 m_free_positions.Add (FreePositionView.InstantiateWithParent (pos, this.transform, this.m_player));
             }
@@ -63,5 +63,11 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
             }
             m_free_positions.Clear ();
         }
+    }
+
+    public void HandleSendTileToPosition (EventSendTileToPosition p_event)
+    {
+        // TODO : Smooth transition
+        TileView.InstantiateWithParent(Suburbia.Market[p_event.index], this.transform);
     }
 }

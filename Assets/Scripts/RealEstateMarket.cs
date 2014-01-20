@@ -25,7 +25,13 @@ public sealed class RealEstateMarket
     private TileStacks m_tileStacks;
     private List<TileInstance> m_availables_tiles;
 
-    public TileInstance Pick (int n)
+    public TileInstance this [int p_index] {
+        get {
+            return this.m_availables_tiles[p_index];
+        }
+    }
+
+    public TileInstance RemoveTile (int n)
     {
         if (n < 0 || n > m_availables_tiles.Count) {
             Debug.LogError ("Trying to pick an unbound tile ! Value : " + n);
@@ -33,7 +39,7 @@ public sealed class RealEstateMarket
         }
 
         TileInstance tile = m_availables_tiles [n];
-        m_availables_tiles.Remove (tile);
+        m_availables_tiles.RemoveAt (n);
         // We may here add a null tile. This is a desired behavior.
         // A null tile is considered has a hole in the real estate market.
         m_availables_tiles.Insert (0, m_tileStacks.PopNextTile ());

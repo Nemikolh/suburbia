@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class RealEstateMarketView : MonoBehaviour
+public class RealEstateMarketView : MonoBehaviour, HandlerSendTileToPosition
 {
     private RealEstateMarket m_market;
     private List<TileREMView> m_tiles;
@@ -38,16 +38,16 @@ public class RealEstateMarketView : MonoBehaviour
     void Start ()
     {
         Debug.Log ("Loading Real Estate Market...");
+        Suburbia.Bus.AddHandler (EventSendTileToPosition.TYPE, this);
+
         m_market = Suburbia.Market;
         m_tiles = new List<TileREMView> ();
         m_cam = GameObject.FindWithTag ("RealEstateCamera").camera;
 
-        if(m_market.tiles.Count > 0)
-        {
-            Vector3 value = m_cam.WorldToScreenPoint(new Vector3(2,0));
-            m_delta_tile = (int) value.x - Screen.width / 2;
-        }
-        else
+        if (m_market.tiles.Count > 0) {
+            Vector3 value = m_cam.WorldToScreenPoint (new Vector3 (2, 0));
+            m_delta_tile = (int)value.x - Screen.width / 2;
+        } else
             m_delta_tile = 85;
         SetPositionOfTiles ();
     }
@@ -61,9 +61,14 @@ public class RealEstateMarketView : MonoBehaviour
         int index = 0;
         foreach (var tile in m_tiles) {
 
-            GUI.Label (new Rect (offset + m_delta_tile / 2 -10, top, 100, 25), "$ " + m_market.PriceOverheadForTileNumber (index++));
+            GUI.Label (new Rect (offset + m_delta_tile / 2 - 10, top, 100, 25), "$ " + m_market.PriceOverheadForTileNumber (index++));
 
             offset += m_delta_tile;
         }
+    }
+
+    public void HandleSendTileToPosition (EventSendTileToPosition p_event)
+    {
+        m_tiles.RemoveAt(p_event.index);
     }
 }
