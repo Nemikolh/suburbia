@@ -34,6 +34,8 @@ public class MainCameraTransition : MonoBehaviour, HandlerEndOfTurn
         if(trans != null)
             Destroy(trans);
 
-        this.gameObject.AddComponent<SmoothTranslation>().InitWith(m_origin);
+        trans = this.gameObject.AddComponent<SmoothTranslation>();
+        trans.InitWith(m_origin);
+        trans.StartTransition ();
     }
 }
