@@ -1,5 +1,5 @@
 // --------------------------------------------------------------- //
-// 
+//
 // Project : Suburbia
 // Author  : Nemikolh
 // All Wrongs Reserved.
@@ -23,12 +23,12 @@ public class TileStacks
         m_tilesC = new Stack<TileInstance> ();
 
         m_tiles_availables = new List<Tile> ();
-                
+
         // Application.dataPath ?
         using (StreamReader reader = File.OpenText(@"Assets/Data/tiles.json")) {
 
             JSONArray tiles = (JSONArray)JSON.Parse (reader.ReadToEnd ());
-           
+
             //Debug.Log (tiles.Count + " tiles to load from JSON.");
 
             foreach (JSONNode child in tiles) {
@@ -41,7 +41,7 @@ public class TileStacks
         }
 
         foreach (Tile tile in m_tiles_availables) {
-                
+
             Stack<TileInstance> tiles_stack;
 
             switch (tile.letter) {
@@ -66,7 +66,7 @@ public class TileStacks
         m_tilesA = Shuffle (m_tilesA);
         m_tilesB = Shuffle (m_tilesB);
         m_tilesC = Shuffle (m_tilesC);
-                    
+
         TrimDownTo (m_tilesA, 15 + (p_nb_players - 2) * 3);
         TrimDownTo (m_tilesB, 15 + (p_nb_players - 2) * 3);
         TrimDownTo (m_tilesC, 25 + (p_nb_players - 2) * 6);
@@ -97,7 +97,8 @@ public class TileStacks
                 if (tile is TileInstanceOneMoreRound) {
                     // Last Turn starting !
                     Suburbia.Bus.FireEvent (new EventLastTurn ());
-                    return null;
+                    // We put the next tile in the Real Estate Market
+                    return PopNextTile();
                 }
 
                 return tile;
