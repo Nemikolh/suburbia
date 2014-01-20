@@ -34,6 +34,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
         m_current_player = 0;
         m_remaining_turns = -1;
         m_turn_manager = new PlayerTurnManager();
+        m_eventBus.FireEvent(new EventGameStarted());
     }
 
     public void ClearGame()
