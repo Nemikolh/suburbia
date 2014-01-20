@@ -53,8 +53,6 @@ public class TileInstance : System.Object
 
         set {
             this.m_owner = value;
-            // We add the tile instance to the player's tile instances
-            value.AddTileInstance (this);
         }
     }
 
