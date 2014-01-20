@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer, HandlerClickOnFreePosition
+public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer
 {
     private static Object RESOURCE = Resources.Load ("Prefabs/PlayerBurrough");
     private Player m_player;
@@ -41,20 +41,10 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
         m_free_positions = new List<FreePositionView> ();
     }
     
-    // Update is called once per frame
-    void Update ()
-    {
-    
-    }
-
     public void HandleClickOnTileFromREM (EventClickOnTileFromREM p_event)
     {
         if (m_free_positions.Count > 0) {
             return;
-        }
-
-        if (m_player == null) {
-            Debug.LogError ("Bad init for Player burrough");
         }
 
         if(m_player == p_event.current)
