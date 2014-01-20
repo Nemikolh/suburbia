@@ -8,7 +8,6 @@
 public class EventClickOnFreePosition : IEvent<HandlerClickOnFreePosition>
 {
     public static Type<HandlerClickOnFreePosition> TYPE = new Type<HandlerClickOnFreePosition> ();
-
     private Player m_player;
     private TilePosition m_position;
 
@@ -28,4 +27,15 @@ public class EventClickOnFreePosition : IEvent<HandlerClickOnFreePosition>
         return TYPE;
     }
 
+    public Player player {
+        get {
+            return this.m_player;
+        }
+    }
+
+    public TilePosition position {
+        get {
+            return this.m_position;
+        }
+    }
 }
