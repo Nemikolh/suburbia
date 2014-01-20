@@ -15,6 +15,20 @@ public class TileView : MonoBehaviour
     private static float m_offset_x;
     private static float m_offset_y;
 
+    // Should be removed and reworked.
+    public static float OffsetX {
+        get {
+            return m_offset_x;
+        }
+    }
+
+    // Should be removed and reworked.
+    public static float OffsetY{
+        get {
+            return m_offset_y;
+        }
+    }
+
     protected TileInstance m_tile;
 
     protected TileView ()
@@ -30,10 +44,10 @@ public class TileView : MonoBehaviour
         m_textures.Add (ETileColor.LAKE, Resources.Load<Texture> ("Textures/tile_top_blue"));
         m_textures.Add (ETileColor.NULL, null);
 
-        GameObject tile = Instantiate(Resources.Load("Prefabs/Tile")) as GameObject;
-        m_offset_x = tile.GetComponent<SphereCollider>().bounds.size.x;
-        m_offset_y = m_offset_x * Mathf.Sqrt(3) / 2;
-        Destroy(tile);
+        GameObject tile = Instantiate (Resources.Load ("Prefabs/Tile")) as GameObject;
+        m_offset_x = tile.GetComponent<SphereCollider> ().bounds.size.x * 0.5f;
+        m_offset_y = m_offset_x * (Mathf.Sqrt (3) / 2.0f) ;
+        Destroy (tile);
     }
 
     public static TileView InstantiateWithParent (TileInstance p_instance, Transform p_parent)
@@ -48,7 +62,7 @@ public class TileView : MonoBehaviour
             _this.m_tile = p_instance;
 
             // Set the common properties
-            SetTileProperties(_new_instance, _this);
+            SetTileProperties (_new_instance, _this);
 
             return _this;
 
@@ -74,7 +88,7 @@ public class TileView : MonoBehaviour
             _this.m_tile = p_instance;
 
             // Set the common properties
-            SetTileProperties(_new_instance, _this);
+            SetTileProperties (_new_instance, _this);
 
             // Set an other script to this instance linked
             _new_instance.AddComponent<SmoothTranslationMarket> ().InitWith (p_position + new Vector3 (0, 0.5f, 0));
@@ -88,18 +102,18 @@ public class TileView : MonoBehaviour
         }
     }
 
-    private static void SetTileProperties(GameObject p_tile, TileView _this)
+    private static void SetTileProperties (GameObject p_tile, TileView _this)
     {
         // Set tthe appropriate texture.
         p_tile.renderer.material.SetTexture ("_PathTex", m_textures [_this.m_tile.color]);
         p_tile.renderer.material.SetTexture ("_PathMask", m_textures [_this.m_tile.color]);
 
         // Set the initial position if one does exists.
-        if(_this.m_tile.position != null)
-        {
-            p_tile.transform.position = new Vector3(_this.m_tile.position.x * m_offset_x, 0, (_this.m_tile.position.y * 0.5f + 0.5f ) * m_offset_y);
+        if (_this.m_tile.position != null) {
+            p_tile.transform.position = new Vector3 (_this.m_tile.position.x * m_offset_x * 1.5f, 0,
+                                                     (_this.m_tile.position.y + 1) * m_offset_y);
             Vector3 eulerAngles = new Vector3 (270, 90, 0);
-            p_tile.transform.rotation = Quaternion.Euler(eulerAngles);
+            p_tile.transform.rotation = Quaternion.Euler (eulerAngles);
         }
     }
 }

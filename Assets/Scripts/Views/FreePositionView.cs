@@ -27,11 +27,21 @@ public class FreePositionView : MonoBehaviour
             // Set the common properties
             _this.m_position = p_position;
             _this.m_player = p_owner;
-            
+            if(_this.m_position != null)
+            {
+                // TODO Rework this Duplicate from TileView.
+                Vector3 position = new Vector3(_this.m_position.x * 1.5f * TileView.OffsetX, 0, (_this.m_position.y + 1 ) * TileView.OffsetY);
+                _this.transform.position = p_parent.TransformPoint(position);
+            }
+            else
+            {
+                Debug.LogError("Position for FreePositionView null !");
+            }
+
             return _this;
             
         } catch (Exception) {
-            Debug.LogError ("Error while instantiating !");
+            Debug.LogError ("Error while instantiating FreePosition! Prefab not found !");
             return null;
         }
     }
