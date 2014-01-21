@@ -14,6 +14,12 @@ public class Tile
     private readonly Effect m_immediate_effect;
     private readonly List<Trigger> m_triggers;
 
+    public static Tile GetLake ()
+    {
+        string lake_description = "{\"name\": \"Lake\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"BLUE\"}], \"color\": \"LAKE\", \"price\": 0, \"number\": 0, \"immediate\": \"NONE\", \"letter\": \"BASE\", \"icon\": \"NONE\"}";
+        return Tile.LoadFromJson(JSON.Parse(lake_description) as JSONClass);
+    }
+
     public static Tile LoadFromJson (JSONClass p_json)
     {
         try {

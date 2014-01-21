@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SimpleJSON;
 
 using NUnit.Framework;
 
@@ -144,6 +145,18 @@ public class TestTileInstance
 
         // Different owner
         Assert.AreNotEqual(suburbs, suburbs_other);
+    }
+
+    [Test]
+    public void TestTransformIntoLake ()
+    {
+        // We actually load the tile into the tile instance
+        string suburbs_description = "{\"name\": \"Suburbs\", \"triggers\": [], \"color\": \"GREEN\", \"price\": 3, \"number\": \"0\", \"immediate\": {\"resource\": \"POPULATION\", \"value\": 2}, \"letter\": \"BASE\", \"icon\": \"NONE\"}";
+        suburbs = new TileInstance (Tile.LoadFromJson (JSON.Parse (suburbs_description) as JSONClass));
+        Assert.AreEqual("Suburbs", suburbs.description.name);
+
+        suburbs.TransformIntoLake();
+        Assert.AreEqual("Lake", suburbs.description.name);
     }
 }
 

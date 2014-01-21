@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class TileInstance : System.Object
 {
-    private readonly Tile m_tile_description;
+    private Tile m_tile_description;
     private List<TriggerInstance> m_triggers;
     private TilePosition m_position;
     private Player m_owner;
@@ -25,6 +25,11 @@ public class TileInstance : System.Object
         }
 
         m_owner = null;
+    }
+
+    public void TransformIntoLake ()
+    {
+        m_tile_description = Tile.GetLake();
     }
 
     // public for test purposes
