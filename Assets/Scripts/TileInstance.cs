@@ -14,22 +14,41 @@ public class TileInstance : System.Object
     private List<TriggerInstance> m_triggers;
     private TilePosition m_position;
     private Player m_owner;
+    private bool m_is_lake;
 
     public TileInstance (Tile p_tile)
     {
+        m_is_lake = false;
         m_tile_description = p_tile;
         m_triggers = new List<TriggerInstance> ();
-
-        foreach (Trigger trigger in m_tile_description.triggers) {
-            m_triggers.Add (new TriggerInstance (trigger, this));
-        }
-
         m_owner = null;
+        this.UpdateTriggers ();
     }
 
     public void TransformIntoLake ()
     {
-        m_tile_description = Tile.GetLake();
+        m_is_lake = true;
+        this.UpdateTriggers ();
+    }
+
+    public void SwitchWithLake ()
+    {
+        m_is_lake = !m_is_lake;
+        this.UpdateTriggers ();
+    }
+
+    private void UpdateTriggers ()
+    {
+        m_triggers.Clear ();
+        if (m_is_lake) {
+            foreach (Trigger trigger in Tile.GetLake().triggers) {
+                m_triggers.Add (new TriggerInstance (trigger, this));
+            }
+        } else {
+            foreach (Trigger trigger in m_tile_description.triggers) {
+                m_triggers.Add (new TriggerInstance (trigger, this));
+            }
+        }
     }
 
     // public for test purposes
@@ -48,7 +67,10 @@ public class TileInstance : System.Object
 
     public bool IsOfType (TileType p_type)
     {
-        return this.m_tile_description.IsOfType (p_type);
+        if (m_is_lake)
+            return Tile.GetLake ().IsOfType (p_type);
+        else
+            return this.m_tile_description.IsOfType (p_type);
     }
 
     public Player owner {
@@ -58,11 +80,11 @@ public class TileInstance : System.Object
 
         set {
             this.m_owner = value;
-            value.AddTileInstance(this);
+            value.AddTileInstance (this);
         }
     }
 
-    public void SetOwner(Player p_player)
+    public void SetOwner (Player p_player)
     {
         // This method is only called by a Plaier who already "owns" this TileInstance
         this.m_owner = p_player;
@@ -70,13 +92,19 @@ public class TileInstance : System.Object
 
     public string name {
         get {
-            return this.m_tile_description.name;
+            if (this.m_is_lake)
+                return Tile.GetLake ().name;
+            else
+                return this.m_tile_description.name;
         }
     }
 
     public ETileColor color {
         get {
-            return this.m_tile_description.color;
+            if (this.m_is_lake)
+                return Tile.GetLake ().color;
+            else
+                return this.m_tile_description.color;
         }
     }
 
@@ -93,13 +121,20 @@ public class TileInstance : System.Object
 
     public List<TileType> types {
         get {
-            return this.m_tile_description.types;
+            if (m_is_lake)
+                return Tile.GetLake ().types;
+            else
+                return this.m_tile_description.types;
         }
     }
 
     public Tile description {
         get {
-            return this.m_tile_description;
+            if (this.m_is_lake)
+                return Tile.GetLake ();
+            else
+                return this.m_tile_description;
+
         }
     }
 
@@ -110,12 +145,12 @@ public class TileInstance : System.Object
         return false;
     }
 
-    public bool IsAdjacentToLake()
+    public bool IsAdjacentToLake ()
     {
-        List<TileInstance> adjacent_instances = GetAdjacentInstances();
+        List<TileInstance> adjacent_instances = GetAdjacentInstances ();
 
         foreach (TileInstance instance in adjacent_instances) {
-            if (instance.description != null && instance.description.IsOfType(new TileType(ETileColor.LAKE)))
+            if (instance.description != null && instance.description.IsOfType (new TileType (ETileColor.LAKE)))
                 return true;
         }
         return false;
@@ -151,6 +186,8 @@ public class TileInstance : System.Object
 
     public void ApplyImmediateEffect ()
     {
+        if(m_is_lake)
+            return;
         if (m_tile_description.immediate_effect == null)
             return;
         m_tile_description.immediate_effect.Apply (m_owner, 1);
@@ -175,7 +212,7 @@ public class TileInstance : System.Object
         //https://stackoverflow.com/questions/5221396/what-is-an-appropriate-gethashcode-algorithm-for-a-2d-point-struct-avoiding
         unchecked {
             int hash = 17;
-            hash = hash * 23 + position.GetHashCode();
+            hash = hash * 23 + position.GetHashCode ();
             hash = hash * 23 + owner.GetHashCode ();
             return hash;
         }
