@@ -68,6 +68,9 @@ public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerR
     public void HandleSendTileToPosition (EventSendTileToPosition p_event)
     {
         // TODO : Smooth transition
-        TileView.InstantiateWithParent(Suburbia.Market[p_event.index], this.transform);
+        if(p_event.player == m_player)
+        {
+            TileView.InstantiateWithParent(Suburbia.Market[p_event.index], this.transform);
+        }
     }
 }
