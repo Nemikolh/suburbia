@@ -1,3 +1,9 @@
+// --------------------------------------------------------------- //
+// 
+// Project : Suburbia
+// Authors : Nemikolh, Pierre mourlanne
+// All Wrongs Reserved.
+// --------------------------------------------------------------- //
 using System;
 using System.Collections.Generic;
 using SimpleJSON;
@@ -14,10 +20,12 @@ public class Tile
     private readonly Effect m_immediate_effect;
     private readonly List<Trigger> m_triggers;
 
+    private static string lake_description = "{\"name\": \"Lake\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"BLUE\"}], \"color\": \"LAKE\", \"price\": 0, \"number\": 0, \"immediate\": \"NONE\", \"letter\": \"BASE\", \"icon\": \"NONE\"}";
+    private static Tile LAKE = Tile.LoadFromJson (JSON.Parse (lake_description) as JSONClass);
+
     public static Tile GetLake ()
     {
-        string lake_description = "{\"name\": \"Lake\", \"triggers\": [{\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"YELLOW\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREEN\"}, {\"scope\": \"ADJACENT\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"BLUE\"}], \"color\": \"LAKE\", \"price\": 0, \"number\": 0, \"immediate\": \"NONE\", \"letter\": \"BASE\", \"icon\": \"NONE\"}";
-        return Tile.LoadFromJson(JSON.Parse(lake_description) as JSONClass);
+        return LAKE;
     }
 
     public static Tile LoadFromJson (JSONClass p_json)
@@ -39,10 +47,9 @@ public class Tile
             }
 
             Effect immediate_effect = null;
-            if(p_json["immediate"] != null && p_json["immediate"].Value != "NONE")
-            {
-                immediate_effect = new Effect(Util.parseEnum<ETileResource>(p_json["immediate"]["resource"].Value),
-                                              p_json["immediate"]["value"].AsInt);
+            if (p_json ["immediate"] != null && p_json ["immediate"].Value != "NONE") {
+                immediate_effect = new Effect (Util.parseEnum<ETileResource> (p_json ["immediate"] ["resource"].Value),
+                                              p_json ["immediate"] ["value"].AsInt);
             }
 
             return new Tile (name, color, icon, price, letter, number, triggers, immediate_effect);
