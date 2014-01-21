@@ -186,7 +186,7 @@ public class TileInstance : System.Object
 
     public void ApplyImmediateEffect ()
     {
-        if(m_is_lake)
+        if (m_is_lake)
             return;
         if (m_tile_description.immediate_effect == null)
             return;
