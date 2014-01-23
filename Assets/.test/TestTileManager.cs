@@ -440,5 +440,34 @@ public class TestTileManager
         Assert.AreEqual(0, player.income);  // the casino's effect negated the red line
         Assert.AreEqual(-2, player.reputation);  // but the reputation did take a hit
     }
+
+    [Test]
+    public void TestSetUpTilesForPlayer()
+    {
+        RealEstateMarket market = new RealEstateMarket(2);
+        TileManager.LoadSetUpTiles(market.Stacks.LoadedTiles);
+
+        Assert.AreEqual(3, TileManager.GetSetUpTiles().Count);
+
+        player = new Player();
+        manager.AddPlayer(player);
+        Assert.AreEqual(0, player.tiles.Count);
+        Assert.AreEqual(15, player.money);
+        Assert.AreEqual(0, player.income);
+        Assert.AreEqual(0, player.reputation);
+        Assert.AreEqual(0, player.population);
+
+        manager.SetUpTilesForPlayer(player);
+        Assert.AreEqual(3, player.tiles.Count);
+
+        // The player didn't lose any money
+        Assert.AreEqual(15, player.money);
+        // The player's income didn't change
+        Assert.AreEqual(0, player.income);
+        // The player's reputation increased by 1 (+2 from park and -1 from factory)
+        Assert.AreEqual(1, player.reputation);
+        // The player's population increased by 2 (suburbs)
+        Assert.AreEqual(2, player.population);
+    }
 }
 
