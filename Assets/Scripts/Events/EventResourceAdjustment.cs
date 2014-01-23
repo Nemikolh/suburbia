@@ -1,5 +1,3 @@
-// TODO : Rajouter la tuile ayant déclenché cet ajustement
-
 using UnityEngine;
 
 public class EventResourceAdjustment : IEvent<HandlerResourceAdjustment>

@@ -155,8 +155,13 @@ public class TestTileInstance
         suburbs = new TileInstance (Tile.LoadFromJson (JSON.Parse (suburbs_description) as JSONClass));
         Assert.AreEqual("Suburbs", suburbs.description.name);
 
-        suburbs.TransformIntoLake();
+        suburbs.SwitchWithLake();
         Assert.AreEqual("Lake", suburbs.description.name);
+
+        suburbs.SwitchWithLake();
+        Assert.AreEqual("Suburbs", suburbs.description.name);
+
+
     }
 }
 
