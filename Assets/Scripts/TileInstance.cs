@@ -25,6 +25,18 @@ public class TileInstance : System.Object
         this.UpdateTriggers ();
     }
 
+    public void TransformIntoLake()
+    {
+        m_is_lake = true;
+        this.UpdateTriggers ();
+    }
+
+    public void ResetFromLake()
+    {
+        m_is_lake = false;
+        this.UpdateTriggers ();
+    }
+
     public void SwitchWithLake ()
     {
         m_is_lake = !m_is_lake;

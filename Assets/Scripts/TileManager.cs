@@ -14,10 +14,6 @@ using System.Linq;
 using UnityEngine;
 using SimpleJSON;
 
-// TODO
-// Handle pour une tile joué en tant que lake
-// PLayTileAsLake(Player p_player, TileInstance p_tile, TilePosition p_position)
-
 
 public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 {

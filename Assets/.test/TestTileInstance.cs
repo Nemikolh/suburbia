@@ -161,7 +161,17 @@ public class TestTileInstance
         suburbs.SwitchWithLake();
         Assert.AreEqual("Suburbs", suburbs.description.name);
 
+        suburbs.TransformIntoLake();
+        Assert.AreEqual("Lake", suburbs.description.name);
 
+        suburbs.TransformIntoLake();
+        Assert.AreEqual("Lake", suburbs.description.name);
+
+        suburbs.ResetFromLake();
+        Assert.AreEqual("Suburbs", suburbs.description.name);
+
+        suburbs.ResetFromLake();
+        Assert.AreEqual("Suburbs", suburbs.description.name);
     }
 }
 
