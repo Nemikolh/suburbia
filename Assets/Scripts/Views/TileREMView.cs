@@ -5,6 +5,7 @@
 // All Wrongs Reserved.
 // --------------------------------------------------------------- //
 using System;
+using UnityEngine;
 
 public class TileREMView : TileView, HandlerSendTileToPosition
 {
@@ -27,9 +28,15 @@ public class TileREMView : TileView, HandlerSendTileToPosition
         Suburbia.Bus.FireEvent (new EventShowTileInformation (false, this.m_tile.description));
     }
     
-    public void OnMouseDown ()
+    public void OnMouseOver ()
     {
-        Suburbia.Bus.FireEvent (new EventClickOnTileFromREM (this.m_tile, Suburbia.ActivePlayer, m_index));
+        if(Input.GetMouseButtonDown(0))
+            Suburbia.Bus.FireEvent (new EventClickOnTileFromREM (this.m_tile, Suburbia.ActivePlayer, m_index));
+        else if(Input.GetMouseButtonDown(1))
+        {
+            this.m_tile.SwitchWithLake();
+            Suburbia.Bus.FireEvent (new EventClickOnTileFromREM (this.m_tile, Suburbia.ActivePlayer, m_index));
+        }
     }
 
     public void Start ()
