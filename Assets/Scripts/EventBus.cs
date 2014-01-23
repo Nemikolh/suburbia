@@ -58,7 +58,7 @@ public class EventBus
 
     }
 
-    public void AddHandler<H> (Type p_type, H p_handler)
+    public void AddHandler<H> (IEvent<H>.Type<H> p_type, H p_handler)
         where H : class, IHandler
     {
         if (m_handlers.ContainsKey (p_type)) {

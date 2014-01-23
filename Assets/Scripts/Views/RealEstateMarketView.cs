@@ -39,7 +39,7 @@ public class RealEstateMarketView : MonoBehaviour, HandlerTileRemovedFromREM
     void Start ()
     {
         Debug.Log ("Loading Real Estate Market...");
-        Suburbia.Bus.AddHandler (EventSendTileToPosition.TYPE, this);
+        Suburbia.Bus.AddHandler (EventTileRemovedFromREM.TYPE, this);
 
         m_market = Suburbia.Market;
         m_tiles = new List<TileREMView> ();
