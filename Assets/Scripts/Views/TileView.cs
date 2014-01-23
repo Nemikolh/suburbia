@@ -111,10 +111,10 @@ public class TileView : MonoBehaviour
 
         // Set the initial position if one does exists.
         if (_this.m_tile.position != null) {
-            p_tile.transform.position = new Vector3 (_this.m_tile.position.x * m_offset_x * 1.5f, 0,
+            p_tile.transform.localPosition = new Vector3 (_this.m_tile.position.x * m_offset_x * 1.5f, 0,
                                                      (_this.m_tile.position.y + 1) * m_offset_y);
             Vector3 eulerAngles = new Vector3 (270, 90, 0);
-            p_tile.transform.rotation = Quaternion.Euler (eulerAngles);
+            p_tile.transform.localRotation = Quaternion.Euler (eulerAngles);
         }
     }
 }

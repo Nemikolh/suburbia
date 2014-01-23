@@ -44,7 +44,7 @@ public sealed class RealEstateMarket
         // A null tile is considered has a hole in the real estate market.
         m_availables_tiles.Insert (0, m_tileStacks.PopNextTile ());
 
-        Suburbia.Bus.FireEvent(new EventTileRemovedFromREM(tile, n));
+        Suburbia.Bus.FireEvent(new EventTileRemovedFromREM(m_availables_tiles[0], n));
 
         return tile;
     }

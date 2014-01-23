@@ -48,7 +48,7 @@ public class RealEstateMarketView : MonoBehaviour, HandlerTileRemovedFromREM
         if (m_market.tiles.Count > 0) {
             Vector3 value = m_cam.WorldToScreenPoint (new Vector3 (2, 0));
             m_delta_tile = (int)value.x - Screen.width / 2;
-            m_delta_tile_world = 1.9f;
+            m_delta_tile_world = 1.75f;
         } else
             m_delta_tile = 85;
         SetPositionOfTiles ();
