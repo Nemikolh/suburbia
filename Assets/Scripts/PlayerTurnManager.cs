@@ -20,7 +20,8 @@ public sealed class PlayerTurnManager : HandlerClickOnTileFromREM, HandlerClickO
 
     public void HandleClickOnTileFromREM (EventClickOnTileFromREM p_event)
     {
-        // TODO check that the current guy has enough money
+        if(m_current_tile_chosen != null)
+            m_current_tile_chosen.ResetFromLake();
         m_current_tile_chosen = p_event.tile;
         m_index_in_REM = p_event.index_in_REM;
     }
