@@ -33,7 +33,8 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
     private Dictionary<TileType, List<TriggerInstance>> m_subscribers;
     private static List<SetUpTile> m_setup_tiles;
 
-    private class SetUpTile
+    // public for test purposes
+    public class SetUpTile
     {
         public SetUpTile (Tile p_tile, int p_x, int p_y)
         {
@@ -58,7 +59,12 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         }
     }
 
-    public static void LoadSetupTiles (List<Tile> p_all_possible_tiles)
+    public static List<SetUpTile> GetSetUpTiles ()
+    {
+        return TileManager.m_setup_tiles;
+    }
+
+    public static void LoadSetUpTiles (List<Tile> p_all_possible_tiles)
     {
         m_setup_tiles = new List<SetUpTile> ();
 
@@ -101,13 +107,17 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         }
     }
 
-    private void SetUpTilesForPlayer (Player p_player)
+    // public for test purposes
+    public void SetUpTilesForPlayer (Player p_player)
     {
         if (TileManager.m_setup_tiles != null) {
             foreach (var setupTile in m_setup_tiles) {
                 TileInstance tileInstance = new TileInstance (setupTile.tile);
                 p_player.AddTileInstance (tileInstance);
                 tileInstance.position = new TilePosition (setupTile.x, setupTile.y);
+
+                // Quick hack so that the setup tiles don't cost any money
+                Suburbia.Bus.FireEvent(new EventTilePlayed(tileInstance, -setupTile.tile.price));
             }
         }
     }

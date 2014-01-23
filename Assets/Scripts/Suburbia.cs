@@ -28,7 +28,7 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
     public void StartGame (int p_nb_players)
     {
         m_market = new RealEstateMarket (p_nb_players);
-        TileManager.LoadSetupTiles (m_market.Stacks.LoadedTiles);
+        TileManager.LoadSetUpTiles (m_market.Stacks.LoadedTiles);
         TileView.InitProperties ();
         m_game_manager = new TileManager (p_nb_players);
         m_current_player = 0;
