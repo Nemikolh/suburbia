@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TileDescriptionMenu : MonoBehaviour, HandlerShowTileInformation {
+public class TileDescriptionMenu : EventBasedBehavior, HandlerShowTileInformation {
 
     private Tile m_current_tile_shown;
     private bool m_show_tile;

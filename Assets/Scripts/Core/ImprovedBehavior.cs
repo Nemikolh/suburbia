@@ -11,7 +11,7 @@ using UnityEngine;
 public delegate void DelayedFunc();
 
 
-public abstract class ImprovedBehavior<T, Arg> : MonoBehaviour
+public abstract class ImprovedBehavior<T, Arg> : EventBasedBehavior
     where T : ImprovedBehavior<T, Arg>
 {
     public static T Create(GameObject p_obj, Arg p_arg1)
@@ -32,7 +32,7 @@ public abstract class ImprovedBehavior<T, Arg> : MonoBehaviour
     {
         //Debug.Log("Delay start");
         yield return new WaitForSeconds(p_delay);
-        f();
+        f(); 
     }
 }
 

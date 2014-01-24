@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class RealEstateMarketView : MonoBehaviour, HandlerTileRemovedFromREM
+public class RealEstateMarketView : EventBasedBehavior, HandlerTileRemovedFromREM
 {
     private RealEstateMarket m_market;
     private List<TileREMView> m_tiles;

@@ -129,9 +129,9 @@ public class EventBus : HandlerHandlerHasBeenDestroyed
                 foreach (var entry in m_handlers) {
                     nb_values += entry.Value.RemoveAll (elem => elem.Key == handler);
                 }
-            
-                Debug.Log ("Handler removed : " + nb_values);
             }
+
+            m_handlers_removed.Clear();
         }
     }
 }

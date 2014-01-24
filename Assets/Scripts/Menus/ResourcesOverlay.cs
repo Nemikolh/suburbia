@@ -7,7 +7,7 @@
 using System;
 using UnityEngine;
 
-public class ResourcesOverlay : MonoBehaviour, HandlerGameStarted, HandlerResourceAdjustment
+public class ResourcesOverlay : EventBasedBehavior, HandlerGameStarted, HandlerResourceAdjustment
 {
     private bool m_show;
     private string m_description;
