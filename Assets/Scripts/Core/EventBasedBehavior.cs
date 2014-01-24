@@ -13,7 +13,7 @@ public class EventBasedBehavior : MonoBehaviour
     {
         MonoBehaviour.Destroy (p_obj);
     
-        if ((IHandler)p_obj != null)
+        if (p_obj as IHandler != null)
             Suburbia.Bus.FireEvent (new EventHandlerHasBeenDestroyed (p_obj as IHandler));
     }
 
@@ -21,7 +21,7 @@ public class EventBasedBehavior : MonoBehaviour
     {
         MonoBehaviour.Destroy (p_obj, p_t);
         
-        if ((IHandler)p_obj != null)
+        if (p_obj as IHandler != null)
             Suburbia.Bus.FireEvent (new EventHandlerHasBeenDestroyed (p_obj as IHandler));
     }
 }
