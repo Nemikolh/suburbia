@@ -30,11 +30,10 @@ public class TileREMView : TileView, HandlerSendTileToPosition
     
     public void OnMouseOver ()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown (0))
             Suburbia.Bus.FireEvent (new EventClickOnTileFromREM (this.m_tile, Suburbia.ActivePlayer, m_index));
-        else if(Input.GetMouseButtonDown(1))
-        {
-            this.m_tile.SwitchWithLake();
+        else if (Input.GetMouseButtonDown (1)) {
+            this.m_tile.SwitchWithLake ();
             Suburbia.Bus.FireEvent (new EventClickOnTileFromREM (this.m_tile, Suburbia.ActivePlayer, m_index));
         }
     }
@@ -47,8 +46,10 @@ public class TileREMView : TileView, HandlerSendTileToPosition
     public void HandleSendTileToPosition (EventSendTileToPosition p_event)
     {
         // TODO perform a smooth transition here instead of a rough destruction.
-        if(p_event.index == this.m_index)
+        if (p_event.index == this.m_index) {
             Destroy (this.gameObject);
+            Destroy (this);
+        }
     }
 }
 

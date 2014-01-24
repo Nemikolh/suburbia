@@ -8,7 +8,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class TileView : MonoBehaviour
+public class TileView : EventBasedBehavior
 {
     private static UnityEngine.Object RESOURCE = Resources.Load ("Prefabs/Tile");
     private static Dictionary<ETileColor, Texture> m_textures = new Dictionary<ETileColor, Texture> ();
