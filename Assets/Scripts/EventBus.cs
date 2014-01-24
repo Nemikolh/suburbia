@@ -9,8 +9,9 @@
 //------------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class EventBus
+public class EventBus : HandlerHandlerHasBeenDestroyed
 {
     public EventBus ()
     {
@@ -52,6 +53,7 @@ public class EventBus
 
         // Dispatch event among handler.
         foreach (var handler in list) {
+            // TODO try catch dirty bro !! with remove / iterator
             H _handler = handler as H;
             p_event.Dispatch (_handler);
         }
@@ -67,6 +69,16 @@ public class EventBus
             m_handlers [p_type] = new List<IHandler> ();
             m_handlers [p_type].Add (p_handler);
         }
+    }
+
+    public void HandleHandlerHasBeenDestroyed(EventHandlerHasBeenDestroyed p_event)
+    {
+        int nb_values = 0;
+        foreach (KeyValuePair<Type, List<IHandler>> entry in m_handlers) {
+            nb_values += entry.Value.RemoveAll(elem => elem == p_event.handler);
+        }
+
+        Debug.Log("Handler removed : " + nb_values);
     }
 }
 
