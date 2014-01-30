@@ -1,15 +1,17 @@
-[done]		Update the REM
-[done]		Player changes
-[partial]	Translations (camera and tiles)
-[done]		Whole burrought needs to be visible
-		Button to move the camera to the Nth burrough
-[partial]	Display infos of a played tiles
-		Visual representation of lake tile
-		Visual representation of grey tile
-		Base tile (suburbs, park and heavy factory)
-		End of game
-		Goals
-		Investor tokens
-		Polish
-		Multiplayer
-		Polish ++
+[done]              Update the REM
+[done]              Player changes
+[partial]           Translations (camera and tiles)
+[done]              Whole burrough needs to be visible
+                    Debug Player's attributes not changed on tile played
+                    Debug Play tile as Lake
+                    Button to move the camera to the Nth burrough
+[partial]           Display infos of a played tiles
+                    Visual representation of lake tile
+                    Visual representation of grey tile
+                    Base tile (suburbs, park and heavy factory)
+                    End of game
+                    Goals
+                    Investor tokens
+                    Polish
+                    Multiplayer
+                    Polish ++
