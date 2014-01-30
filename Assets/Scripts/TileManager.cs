@@ -20,6 +20,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
     public TileManager ()
     {
         m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
+        m_players = new List<Pair<Player, PlayerBurrough>>();
         
         // Listen on TilePlayed
         Suburbia.Bus.AddHandler(EventTilePlayed.TYPE, this);
@@ -81,7 +82,6 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 
     public void InitPlayers (int p_nb_players)
     {
-        m_players = new List<Pair<Player, PlayerBurrough>>();
         string name;
 
         for (int i = 0; i < p_nb_players; i++) {
@@ -118,7 +118,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
                 tileInstance.position = new TilePosition (setupTile.x, setupTile.y);
 
                 // Quick hack so that the setup tiles don't cost any money
-                Suburbia.Bus.FireEvent(new EventTilePlayed(tileInstance, -setupTile.tile.price));
+                Suburbia.Bus.FireEvent(new EventTilePlayed(tileInstance, -setupTile.tile.price, true));
             }
         }
     }

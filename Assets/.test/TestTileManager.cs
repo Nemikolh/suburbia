@@ -31,7 +31,7 @@ public class TestTileManager
     [SetUp]
     public void Init ()
     {
-        manager = new TileManager (0);
+        manager = new TileManager ();
 
         player = new Player ();
         player_other = new Player ();
@@ -322,7 +322,7 @@ public class TestTileManager
         Assert.AreEqual(true, listeners.Contains(trigger));
 
         // We subscribe a tile with a trigger
-        manager = new TileManager(0);
+        manager = new TileManager();
         Assert.AreEqual(0, manager.subscribers.Count);
         string mint_description = "{\"name\": \"Mint\", \"triggers\": [{\"scope\": \"OWN\", \"when\": \"ALWAYS\", \"effect\": {\"resource\": \"MONEY\", \"value\": 2}, \"type\": \"GREY\"}], \"color\": \"GREY\", \"price\": 15, \"number\": 2, \"immediate\": {\"resource\": \"INCOME\", \"value\": 3}, \"letter\": \"A\", \"icon\": \"NONE\"}";
         Tile mint_ = GetTileFromString(mint_description);
@@ -338,7 +338,7 @@ public class TestTileManager
         Assert.AreEqual(true, listeners.Contains(mint.triggers[0]));
 
         // We subscribe a tile with no trigger
-        manager = new TileManager(0);
+        manager = new TileManager();
         Assert.AreEqual(0, manager.subscribers.Count);
         manager.AddSubscriber(suburbs);
 
