@@ -92,7 +92,7 @@ public class TileView : EventBasedBehavior
             SetTileProperties (_new_instance, _this);
 
             // Set an other script to this instance linked
-            _new_instance.AddComponent<SmoothTranslationMarket> ().InitWith (p_position + new Vector3 (0, 0.5f, 0));
+            _new_instance.AddComponent<SmoothTranslationMarket> ().InitWith (new Vector3 (0, 0.5f, 0));
 
             Debug.Log ("Tile : " + p_instance.name + " loaded to market place.");
 

@@ -73,7 +73,7 @@ public class RealEstateMarketView : EventBasedBehavior, HandlerTileRemovedFromRE
     {
         m_tiles.RemoveAt(p_event.index);
         for (int i = 0; i < p_event.index; i++) {
-            Vector3 destination = m_tiles[p_event.index - i - 1].transform.position + new Vector3(m_delta_tile_world / 2,0,0);
+            Vector3 destination = new Vector3(m_delta_tile_world / 2,0,0);
             SmoothTranslation.Translate(m_tiles[p_event.index - i - 1].gameObject, destination, i / 2.0f, TranslationType.DESTROY_ON_DESTINATION);
             m_tiles[i].index = i+1;
         }
