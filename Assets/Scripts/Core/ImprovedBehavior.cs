@@ -10,19 +10,8 @@ using UnityEngine;
 
 public delegate void DelayedFunc();
 
-
-public abstract class ImprovedBehavior<T, Arg> : EventBasedBehavior
-    where T : ImprovedBehavior<T, Arg>
+public abstract class ImprovedBehavior : EventBasedBehavior
 {
-    public static T Create(GameObject p_obj, Arg p_arg1)
-    {
-        T behavior = p_obj.AddComponent<T>();
-        behavior.Construct(p_arg1);
-        return behavior;
-    }
-
-    public abstract void Construct(Arg p_arg1);
-
     public void Delay(DelayedFunc f, float p_delay)
     {
         StartCoroutine(DelayHelper(f, p_delay));
@@ -36,3 +25,15 @@ public abstract class ImprovedBehavior<T, Arg> : EventBasedBehavior
     }
 }
 
+public abstract class ImprovedBehavior<T, Arg> : ImprovedBehavior
+    where T : ImprovedBehavior<T, Arg>
+{
+    public static T Create(GameObject p_obj, Arg p_arg1)
+    {
+        T behavior = p_obj.AddComponent<T>();
+        behavior.Construct(p_arg1);
+        return behavior;
+    }
+
+    public abstract void Construct(Arg p_arg1);
+}
