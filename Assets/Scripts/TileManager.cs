@@ -124,9 +124,9 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         }
     }
 
-    public Player this [int index] {
+    public Pair<Player, PlayerBurrough> this [int index] {
         get {
-            return this.players [index];
+            return this.m_players [index];
         }
     }
 

@@ -104,7 +104,13 @@ public sealed class Suburbia : HandlerEndOfTurn, HandlerLastTurn, HandlerEndOfGa
 
     public static Player ActivePlayer {
         get {
-            return m_instance.m_game_manager[m_instance.m_current_player];
+            return m_instance.m_game_manager[m_instance.m_current_player].Key;
+        }
+    }
+
+    public static PlayerBurrough CurrentBurrough {
+        get {
+            return m_instance.m_game_manager[m_instance.m_current_player].Value;
         }
     }
 
