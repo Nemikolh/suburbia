@@ -29,7 +29,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         Suburbia.Bus.AddHandler(EventRedLine.TYPE, this);
     }
 
-    private List<Player> m_players;
+    private List<Pair<Player, PlayerBurrough>> m_players;
     private Dictionary<TileType, List<TriggerInstance>> m_subscribers;
     private static List<SetUpTile> m_setup_tiles;
 
@@ -82,25 +82,27 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 
     private void InitPlayers (int p_nb_players)
     {
-        m_players = new List<Player> ();
+        m_players = new List<Pair<Player, PlayerBurrough>>();
         string name;
 
         for (int i = 0; i < p_nb_players; i++) {
             name = "Player " + i;
             Player player = new Player (name);
-            m_players.Add (player);
+            this.AddPlayer (player);
             SetUpTilesForPlayer (player);
         }
 
-        CreatePlayersBurroughs(m_players);
+        CreatePlayersBurroughs();
     }
 
-    private void CreatePlayersBurroughs (ICollection<Player> p_players)
+    private void CreatePlayersBurroughs ()
     {
         int i = 0;
-        foreach (Player player in p_players) {
+        foreach (Pair<Player, PlayerBurrough> player in m_players) {
 
-            GameObject player_place = PlayerBurrough.Instantiate(player).gameObject;
+            PlayerBurrough burrough = PlayerBurrough.Instantiate(player.Key);
+            player.Value = burrough;
+            GameObject player_place = burrough.gameObject;
             player_place.transform.position = new Vector3 (10.0f * (i / 2), 0, 0);
             player_place.transform.rotation = Quaternion.Euler (new Vector3 (0, i % 2 == 0 ? 0 : 180, 0));
             ++i;
@@ -124,13 +126,13 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 
     public Player this [int index] {
         get {
-            return this.m_players [index];
+            return this.players [index];
         }
     }
 
     public List<Player> players {
         get {
-            return this.m_players;
+            return this.m_players.ConvertAll(new Converter<Pair<Player, PlayerBurrough>, Player>(elem => elem.Key));
         }
     }
 
@@ -199,8 +201,8 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
     public List<TileInstance> GetAllTiles ()
     {
         List<TileInstance> tiles = new List<TileInstance> ();
-        foreach (Player player in m_players) {
-            tiles.AddRange (player.tiles);
+        foreach (var player in m_players) {
+            tiles.AddRange (player.Key.tiles);
         }
 
         return tiles;
@@ -216,9 +218,9 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
     public List<TileInstance> GetTilesOfOtherPlayers (Player p_player)
     {
         List<TileInstance> tiles = new List<TileInstance> ();
-        foreach (Player player in m_players) {
-            if (player != p_player)
-                tiles.AddRange (player.tiles);
+        foreach (var player in m_players) {
+            if (player.Key != p_player)
+                tiles.AddRange (player.Key.tiles);
         }
 
         return tiles;
@@ -381,17 +383,17 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 
     public void AddPlayer (Player p_player)
     {
-        m_players.Add (p_player);
+        m_players.Add (new Pair<Player, PlayerBurrough>(p_player, null));
     }
 
     public void RemovePlayer (Player p_player)
     {
-        m_players.Remove (p_player);
+        m_players.RemoveAll (elem => elem.Key == p_player);
     }
 
     public bool Manages (Player p_player)
     {
-        return m_players.Contains (p_player);
+        return m_players.Exists(elem => elem.Key == p_player);
     }
 }
 
