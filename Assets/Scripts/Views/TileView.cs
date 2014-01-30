@@ -35,6 +35,16 @@ public class TileView : MonoBehaviour
     {
     }
 
+    public void OnMouseEnter ()
+    {
+        Suburbia.Bus.FireEvent (new EventShowTileInformation (true, this.m_tile.description));
+    }
+    
+    public void OnMouseExit ()
+    {
+        Suburbia.Bus.FireEvent (new EventShowTileInformation (false, this.m_tile.description));
+    }
+
     public static void InitProperties ()
     {
         m_textures.Add (ETileColor.BLUE, Resources.Load<Texture> ("Textures/tile_top_blue"));
@@ -91,7 +101,7 @@ public class TileView : MonoBehaviour
             // Set the common properties
             SetTileProperties (_new_instance, _this);
 
-            // Set an other script to this instance linked
+            // Set another script to this instance linked
             _new_instance.AddComponent<SmoothTranslationMarket> ().InitWith (p_position + new Vector3 (0, 0.5f, 0));
 
             Debug.Log ("Tile : " + p_instance.name + " loaded to market place.");
@@ -105,11 +115,11 @@ public class TileView : MonoBehaviour
 
     private static void SetTileProperties (GameObject p_tile, TileView _this)
     {
-        // Set tthe appropriate texture.
+        // Set the appropriate texture.
         p_tile.renderer.material.SetTexture ("_PathTex", m_textures [_this.m_tile.color]);
         p_tile.renderer.material.SetTexture ("_PathMask", m_textures [_this.m_tile.color]);
 
-        // Set the initial position if one does exists.
+        // Set the initial position if one does exist.
         if (_this.m_tile.position != null) {
             p_tile.transform.position = new Vector3 (_this.m_tile.position.x * m_offset_x * 1.5f, 0,
                                                      (_this.m_tile.position.y + 1) * m_offset_y);

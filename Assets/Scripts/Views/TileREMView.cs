@@ -17,16 +17,6 @@ public class TileREMView : TileView, HandlerSendTileToPosition
             m_index = value;
         }
     }
-
-    public void OnMouseEnter ()
-    {
-        Suburbia.Bus.FireEvent (new EventShowTileInformation (true, this.m_tile.description));
-    }
-    
-    public void OnMouseExit ()
-    {
-        Suburbia.Bus.FireEvent (new EventShowTileInformation (false, this.m_tile.description));
-    }
     
     public void OnMouseOver ()
     {
