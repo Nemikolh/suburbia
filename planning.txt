@@ -1,7 +1,8 @@
+Whole burrought needs to be visible
 Player changes
 Translations (camera and tiles)
 Button to move the camera to the Nth burrough
-DIsplay infos of a played tile
+DIsplay infos of a played tiles                             DONE
 Visual representation of lake tile
 Visual representation of grey tile
 Base tile (suburbs, park and heavy factory)
