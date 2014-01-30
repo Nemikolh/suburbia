@@ -42,4 +42,10 @@ public class EventTilePlayed : IEvent<HandlerTilePlayed>
             return this.m_price_overhead;
         }
     }
+
+    public bool setuptile {
+        get {
+            return this.m_setuptile;
+        }
+    }
 }

@@ -2,7 +2,7 @@
 [done]              Player changes
 [partial]           Translations (camera and tiles)
 [done]              Whole burrough needs to be visible
-                    Debug Player's attributes not changed on tile played
+[done]              Debug Player's attributes not changed on tile played
                     Debug Play tile as Lake
                     Button to move the camera to the Nth burrough
 [partial]           Display infos of a played tiles

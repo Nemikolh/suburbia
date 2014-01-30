@@ -165,8 +165,12 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         EmitNewTileEvent(p_new_tile);
         // We subscribe the new tile for later conditional effects
         AddSubscriber(p_new_tile);
-        // End of turn.
-        Suburbia.Bus.FireEvent(new EventEndOfTurn(p_new_tile.owner));
+
+        if(!p_event.setuptile)
+        {
+            // End of turn.
+            Suburbia.Bus.FireEvent(new EventEndOfTurn(p_new_tile.owner));
+        }
     }
 
     public void HandleRedLinePassed (EventRedLine p_event)
