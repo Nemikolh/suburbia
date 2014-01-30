@@ -1,4 +1,3 @@
-Update the REM
 Player changes
 Translations (camera and tiles)
 Button to move the camera to the Nth burrough
@@ -10,4 +9,5 @@ End of game
 Goals
 Investor tokens
 Polish
+Multiplayer
 Polish ++

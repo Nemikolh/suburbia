@@ -8,7 +8,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class TileView : MonoBehaviour
+public class TileView : EventBasedBehavior
 {
     private static UnityEngine.Object RESOURCE = Resources.Load ("Prefabs/Tile");
     private static Dictionary<ETileColor, Texture> m_textures = new Dictionary<ETileColor, Texture> ();
@@ -102,7 +102,7 @@ public class TileView : MonoBehaviour
             SetTileProperties (_new_instance, _this);
 
             // Set another script to this instance linked
-            _new_instance.AddComponent<SmoothTranslationMarket> ().InitWith (p_position + new Vector3 (0, 0.5f, 0));
+            _new_instance.AddComponent<SmoothTranslationMarket> ().InitWith (new Vector3 (0, 0.5f, 0));
 
             Debug.Log ("Tile : " + p_instance.name + " loaded to market place.");
 
@@ -121,10 +121,10 @@ public class TileView : MonoBehaviour
 
         // Set the initial position if one does exist.
         if (_this.m_tile.position != null) {
-            p_tile.transform.position = new Vector3 (_this.m_tile.position.x * m_offset_x * 1.5f, 0,
+            p_tile.transform.localPosition = new Vector3 (_this.m_tile.position.x * m_offset_x * 1.5f, 0,
                                                      (_this.m_tile.position.y + 1) * m_offset_y);
             Vector3 eulerAngles = new Vector3 (270, 90, 0);
-            p_tile.transform.rotation = Quaternion.Euler (eulerAngles);
+            p_tile.transform.localRotation = Quaternion.Euler (eulerAngles);
         }
     }
 }

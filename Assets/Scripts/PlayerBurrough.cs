@@ -7,7 +7,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerBurrough : MonoBehaviour, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer, HandlerSendTileToPosition
+public class PlayerBurrough : EventBasedBehavior, HandlerClickOnTileFromREM, HandlerRemoveFreePositionOfPlayer, HandlerSendTileToPosition
 {
     private static Object RESOURCE = Resources.Load ("Prefabs/PlayerBurrough");
     private Player m_player;

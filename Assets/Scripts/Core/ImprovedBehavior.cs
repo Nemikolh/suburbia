@@ -5,9 +5,13 @@
 // All Wrongs Reserved.
 // --------------------------------------------------------------- //
 using System;
+using System.Collections;
 using UnityEngine;
 
-public abstract class ImprovedBehavior<T, Arg> : MonoBehaviour
+public delegate void DelayedFunc();
+
+
+public abstract class ImprovedBehavior<T, Arg> : EventBasedBehavior
     where T : ImprovedBehavior<T, Arg>
 {
     public static T Create(GameObject p_obj, Arg p_arg1)
@@ -18,5 +22,17 @@ public abstract class ImprovedBehavior<T, Arg> : MonoBehaviour
     }
 
     public abstract void Construct(Arg p_arg1);
+
+    public void Delay(DelayedFunc f, float p_delay)
+    {
+        StartCoroutine(DelayHelper(f, p_delay));
+    }
+    
+    private IEnumerator DelayHelper(DelayedFunc f, float p_delay)
+    {
+        //Debug.Log("Delay start");
+        yield return new WaitForSeconds(p_delay);
+        f(); 
+    }
 }
 

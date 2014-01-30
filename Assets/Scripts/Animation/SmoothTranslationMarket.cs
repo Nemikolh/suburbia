@@ -8,14 +8,20 @@ using System;
 
 public class SmoothTranslationMarket : SmoothTranslation
 {
+
+    void Start()
+    {
+        this.Construct(TranslationType.KEEP_ON_DESTINATION);
+    }
+
     void OnMouseEnter ()
     {
-        m_is_transition_started = true;
+        this.SwitchTransition();
     }
     
     void OnMouseExit ()
     {
-        m_is_transition_started = false;
+        this.SwitchTransition();
     }
 
 }

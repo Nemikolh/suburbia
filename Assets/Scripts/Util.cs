@@ -57,13 +57,5 @@ public sealed class Util
             return (T)Enum.Parse (typeof(T), "NULL", true);
         }
     }
-
-    public delegate void DelayedFunc();
-
-    public static IEnumerator Delay(DelayedFunc f, float p_delay)
-    {
-        yield return new WaitForSeconds(p_delay);
-        f();
-    }
 }
 
