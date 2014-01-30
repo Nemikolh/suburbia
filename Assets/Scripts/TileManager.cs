@@ -17,14 +17,13 @@ using SimpleJSON;
 
 public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
 {
-    public TileManager (int p_nb_players)
+    public TileManager ()
     {
         m_subscribers = new Dictionary<TileType, List<TriggerInstance>> ();
-        InitPlayers (p_nb_players);
-
+        
         // Listen on TilePlayed
         Suburbia.Bus.AddHandler(EventTilePlayed.TYPE, this);
-
+        
         // Listen on RedLine
         Suburbia.Bus.AddHandler(EventRedLine.TYPE, this);
     }
@@ -80,7 +79,7 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
         }
     }
 
-    private void InitPlayers (int p_nb_players)
+    public void InitPlayers (int p_nb_players)
     {
         m_players = new List<Pair<Player, PlayerBurrough>>();
         string name;

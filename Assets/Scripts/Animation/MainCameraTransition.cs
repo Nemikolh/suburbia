@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MainCameraTransition : ImprovedBehavior, HandlerEndOfTurn, HandlerGameStarted
+public class MainCameraTransition : ImprovedBehavior, HandlerEndOfTurn, HandlerGameStarted, HandlerClickOnTileFromREM
 {
     private static float TAN_FOVV = Mathf.Tan (Camera.main.fieldOfView);
     private static float TAN_FOVV2 = Mathf.Tan (Camera.main.fieldOfView / 2.0f);
@@ -14,6 +14,7 @@ public class MainCameraTransition : ImprovedBehavior, HandlerEndOfTurn, HandlerG
         m_go_to_second_player = false;
         Suburbia.Bus.AddHandler (EventEndOfTurn.TYPE, this);
         Suburbia.Bus.AddHandler (EventGameStarted.TYPE, this);
+        Suburbia.Bus.AddHandler (EventClickOnTileFromREM.TYPE, this);
     }
     
     public void HandleEndOfTurn (EventEndOfTurn p_event)
@@ -25,6 +26,11 @@ public class MainCameraTransition : ImprovedBehavior, HandlerEndOfTurn, HandlerG
     public void HandleGameStarted (EventGameStarted p_event)
     {
         this.Delay (UpdatePositionCamera, 0.2f);
+    }
+
+    public void HandleClickOnTileFromREM (EventClickOnTileFromREM p_event)
+    {
+        this.Delay (UpdatePositionCamera, 0.1f);
     }
 
     private void UpdatePositionCamera ()
