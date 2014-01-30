@@ -1,5 +1,6 @@
-Player changes
-Translations (camera and tiles)
+[done]	Update the REM
+[done]	Player changes
+[done]	Translations (camera and tiles) (partial)
 Button to move the camera to the Nth burrough
 DIsplay infos of a played tile
 Visual representation of lake tile
