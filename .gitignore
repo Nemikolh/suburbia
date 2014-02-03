@@ -48,7 +48,3 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-
-# Perso
-tiles.json_backup
-tiles.json
