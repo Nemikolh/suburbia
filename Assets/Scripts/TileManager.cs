@@ -68,8 +68,11 @@ public sealed class TileManager : HandlerTilePlayed, HandlerRedLine
     {
         m_setup_tiles = new List<SetUpTile> ();
 
-        using (StreamReader reader = File.OpenText(@"Assets/Data/setup_tiles.json")) {
-            JSONArray arr = JSON.Parse (reader.ReadToEnd ()) as JSONArray;
+        TextAsset json_data = Resources.Load("Data/setup_tiles") as TextAsset;
+
+        if(json_data.text.Length > 0)
+        {
+            JSONArray arr = JSON.Parse (json_data.text) as JSONArray;
 
             foreach (JSONNode pos_tile in arr) {
                 int x = pos_tile ["x"].AsInt;

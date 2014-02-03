@@ -24,10 +24,11 @@ public class TileStacks
 
         m_tiles_availables = new List<Tile> ();
 
-        // Application.dataPath ?
-        using (StreamReader reader = File.OpenText(@"Assets/Data/tiles.json")) {
+        TextAsset json_data = Resources.Load("Data/tiles") as TextAsset;
 
-            JSONArray tiles = (JSONArray)JSON.Parse (reader.ReadToEnd ());
+        if(json_data.text.Length > 0)
+        {
+            JSONArray tiles = (JSONArray)JSON.Parse (json_data.text);
 
             // Debug.Log (tiles.Count + " tiles to load from JSON.");
 
